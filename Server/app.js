@@ -6,9 +6,14 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-
+// var express = require('express-session')
 var app = express();
+const session = require('express-session');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('Database Connected!')).catch(err => console.log('Database Error: ', err));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -23,6 +28,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
+app.use(session({
+  secret: 'agile',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 app.use(function(req, res, next) {
   next(createError(404));
 });
