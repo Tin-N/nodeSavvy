@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema= mongoose.Schema;
 const ObjectId=Schema.ObjectId;
 
-const categorySchema=new Schema({
+const roleSchema=new Schema({
     id:{type:ObjectId},
     name:{type:String},
+   
 });
-module.exports = mongoose.models.category || mongoose.model('category',categorySchema);
+module.exports = mongoose.models.role || mongoose.model('role',roleSchema);
