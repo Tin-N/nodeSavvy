@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+const categoryApiRouter = require('./routes/api/CategoryApi');
 // var express = require('express-session')
 var app = express();
 const session = require('express-session');
@@ -26,7 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+//http://localhost:3000/api/category
+app.use('/api/category', categoryApiRouter);
 // catch 404 and forward to error handler
 app.use(session({
   secret: 'agile',
