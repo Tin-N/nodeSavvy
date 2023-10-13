@@ -20,6 +20,8 @@ const productSchema=new Schema({
     isApproved:{type:Boolean},
     name:{type:String},
     quantity:{type:Number},
+    sold:{type:Number},
+    rating:{type:Number},
     options:[optionSchema]
 });
 

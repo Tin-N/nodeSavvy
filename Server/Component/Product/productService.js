@@ -2,12 +2,12 @@ const productModel = require('./productModel');
 const addProduct = async (
     userID, categoryID, price,
     detail, image, isApproved,
-    name, quantity, options) => {
+    name, quantity, sold, rating, options) => {
     try {
         const newProduct = {
             userID, categoryID,
             price, detail, image,
-            isApproved, quantity, options
+            isApproved, name, quantity, sold, rating, options
         };
         const newP = new productModel(newProduct);
         await newP.save();

@@ -9,11 +9,11 @@ router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
         let { body } = req;
         const { userID, categoryID, price,
             detail, image, isApproved,
-            name, quantity, options } = body;
+            name, quantity, sold, rating, options } = body;
         await productController.addProduct(
             userID, categoryID, price,
             detail, image, isApproved,
-            name, quantity, options);
+            name, quantity, sold, rating, options);
         return res.status(200).json({ result: true })
     } catch (err) {
         console.log('Không thêm được  sản phẩm: ' + err);
@@ -37,6 +37,7 @@ router.post('/addOption', async (req, res, next) => {
         return res.status(500).json({ result: false })
     }
 })
+// http://localhost:3000/Api/productAPI/getAllProductByUserID?id=
 router.get('/getAllProductByUserID', async (req, res, next) => {
     try {
         const {id} = req.query;

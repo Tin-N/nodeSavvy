@@ -3,12 +3,12 @@ const productService = require('./productService');
 const addProduct = async (
     userID, categoryID, price,
     detail, image, isApproved,
-    name, quantity, options) => {
+    name, quantity, sold, rating, options) => {
     try {
         return await productService.addProduct(
             userID, categoryID, price,
             detail, image, isApproved,
-            name, quantity, options
+            name, quantity, sold, rating, options
         )
     } catch (err) {
         throw err;
