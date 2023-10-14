@@ -33,4 +33,12 @@ const getAllProductByUserID = async (id) => {
         return false;
     }
 }
-module.exports = { addProduct, addOption, getAllProductByUserID }
+const getProductByID = async (id) => {
+    try {
+        return await productService.getProductByID(id);
+    } catch (error) {
+        console.log('getAllProductByUserID error(contr): '+error);
+        return false;
+    }
+}
+module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID }

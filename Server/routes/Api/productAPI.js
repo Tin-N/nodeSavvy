@@ -49,5 +49,19 @@ router.get('/getAllProductByUserID', async (req, res, next) => {
     } catch (error) {
         console.log('getAllProductByUserID error(Api): '+error);
     }
-})
+});
+// http://localhost:3000/Api/productAPI/getProductByID?id=
+
+router.get('/getProductByID', async (req, res, next) => {
+    try {
+        const {id} = req.query;
+        const products = await productController.getProductByID(id);
+        console.log(id);
+        return res.status(200).json({
+            result:true, products: products
+        })
+    } catch (error) {
+        console.log('getAllProductByUserID error(Api): '+error);
+    }
+});
 module.exports = router;
