@@ -51,7 +51,6 @@ router.get('/getAllProductByUserID', async (req, res, next) => {
     }
 });
 // http://localhost:3000/Api/productAPI/getProductByID?id=
-
 router.get('/getProductByID', async (req, res, next) => {
     try {
         const {id} = req.query;
