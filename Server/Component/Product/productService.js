@@ -56,7 +56,43 @@ const getProductByID = async (id) => {
     try {
         return await productModel.findById(id);
     } catch (error) {
+        console.log('getProductByID error: ' + error);
+    }
+}
+
+const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
+    try {
+        // let page=0
+        // if (limitData<=2) 
+        //     page=0;
+        // else
+        //     page=24*skipPage;
+        console.log(categoryID);
+        return await productModel.find({categoryID:categoryID}).limit(limitData).skip(skipPage);
+    } catch (error) {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
-module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID }
+
+const getAllProductByUserIDByPage = async (userID,limitData,skipPage) => {
+    try {
+        // let page=0
+        // if (limitData<=2) 
+        //     page=0;
+        // else
+        //     page=24*skipPage;
+        console.log(categoryID);
+        return await productModel.find({userID:userID}).limit(limitData).skip(skipPage);
+    } catch (error) {
+        console.log('getAllProductByUserID error: ' + error);
+    }
+}
+module.exports = { 
+    addProduct,
+    addOption,
+    getAllProductByUserID,
+    getProductByID,
+    getProductByCategoryID,
+    getAllProductByUserIDByPage
+
+}

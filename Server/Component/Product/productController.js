@@ -1,5 +1,8 @@
 const productModel = require('./productModel');
 const productService = require('./productService');
+
+
+//  
 const addProduct = async (
     userID, categoryID, price,
     detail, image, isApproved,
@@ -14,6 +17,9 @@ const addProduct = async (
         throw err;
     }
 }
+
+
+// 
 const addOption = async (
     productID,
     title, color, titleColor, size, weight, imageOption) => {
@@ -25,6 +31,8 @@ const addOption = async (
         console.log('Không thể thêm thuộc tính: ' + err);;
     }
 }
+
+// 
 const getAllProductByUserID = async (id) => {
     try {
         return await productService.getAllProductByUserID(id);
@@ -33,6 +41,9 @@ const getAllProductByUserID = async (id) => {
         return false;
     }
 }
+
+
+// 
 const getProductByID = async (id) => {
     try {
         return await productService.getProductByID(id);
@@ -41,4 +52,26 @@ const getProductByID = async (id) => {
         return false;
     }
 }
-module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID }
+
+
+
+const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
+    try {
+        console.log(categoryID,limitData,skipPage);
+        return await productService.getProductByCategoryID(categoryID,limitData,skipPage);
+    } catch (error) {
+        console.log('getAllProductByUserID error(contr): '+error);
+        return false;
+    }
+}
+const getAllProductByUserIDByPage = async (userID,limitData,skipPage) => {
+    try {
+        console.log(userID,limitData,skipPage);
+        return await productService.getProductByCategoryID(userID,limitData,skipPage);
+    } catch (error) {
+        console.log('getAllProductByUserID error(contr): '+error);
+        return false;
+    }
+}
+getAllProductByUserIDByPage
+module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID,getProductByCategoryID,getAllProductByUserIDByPage }
