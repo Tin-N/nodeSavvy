@@ -116,4 +116,20 @@ router.get('/getProductByCategoryID', async (req, res, next) => {``
         console.log('getProductByCategoryID error(Api): '+error);
     }
 });
+
+// http://localhost:3000/Api/productAPI/searchByName?id=
+
+router.get('/searchByName', async (req, res, next) => {``
+    try {
+        const {name,limitData} = req.query;
+
+
+        const products = await productController.searchByName(name,limitData);
+        return res.status(200).json({
+            result:true, products: products
+        })
+    } catch (error) {
+        console.log('searchByName error(Api): '+error);
+    }
+});
 module.exports = router;

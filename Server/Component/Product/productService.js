@@ -87,7 +87,23 @@ const getAllProductByUserIDByPage = async (userID,limitData,skipPage) => {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
+
+const searchByName = async (name,limitData) => {
+    try {
+        // let page=0
+        // if (limitData<=2) 
+        //     page=0;
+        // else
+        //     page=24*skipPage;
+        console.error(name,limitData);
+        
+        return await productModel.find({name: { $regex: name, $options: "i" }}).limit(limitData);
+    } catch (error) {
+        console.log('searchByName error: ' + error);
+    }
+}
 module.exports = { 
+    searchByName,
     addProduct,
     addOption,
     getAllProductByUserID,
