@@ -33,8 +33,6 @@ const addOption = async (
                 }
             }
         });
-        console.log(newO);
-
         if (newO.modifiedCount === 1) {
             return true;
         } else {

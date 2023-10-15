@@ -7,11 +7,12 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 // var express = require('express-session')
-var app = express();
 const session = require('express-session');
 const mongoose = require('mongoose');
-require('./Component/Product/productModel')
+require('./Component/Product/productModel');
+const feedbackAPIRouter = require('./routes/Api/feedbackAPI');
 const productAPIRouter = require('./routes/Api/productAPI');
+var app = express();
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -27,9 +28,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+// http://localhost:3000/API/productAPI
 app.use('/Api/productAPI', productAPIRouter);
 app.use('/users', usersRouter);
-
+app.use('/Api/feedbackAPI', feedbackAPIRouter)
 // catch 404 and forward to error handler
 app.use(session({
   secret: 'agile',

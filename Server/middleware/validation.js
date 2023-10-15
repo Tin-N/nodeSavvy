@@ -15,4 +15,15 @@ const validationAddProduct = async (req, res, next) => {
         next();
     }
 }
-module.exports = {validationAddProduct}
+const validationAddFeeback = async (req, res, next) => {
+    const {feedback} = req.body;
+    if(feedback.lenght <= 10) {
+        return res.status(400).json({
+            result: false,
+            message: 'Bình luận quá ngắn'
+        })
+    }else {
+        next();
+    }
+}
+module.exports = {validationAddProduct, validationAddFeeback}

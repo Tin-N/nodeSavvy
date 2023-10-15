@@ -37,7 +37,7 @@ router.post('/addOption', async (req, res, next) => {
         return res.status(500).json({ result: false })
     }
 })
-// http://localhost:3000/Api/productAPI/getAllProductByUserID?id=
+// http://localhost:3000/Api/productAPI/getAllProductByUserID?id=113
 router.get('/getAllProductByUserID', async (req, res, next) => {
     try {
         const {id} = req.query;
