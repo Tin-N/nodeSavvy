@@ -50,4 +50,11 @@ const getAllProductByUserID = async (id) => {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
-module.exports = { addProduct, addOption, getAllProductByUserID }
+const getProductByID = async (id) => {
+    try {
+        return await productModel.findById(id);
+    } catch (error) {
+        console.log('getAllProductByUserID error: ' + error);
+    }
+}
+module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID }
