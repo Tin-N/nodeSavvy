@@ -6,16 +6,20 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const orderAPI = require('./routes/Api/Order')
+const productAPIRouter = require('./routes/Api/productAPI');
+const orderDetail = require('./routes/Api/OrderDetail')
+
 // var express = require('express-session')
 var app = express();
 const session = require('express-session');
 const mongoose = require('mongoose');
 require('./Component/Product/productModel')
-const productAPIRouter = require('./routes/Api/productAPI');
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('Database Connected!')).catch(err => console.log('Database Error: ', err));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,6 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/Api/productAPI', productAPIRouter);
 app.use('/users', usersRouter);
+app.use('/order', orderAPI);
+app.use('/orderdetail', orderDetail);
 
 // catch 404 and forward to error handler
 app.use(session({
@@ -37,19 +43,19 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }));
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-  
+
 });
 
 module.exports = app;
