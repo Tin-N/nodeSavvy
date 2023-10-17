@@ -1,4 +1,3 @@
-const productModel = require('./productModel');
 const productService = require('./productService');
 
 

@@ -117,7 +117,7 @@ router.get('/getProductByCategoryID', async (req, res, next) => {``
     }
 });
 
-// http://localhost:3000/Api/productAPI/searchByName?id=
+// http://localhost:3000/Api/productAPI/searchByName?name=
 
 router.get('/searchByName', async (req, res, next) => {``
     try {
