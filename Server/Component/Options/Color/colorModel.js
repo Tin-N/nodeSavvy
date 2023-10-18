@@ -7,5 +7,6 @@ const colorSchema=new Schema({
     productID:{type:String},
     color:{type:String},
     title:{type:String},
+    image:{type:String}
 });
 module.exports = mongoose.models.color || mongoose.model('color',colorSchema);
