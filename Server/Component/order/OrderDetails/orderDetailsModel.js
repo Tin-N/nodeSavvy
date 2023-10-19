@@ -10,9 +10,8 @@ const productSchema = new Schema({
 });
 
 const orderDetailsSchema = new Schema({
-    orderDetailID: { type: ObjectId },
+    orderDetailID: { type: ObjectId, default: () => new mongoose.Types.ObjectId() },
     products: [productSchema],
-    orderID: { type: ObjectId },
     totalCost: { type: Number },
 });
 module.exports = mongoose.models.orderDetal || mongoose.model('OrderDetail', orderDetailsSchema);
