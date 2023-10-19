@@ -1,4 +1,4 @@
-const categoryModel = require('./Model/CategoryModel');
+const categoryModel = require('./CategoryModel');
 
 const getAPICategory = async (page, size) => {
     try {
