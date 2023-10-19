@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const productController = require('../../Component/Product/productController');
-const { validationAddProduct } = require('../../middleware/validation')
+const { validationAddProduct } = require('../../middleware/validation');
+const productModel = require('../../Component/Product/productModel');
 
 // http://localhost:3000/Api/productAPI/addProduct
 router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
@@ -15,6 +16,38 @@ router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
             detail, image, isApproved,
             name, quantity, sold, rating, options);
         return res.status(200).json({ result: true })
+    } catch (err) {
+        console.log('Không thêm được  sản phẩm: ' + err);
+        return res.status(500).json({ result: false })
+    }
+});
+// http://localhost:3000/Api/productAPI/updateProduct
+router.post('/updateProduct', async (req, res, next) => {
+    try {
+        let { id,detail,name,quantity } = req.query;
+        console.log(id,detail,name,quantity, "API");
+        const result= await productController.updateProduct(id,detail,quantity,name);
+        
+        if(result)
+            return res.status(200).json({ result: true,message:"Sửa thành công" });
+        else
+            return res.status(400).json({ result: false,message:"Lỗi không thể sửa" });
+    } catch (err) {
+        console.log('Không thêm được  sản phẩm: ' + err);
+        return res.status(500).json({ result: false })
+    }
+});
+// http://localhost:3000/Api/productAPI/deleteProduct
+
+router.post('/deleteProduct', async (req, res, next) => {
+    try {
+        let { id } = req.query;
+        const result= await productController.deleteProduct(id)
+        if(result)
+            return res.status(200).json({ result: true,message:"Xóa thành công" });
+        else
+            return res.status(400).json({ result: true,message:"Lỗi không thể xóa" });
+
     } catch (err) {
         console.log('Không thêm được  sản phẩm: ' + err);
         return res.status(500).json({ result: false })

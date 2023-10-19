@@ -16,6 +16,29 @@ const addProduct = async (
         return false;
     }
 }
+
+const updateProduct = async (id,detail,quantity,name) => {
+    try {
+        const product = await productModel.findById(id);
+        if (product) {
+        product.name = name? name : product.name;
+        product.quantity = quantity? quantity : product.quantity;
+        product.detail = detail? detail : product.detail;
+        return await product.save();
+        }
+    } catch (err) {
+        console.log("Lỗi không thêm được: " + err);
+        return false;
+    }
+}
+const deleteProduct = async (id) => {
+    try {
+        return await productModel.findByIdAndDelete(id)
+    } catch (err) {
+        console.log("Lỗi không thêm được: " + err);
+        return false;
+    }
+}
 const addOption = async (
     productID,
     title, titleColor, color, size, weight, imageOption) => {
@@ -109,6 +132,8 @@ module.exports = {
     getAllProductByUserID,
     getProductByID,
     getProductByCategoryID,
-    getAllProductByUserIDByPage
+    getAllProductByUserIDByPage,
+    updateProduct,
+    deleteProduct
 
 }

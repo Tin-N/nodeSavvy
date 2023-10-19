@@ -16,7 +16,22 @@ const addProduct = async (
         throw err;
     }
 }
-
+const deleteProduct = async (id) => {
+    try {
+        return await productService.deleteProduct(
+            id
+        )
+    } catch (err) {
+        throw err;
+    }
+}
+const updateProduct = async (id,detail,quantity,name) => {
+    try {
+        return await productService.updateProduct(id,detail,quantity,name)
+    } catch (err) {
+        throw err;
+    }
+}
 
 // 
 const addOption = async (
@@ -81,4 +96,13 @@ const searchByName = async (name,limitData) => {
         return false;
     }
 }
-module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID,getProductByCategoryID,getAllProductByUserIDByPage,searchByName }
+module.exports = { 
+    addProduct,
+    addOption,
+    getAllProductByUserID
+    ,getProductByID
+    ,getProductByCategoryID
+    ,getAllProductByUserIDByPage
+    ,searchByName,
+    updateProduct,
+    deleteProduct }
