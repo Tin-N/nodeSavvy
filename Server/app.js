@@ -6,9 +6,14 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
 const orderAPI = require('./routes/Api/Order')
 const productAPIRouter = require('./routes/Api/productAPI');
 const orderDetail = require('./routes/Api/OrderDetail')
+
+const categoryApiRouter = require('./routes/api/CategoryApi');
+const userApiRouter = require('./routes/api/UserApi');
+
 
 // var express = require('express-session')
 var app = express();
@@ -33,8 +38,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/Api/productAPI', productAPIRouter);
 app.use('/users', usersRouter);
+
 app.use('/order', orderAPI);
 app.use('/orderdetail', orderDetail);
+
+//http://localhost:3000/api/category
+app.use('/api/category', categoryApiRouter);
+app.use('/api/UserApi', userApiRouter);
+
 
 // catch 404 and forward to error handler
 app.use(session({
