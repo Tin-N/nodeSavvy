@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const orderSchema = new Schema({
-    orderID: { type: ObjectId, ref: 'OrderDetail' },
+    orderID: { type: ObjectId, default: () => new mongoose.Types.ObjectId() },
+    orderDetailID: { type: ObjectId, ref: 'OrderDetail' },
     userID: { type: ObjectId, ref: 'Users' },
     orderDate: { type: Date }
 });
