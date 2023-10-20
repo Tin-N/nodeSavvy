@@ -37,7 +37,7 @@ const getAllProductByUserID = async (id) => {
         return await productService.getAllProductByUserID(id);
     } catch (error) {
         console.log('getAllProductByUserID error(contr): '+error);
-        return false;
+       return false;
     }
 }
 
@@ -57,7 +57,6 @@ const getProductByID = async (id) => {
 const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
     try {
         console.log(categoryID,limitData,skipPage);
-
         let page=0;
         // if(limitData<24)
             page=10*skipPage;
