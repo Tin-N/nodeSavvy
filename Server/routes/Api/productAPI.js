@@ -69,7 +69,7 @@ router.get('/getProductByID', async (req, res, next) => {
 
 
 
-// http://localhost:3000/Api/productAPI/getAllProductByUserIDByPage?id=
+// http://localhost:3000/Api/productAPI/getAllProductByUserIDByPage?id=     &limitData=  &skipPage=0
 
 // Paging
 router.get('/getAllProductByUserIDByPage', async (req, res, next) => {
@@ -101,6 +101,7 @@ router.get('/getAllProductByUserIDByPage', async (req, res, next) => {
 // Viewmore
 
 // http://localhost:3000/Api/productAPI/getProductByCategoryID?id=
+// http://localhost:3000/Api/productAPI/getProductByCategoryID?id=     &limitData=  &skipPage=0
 
 router.get('/getProductByCategoryID', async (req, res, next) => {``
     try {

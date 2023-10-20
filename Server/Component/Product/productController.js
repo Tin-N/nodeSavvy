@@ -57,7 +57,11 @@ const getProductByID = async (id) => {
 const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
     try {
         console.log(categoryID,limitData,skipPage);
-        return await productService.getProductByCategoryID(categoryID,limitData,skipPage);
+
+        let page=0;
+        // if(limitData<24)
+            page=10*skipPage;
+        return await productService.getProductByCategoryID(categoryID,limitData,page);
     } catch (error) {
         console.log('getProductByCategoryID error(contr): '+error);
         return false;

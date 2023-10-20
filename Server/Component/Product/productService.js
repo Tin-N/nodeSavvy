@@ -62,12 +62,6 @@ const getProductByID = async (id) => {
 
 const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
     try {
-        // let page=0
-        // if (limitData<=2) 
-        //     page=0;
-        // else
-        //     page=24*skipPage;
-        console.log(categoryID);
         return await productModel.find({categoryID:categoryID}).limit(limitData).skip(skipPage);
     } catch (error) {
         console.log('getAllProductByUserID error: ' + error);
