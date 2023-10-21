@@ -6,8 +6,8 @@ const {validationAddFeeback} = require('../../middleware/validation')
 router.post('/addFeedback', [validationAddFeeback],async (req, res, next) => {
     try {
         let { body } = req;
-        const { prductID, userID, rating, feedback, reply } = body;
-        await feedbackController.addFeedback(prductID, userID, rating, feedback, reply);
+        const { productID, userID, rating, feedback, reply } = body;
+        await feedbackController.addFeedback(productID, userID, rating, feedback, reply);
         return res.status(200).json({
             result: true
         })

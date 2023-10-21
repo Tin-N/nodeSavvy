@@ -37,7 +37,7 @@ const addReply = async (feedbackID, userID, reply) => {
 }
 const getFeedbackByProductID = async(id) => {
     try {
-        return await feedbackModel.findOne({productID: id});
+        return await feedbackModel.find({productID: id});
     } catch (error) {
         console.log('getFeedbackByProductID error(Ser): '+error);
     }
