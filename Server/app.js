@@ -19,8 +19,23 @@ var app = express();
 
 require('./Component/Product/productModel')
 const productAPIRouter = require('./routes/Api/productAPI');
+
+
 require('./Component/HistorySearch/historySearchModel')
 const historySearchAPIRouter = require('./routes/Api/historySearchAPI');
+
+
+<<<<<<< HEAD
+>>>>>>> dev-nhat
+=======
+require('./Component/Options/Color/colorModel')
+const colorAPIRouter = require('./routes/Api/Options/ColorApi');
+
+
+require('./Component/Options/Size/sizeModel')
+const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
+
+
 
 
 >>>>>>> dev-nhat
@@ -42,6 +57,8 @@ app.use('/', indexRouter);
 // http://localhost:3000/API/productAPI
 app.use('/Api/productAPI', productAPIRouter);
 app.use('/Api/historySearchAPI', historySearchAPIRouter);
+app.use('/Api/Options/colorAPI', colorAPIRouter);
+app.use('/Api/Options/sizeAPI', sizeAPIRouter);
 
 app.use('/users', usersRouter);
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
@@ -61,7 +78,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // render the error page
+  // render the eroror page
   res.status(err.status || 500);
   res.render('error');
   
