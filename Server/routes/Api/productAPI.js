@@ -60,7 +60,75 @@ router.get('/getProductByID', async (req, res, next) => {
             result:true, products: products
         })
     } catch (error) {
+        console.log('getProductByID error(Api): '+error);
+    }
+});
+
+// http://localhost:3000/Api/productAPI/getProductByCategoryID?id=
+
+
+
+// http://localhost:3000/Api/productAPI/getAllProductByUserIDByPage?id=
+
+// Paging
+router.get('/getAllProductByUserIDByPage', async (req, res, next) => {
+    try {
+        const {id,limitData,skipPage} = req.query;
+        const products = await productController.getAllProductByUserIDByPage(id,limitData,skipPage);
+        console.log(products);
+        return res.status(200).json({
+            result:true, products: products
+        })
+    } catch (error) {
         console.log('getAllProductByUserID error(Api): '+error);
+    }
+});
+// http://localhost:3000/Api/productAPI/getProductByCategoryID?id=
+
+// router.get('/getProductByCategoryID', async (req, res, next) => {
+//     try {
+//         const {id} = req.query;
+//         const products = await productController.getProductByCategoryID(id);
+//         return res.status(200).json({
+//             result:true, products: products
+//         })
+//     } catch (error) {
+//         console.log('getProductByCategoryID error(Api): '+error);
+//     }
+// });
+
+// Viewmore
+
+// http://localhost:3000/Api/productAPI/getProductByCategoryID?id=
+
+router.get('/getProductByCategoryID', async (req, res, next) => {``
+    try {
+        const {id,limitData,skipPage} = req.query;
+
+        console.error(id,limitData,skipPage);
+
+        const products = await productController.getProductByCategoryID(id,limitData,skipPage);
+        return res.status(200).json({
+            result:true, products: products
+        })
+    } catch (error) {
+        console.log('getProductByCategoryID error(Api): '+error);
+    }
+});
+
+// http://localhost:3000/Api/productAPI/searchByName?name=
+
+router.get('/searchByName', async (req, res, next) => {``
+    try {
+        const {name,limitData} = req.query;
+
+
+        const products = await productController.searchByName(name,limitData);
+        return res.status(200).json({
+            result:true, products: products
+        })
+    } catch (error) {
+        console.log('searchByName error(Api): '+error);
     }
 });
 module.exports = router;

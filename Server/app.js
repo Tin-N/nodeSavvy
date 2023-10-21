@@ -9,10 +9,21 @@ var usersRouter = require('./routes/users');
 // var express = require('express-session')
 const session = require('express-session');
 const mongoose = require('mongoose');
+<<<<<<< HEAD
 require('./Component/Product/productModel');
 const feedbackAPIRouter = require('./routes/Api/feedbackAPI');
 const productAPIRouter = require('./routes/Api/productAPI');
 var app = express();
+=======
+
+
+require('./Component/Product/productModel')
+const productAPIRouter = require('./routes/Api/productAPI');
+require('./Component/HistorySearch/historySearchModel')
+const historySearchAPIRouter = require('./routes/Api/historySearchAPI');
+
+
+>>>>>>> dev-nhat
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -30,6 +41,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 // http://localhost:3000/API/productAPI
 app.use('/Api/productAPI', productAPIRouter);
+app.use('/Api/historySearchAPI', historySearchAPIRouter);
+
 app.use('/users', usersRouter);
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
 // catch 404 and forward to error handler
