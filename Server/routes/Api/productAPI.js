@@ -133,4 +133,43 @@ router.get('/searchByName', async (req, res, next) => {``
         console.log('searchByName error(Api): '+error);
     }
 });
+
+
+
+
+// Filter 
+// http://localhost:3000/Api/productAPI/filterProduct
+
+router.get('/filterProduct', async (req, res, next) => {``
+    try {
+        const {
+            categoryID,
+            skipData,
+            limitData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte
+        } = req.body;
+
+
+        const products = await productController.filterProduct(
+            categoryID,
+            skipData,
+            limitData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte
+            );
+        return res.status(200).json({
+            result:true, products: products
+        })
+    } catch (error) {
+        console.log('searchByName error(Api): '+error);
+    }
+});
+
 module.exports = router;
