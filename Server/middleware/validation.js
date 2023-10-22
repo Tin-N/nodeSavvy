@@ -1,7 +1,7 @@
 const validationAddProduct = async (req, res, next) => {
     const { categoryID, price,
         detail, image, name, quantity } = req.body;
-    if (!categoryID || !detail || !image || !name) {
+    if (!categoryID || !detail || !name) {
         return res.status(400).json({
             result: false,
             message: 'Thiếu thông tin sản phẩm!!'

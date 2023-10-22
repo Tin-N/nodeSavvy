@@ -25,13 +25,13 @@ router.post('/deleteColor', async (req, res, next) => {
         return res.status(500).json({ result: false })
     }
 });
-// http://localhost:3000/Api/Options/ColorApi/getColorByProductId
+// http://localhost:3000/Api/Options/colorApi/getColorByProductId
 
-router.post('/getColorByProductId', async (req, res, next) => {
+router.get('/getColorByProductId', async (req, res, next) => {
     try {
         let { productID} = req.query;
         const result=  await colorController.getColorByProductId(productID);
-        return res.status(200).json({ result: true,result:result })
+        return res.status(200).json({ result: true, color:result })
     } catch (err) {
         console.log('Không lay được màu api: ' + err);
         return res.status(500).json({ result: false })
