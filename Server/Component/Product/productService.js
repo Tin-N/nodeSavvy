@@ -151,28 +151,48 @@ const FilterProduct = async (
     // else
     //     page=24*skipPage;
     // console.error(name,limitData);
-
-    return await productModel
-      .aggregate([
+    const option = [
         {
           $match: {
-            categoryID: categoryID?categoryID:0,
             price: {
-              $lte: lte?lte:0,
-              $gte: gte?gte:MAX_VALUE,
+              $lte: lte ? lte : Number.MAX_VALUE,
+              $gte: gte ? gte : 0,
             },
           },
         },
-        {
+      ];
+      
+      if (sortName) {
+        option.push({
           $sort: {
-            name: sortName?sortName:0,
-            sold: sortPrice?sortPrice:0,
-            rating: sortRating?sortRating:0,
+            name: sortName,
           },
-        },
-      ])
-      .limit(limitData)
-      .skip(skipData);
+        });
+      }
+      
+      if (sortPrice) {
+        option.push({
+          $sort: {
+            sold: sortPrice,
+          },
+        });
+      }
+      
+      if (sortRating) {
+        option.push({
+          $sort: {
+            rating: sortRating,
+          },
+        });
+      }
+      
+  if (categoryID) {
+    option[0].$match.categoryID = categoryID;
+  }
+    return await productModel
+      .aggregate(option)
+      .limit(limitData?limitData:30)
+      .skip(skipData?skipData:0);
   } catch (error) {
     console.log("filterProduct error: " + error);
   }
