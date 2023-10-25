@@ -4,7 +4,7 @@ const orderModel = require('../../Component/order/Orders/orderModel');
 
 router.post('/add', async (req, res) => {
   try {
-    const {orderDetailID, userID, orderDate } = req.body;
+    const { orderDetailID, userID, orderDate } = req.body;
 
     const newOrderModel = new orderModel({
       orderDetailID,
@@ -12,14 +12,15 @@ router.post('/add', async (req, res) => {
       orderDate
     });
 
-    await newOrderModel.save();
+    const savedOrderModel = await newOrderModel.save();
 
-    res.status(201).json(newOrderModel);
+    res.status(201).json(savedOrderModel);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm đơn hàng đơn hàng.' });
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm đơn hàng.' });
   }
-})
+});
+
 
 router.delete('/delete/:orderID', async (req, res) => {
   try {
