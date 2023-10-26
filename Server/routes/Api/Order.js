@@ -17,7 +17,7 @@ router.post('/add', async (req, res) => {
     res.status(201).json(savedOrderModel);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm đơn hàng.' });
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm đơn hàng.', orderDetailID: orderDetailID});
   }
 });
 

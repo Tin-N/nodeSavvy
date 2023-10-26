@@ -5,7 +5,7 @@ const orderDetailModel = require('../../Component/order/OrderDetails/orderDetail
 router.post('/add', async (req, res) => {
   try {
     const { products, totalCost } = req.body;
-    
+
     const newOrderDetail = new orderDetailModel({
       products,
       totalCost
@@ -13,7 +13,7 @@ router.post('/add', async (req, res) => {
 
     await newOrderDetail.save();
 
-    res.status(201).json({ message: "Thành Công", data: newOrderDetail });
+    res.status(201).json({ error: false, message: "Thành Công", data: newOrderDetail });
 
   } catch (error) {
     console.error(error);
