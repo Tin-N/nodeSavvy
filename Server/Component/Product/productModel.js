@@ -17,11 +17,13 @@ const productSchema=new Schema({
     price:{type:Number},
     detail:{type:String},
     image:{type:[String]},
-    isApproved:{type:Boolean},
+    isApproved:{type:Boolean, default: false},
     name:{type:String},
     quantity:{type:Number},
     sold:{type:Number},
-    rating:{type:Number},
+    rating:{type:Number, default: 0},
+    isShow:{type:Boolean, default: true},
+    saleOff:{type:Number, default: 0},
     options:[optionSchema]
 });
 

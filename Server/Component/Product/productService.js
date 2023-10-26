@@ -45,7 +45,7 @@ const addOption = async (
 }
 const getAllProductByUserID = async (id) => {
     try {
-        return await productModel.find({userID: id});
+        return await productModel.find({ userID: id });
     } catch (error) {
         console.log('getAllProductByUserID error: ' + error);
     }
@@ -57,16 +57,15 @@ const getProductByID = async (id) => {
         console.log('getProductByID error: ' + error);
     }
 }
-
-const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
+const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
     try {
-        return await productModel.find({categoryID:categoryID}).limit(limitData).skip(skipPage);
+        return await productModel.find({ categoryID: categoryID }).limit(limitData).skip(skipPage);
     } catch (error) {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
 
-const getAllProductByUserIDByPage = async (userID,limitData,skipPage) => {
+const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
     try {
         // let page=0
         // if (limitData<=2) 
@@ -74,33 +73,56 @@ const getAllProductByUserIDByPage = async (userID,limitData,skipPage) => {
         // else
         //     page=24*skipPage;
         console.log(categoryID);
-        return await productModel.find({userID:userID}).limit(limitData).skip(skipPage);
+        return await productModel.find({ userID: userID }).limit(limitData).skip(skipPage);
     } catch (error) {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
 
-const searchByName = async (name,limitData) => {
+const searchByName = async (name, limitData) => {
     try {
         // let page=0
         // if (limitData<=2) 
         //     page=0;
         // else
         //     page=24*skipPage;
-        console.error(name,limitData);
-        
-        return await productModel.find({name: { $regex: name, $options: "i" }}).limit(limitData);
+        console.error(name, limitData);
+
+        return await productModel.find({ name: { $regex: name, $options: "i" } }).limit(limitData);
     } catch (error) {
         console.log('searchByName error: ' + error);
     }
 }
-module.exports = { 
+const deleteProduct = async (id) => {
+    try {
+        return await productModel.findByIdAndDelete(id);
+    } catch (error) {
+        return json({ return: false, message: "Delete product error(Service): " + error })
+    }
+}
+const updateProduct = async (productID, name, quantity, saleOff) => {
+    try {
+        const product = await productModel.findById(productID);
+        if(product){
+            product.name = name ? name: product.name;
+            product.quantity = quantity ? quantity: product.quantity;
+            product.saleOff = saleOff ? saleOff: product.saleOff;
+            await product.save();
+            return true;
+        }
+        return false
+    } catch (error) {
+        console.log("update product error(Service): " + error);
+        return false;
+    }
+}
+module.exports = {
     searchByName,
     addProduct,
     addOption,
     getAllProductByUserID,
     getProductByID,
     getProductByCategoryID,
-    getAllProductByUserIDByPage
-
+    getAllProductByUserIDByPage,
+    deleteProduct, updateProduct
 }
