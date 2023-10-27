@@ -53,8 +53,8 @@ app.use('/Api/Options/colorAPI', colorAPIRouter);
 app.use('/Api/Options/sizeAPI', sizeAPIRouter);
 
 app.use('/users', usersRouter);
-//http://localhost:3000/api/category
-app.use('/api/category', categoryApiRouter);
+//http://localhost:3000/Api/category
+app.use('/Api/category', categoryApiRouter);
 // catch 404 and forward to error handler
 app.use(session({
   secret: 'agile',

@@ -7,7 +7,7 @@ router.get('/damn', function (req, res, next) {
     res.render('index', { title: 'Express123' });
 });
 
-//http://localhost:3000/api/Category/getCategory
+//http://localhost:3000/Api/Category/getCategory
 router.get('/getCategory', async (req, res, next) => {
     try {
         const categories = await categoryController.getAPICategory();
@@ -17,7 +17,7 @@ router.get('/getCategory', async (req, res, next) => {
     }
 });
 
-//http://localhost:3000/api/Category/1/delete
+//http://localhost:3000/Api/Category/1/delete
 router.post('/:id/delete', async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -29,7 +29,7 @@ router.post('/:id/delete', async (req, res, next) => {
 });
 
 //them
-//http://localhost:3000/api/Category/
+//http://localhost:3000/Api/Category/
 router.post('/', async (req, res, next) => {
     try {
         let { body } = req;
@@ -42,7 +42,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-//http://localhost:3000/api/Category/1/update-by-id
+//http://localhost:3000/Api/Category/1/update-by-id
 router.post('/:id/update-by-id', async (req, res, next) => {
     try {
         const { id } = req.params;
