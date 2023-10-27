@@ -107,9 +107,29 @@ const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
     return false;
   }
 };
-const searchByName = async (name, limitData) => {
+const searchByName = async (
+  name,
+  limitData,
+  categoryID,
+  skipData,
+  sortName,
+  sortPrice,
+  sortRating,
+  lte,
+  gte
+  ) => {
   try {
-    return await productService.searchByName(name, limitData);
+    return await productService.searchByName
+    (
+      name,
+      limitData,
+      categoryID,
+      skipData,
+      sortName,
+      sortPrice,
+      sortRating,
+      lte,
+      gte);
   } catch (error) {
     console.log("searchByName error(contr): " + error);
     return false;

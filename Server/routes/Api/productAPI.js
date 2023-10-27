@@ -122,10 +122,28 @@ router.get('/getProductByCategoryID', async (req, res, next) => {``
 
 router.get('/searchByName', async (req, res, next) => {``
     try {
-        const {name,limitData} = req.query;
+        const {
+            name,
+            limitData,
+            categoryID,
+            skipData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte} = req.query;
 
-
-        const products = await productController.searchByName(name,limitData);
+            console.log(typeof name);
+        const products = await productController.searchByName(
+            name,
+            limitData,
+            categoryID,
+            skipData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte);
         return res.status(200).json({
             result:true, products: products
         })
