@@ -111,6 +111,7 @@ const searchByName = async (
   name,
   limitData,
   categoryID,
+  userID,
   skipData,
   sortName,
   sortPrice,
@@ -119,17 +120,21 @@ const searchByName = async (
   gte
   ) => {
   try {
+    console.log(gte);
+
     return await productService.searchByName
     (
       name,
       limitData,
       categoryID,
+      userID,
       skipData,
       sortName,
       sortPrice,
       sortRating,
       lte,
       gte);
+
   } catch (error) {
     console.log("searchByName error(contr): " + error);
     return false;

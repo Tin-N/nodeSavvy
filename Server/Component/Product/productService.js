@@ -122,6 +122,7 @@ const searchByName = async (
   name,
   limitData,
   categoryID,
+  userID,
   skipData,
   sortName,
   sortPrice,
@@ -130,15 +131,17 @@ const searchByName = async (
   gte
 ) => {
   try {
-    console.log( name,
-      limitData,
-      categoryID,
-      skipData,
-      sortName,
-      sortPrice,
-      sortRating,
-      lte,
-      gte);
+    // console.log( 
+    //   name,
+    //   limitData,
+    //   categoryID,
+    //   userID,
+    //   skipData,
+    //   sortName,
+    //   sortPrice,
+    //   sortRating,
+    //   lte,
+    //   gte);
     // const option = [
       
     // ];
@@ -150,43 +153,24 @@ let searchoriginal= {
     $gte: gte ? gte : 0,
   }
 }
-    if (sortName) {
+    if (sortName) 
       sort={...sort,name: +sortName}
-      // option.push({
-      //   $sort: {
-      //     name: sortName,
-      //   },
-      // });
-    }
+    
 
-    if (sortPrice) {
+    if (sortPrice) 
       sort={...sort,price: +sortPrice}
+    
 
-      // option.push({
-      //   $sort: {
-      //     sold: sortPrice,
-      //   },
-      // });
-    }
-
-    if (sortRating) {
+    if (sortRating) 
       sort={...sort,rating: +sortRating}
-
-    //   option.push({
-    //     $sort: {
-    //       rating: sortRating,
-    //     },
-    //   });
-    }
-    // if (name) {
-    //   option[0].$match.name = { $regex: name, $options: "i" };
-    // }
-    if (categoryID) {
+    
+    if (categoryID) 
       searchoriginal={...searchoriginal,categoryID:categoryID};
-    }
+    if (userID) 
+    searchoriginal={...searchoriginal,userID:userID};
 
-console.log(sort,searchoriginal);
-   const result = await productModel
+    console.log(sort,searchoriginal);
+      const result = await productModel
       .find(
         searchoriginal
        ).sort(sort)
@@ -196,6 +180,7 @@ console.log(sort,searchoriginal);
     console.log("searchByName error: " + error);
   }
 };
+
 
 // Filter
 const FilterProduct = async (
