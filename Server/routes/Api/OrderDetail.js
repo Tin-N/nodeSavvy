@@ -4,9 +4,10 @@ const orderDetailModel = require('../../Component/order/OrderDetails/orderDetail
 
 router.post('/add', async (req, res) => {
   try {
-    const { products, totalCost } = req.body;
+    const {orderDetailID, products, totalCost } = req.body;
 
     const newOrderDetail = new orderDetailModel({
+      orderDetailID,
       products,
       totalCost
     });

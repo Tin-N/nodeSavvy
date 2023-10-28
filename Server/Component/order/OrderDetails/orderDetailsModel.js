@@ -5,6 +5,7 @@ const ObjectId = Schema.ObjectId;
 const productSchema = new Schema({
     productID: { type: ObjectId, ref: 'products' },
     quantity: { type: Number },
+    itemTotalCost: { type: Number }
     // options: { type: String } // Các tùy chọn khác, có thể là một chuỗi
 });
 
