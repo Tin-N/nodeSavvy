@@ -169,13 +169,18 @@ let searchoriginal= {
     if (userID) 
     searchoriginal={...searchoriginal,userID:userID};
 
-    console.log(sort,searchoriginal);
+    console.log(skipData+"ssssss");
       const result = await productModel
       .find(
         searchoriginal
-       ).sort(sort)
-      .limit(limitData?limitData:30);
-      return result;
+       ).sort(sort).limit(limitData?limitData:6).skip(skipData);
+
+       const count = await productModel
+      .find(
+        searchoriginal
+       ).sort(sort).count();
+       console.log("Page service   "+skipData);
+      return {result:result,count:count};
   } catch (error) {
     console.log("searchByName error: " + error);
   }

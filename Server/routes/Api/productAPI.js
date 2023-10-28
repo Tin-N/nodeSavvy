@@ -146,8 +146,10 @@ router.get('/searchByName', async (req, res, next) => {``
             sortRating,
             lte,
             gte);
+            const totalPage=Math.floor(products.count/6)+1;
+            console.log(totalPage,products.count,"TOTAL PAGES");
         return res.status(200).json({
-            result:true, products: products
+            result:true, products: products.result,totalPage:totalPage
         })
     } catch (error) {
         console.log('searchByName error(Api): '+error);

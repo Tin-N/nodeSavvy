@@ -120,15 +120,26 @@ const searchByName = async (
   gte
   ) => {
   try {
-    console.log(gte);
+    let skip=0;
+      
+      if((typeof limitData !== 'undefined')&&(limitData>0))
+        skip=(skipData-1)*limitData;
+      else
+      {
+        if(skipData==1)
+        skip=0
+        else if(skipData>1)
+        skip=(skipData-1)*6;
 
+      }
+      console.log("page: "+skip);
     return await productService.searchByName
     (
       name,
       limitData,
       categoryID,
       userID,
-      skipData,
+      skip,
       sortName,
       sortPrice,
       sortRating,
