@@ -17,7 +17,7 @@ const productSchema=new Schema({
     price:{type:Number},
     detail:{type:String},
     image:{type:[String]},
-    isApproved:{type:Boolean},
+    isApproved:{type:Boolean,default:false},
     name:{type:String},
     quantity:{type:Number},
     sold:{type:Number},
