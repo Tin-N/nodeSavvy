@@ -11,6 +11,7 @@ const userSchema=new Schema({
     address:{type:String},
     email:{type:String},
     CCCD:{type:String},
-    phoneNumber:{type:String}
+    phoneNumber:{type:String},
+    isDisabled:{type:Boolean,default:false}
 });
 module.exports = mongoose.models.user || mongoose.model('user',userSchema);

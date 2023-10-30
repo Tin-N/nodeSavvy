@@ -1,3 +1,4 @@
+const UserModel = require('../Model/UserModel');
 const userModel=require('../Model/UserModel');
 const bcrypt = require('bcrypt');
 
@@ -94,6 +95,30 @@ const getById = async (id) => {
     } catch (error) {
         console.log("Get product by id error " + error);
         return null;
+    }
+}
+
+const getUserByNameAndFilter = async (name,sortName,isDisabled)=>{
+
+    try {
+
+        const option = {name:{option}}
+        const result = UserModel.find(
+            {option}
+        ).sort().limit(size?size:10).skip(page)
+    } catch (error) {
+        
+    }
+}
+
+
+const disableUser= async (id)=>{
+    try {
+        const user= await UserModel.findByIdAndUpdate(id,{isDisable:true});
+        return user
+    } catch (error) {
+        console.log("DisableUser service"+error);
+        return null
     }
 }
 
