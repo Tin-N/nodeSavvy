@@ -1,4 +1,3 @@
-const UserModel = require('../Model/UserModel');
 const userModel=require('../Model/UserModel');
 const bcrypt = require('bcrypt');
 
@@ -98,53 +97,60 @@ const getById = async (id) => {
     }
 }
 
-const getUserByNameAndFilter = async (username,isDisabled,sortName,sortFullname,sortCreatedDate)=>{
+const getUserByNameAndFilter = async (
+    username,roleID,isDisabled,sortName,sortFullname,sortEmail,page
+    )=>{
 
     try {
+        // console.log("PJSF");
+        // console.log("page: "+page,isDisabled);
 
         let option = {isDisabled:isDisabled};
         let sort = {}
+        console.error("page: "+option,sort);
 
         if(roleID)
         {
             option={...option,roleID:roleID}
         }
-        if(isDisabled)
-        {
-            option={...option,isDisabled:isDisabled};
-        }
         // Tim kiem
-         if (username) {
+         if ((typeof username !=="undefined")&&(username.length>0)) {
             console.log("getUserByNameAndFilter  username"+username.length);
             option = {...option,username:{$regex: username, $options: "i"}  };
           }
-        //   if (roleID) {
-        //     option = {...option,roleID:roleID};
-        //   }
-          
+
         //    sap xep
           if(sortName)
             sort={...sort,username:sortName}
           if(sortFullname)
             sort={...sort,fullname:sortFullname}
-          if(sortCreatedDate)
-            sort={...sort,_id:sortCreatedDate}
+            if(sortEmail)
+            sort={...sort,email:sortEmail}
+            console.error("page: "+option,sort);
+
+        //   if(sortCreatedDate)
+        //     sort={...sort,_id:sortCreatedDate}
 
 
-        const result = await UserModel.find(option)
+        const result = await userModel.find(option)
         .sort(sort)
-        .limit(size?size:10)
+        .limit(typeof size!=="undefined"?size:10)
         .skip(page);
-        return result;
+
+        const count = await userModel.find(option)
+        .sort(sort)
+        .limit()
+        .skip().count();
+        return {result:result,countData:count};
     } catch (error) {
-        
+        console.error("SearchUSerinAPI: "+error);
     }
 }
 
 
 const disableUser= async (id)=>{
     try {
-        const user= await UserModel.findByIdAndUpdate(id,{isDisable:true});
+        const user= await userModel.findByIdAndUpdate(id,{isDisable:true});
         return user
     } catch (error) {
         console.log("DisableUser service"+error);
@@ -175,7 +181,7 @@ const disableUser= async (id)=>{
 
 
 
-module.exports={login, register, updateUser, changePassword, getById};
+module.exports={login,getUserByNameAndFilter, disableUser,register, updateUser, changePassword, getById};
 
 
 

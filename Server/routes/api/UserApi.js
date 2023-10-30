@@ -3,7 +3,7 @@ var router = express.Router();
 
 const userController = require("../../Component/User/Controller/UserController");
 
-// http://localhost:3000/api/UserApi/login
+// http://localhost:3000/Api/UserApi/login
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.query;
@@ -19,7 +19,7 @@ router.post("/login", async (req, res, next) => {
         return res.status(500).json({ result: false, user: null });
     }
 });
-// http://localhost:3000/api/UserApi/loginGoogle
+// http://localhost:3000/Api/UserApi/loginGoogle
 router.post('/loginGoogle', async (req, res, next) => {
   try {
       const { email, name } = req.query;
@@ -32,7 +32,7 @@ router.post('/loginGoogle', async (req, res, next) => {
       return res.status(500).json({ result: false, message: 'Error System' })
   }
 });
-// http://localhost:3000/api/UserApi/register
+// http://localhost:3000/Api/UserApi/register
 router.post('/register', [], async (req, res, next) => {
   try {
       const { email, password, roleID } = req.query;
@@ -47,7 +47,7 @@ router.post('/register', [], async (req, res, next) => {
       return res.status(500).json({ result: false, user: null })
   }
 });
-// http://localhost:3000/api/UserApi/change-password
+// http://localhost:3000/Api/UserApi/change-password
 router.post('/change-password', [], async (req, res, next) => {
 
   const { email, oldPassword, newPassword } = req.query;
@@ -64,7 +64,7 @@ router.post('/change-password', [], async (req, res, next) => {
 //       res.status(500).json({ message: 'Lỗi máy chủ' });
 //   }
 });
-// http://localhost:3000/api/UserApi/get-by-id/
+// http://localhost:3000/Api/UserApi/get-by-id/
 router.get('/get-by-id/', async (req, res, next) => {
   try {
       const { id } = req.query;
@@ -79,4 +79,30 @@ router.get('/get-by-id/', async (req, res, next) => {
   }
 });
 
+// http://localhost:3000/Api/UserApi/searchByNameAndSort/
+function calculatePage(countData) {
+  const trangMoiTrang = 10;
+  const soTrang = countData <= trangMoiTrang ? 1 : Math.ceil(countData / trangMoiTrang);
+  return soTrang;
+} 
+router.get('/searchByNameAndSort/', async (req, res, next) => {
+  try {
+      const { 
+        username,roleID,isDisabled,sortName,sortFullname,sortEmail,page} = req.query;
+       console.log("page: "+page,isDisabled);
+      const user = await userController.getUserByNameAndFilter(username,roleID,isDisabled,sortName,sortFullname,sortEmail,page);
+
+      if (user) {
+          const totalPage= calculatePage(user.countData)
+          console.log(totalPage,user.countData,"TOTAL PAGES");
+
+          return res.status(200).json({ result: true, user: user.result,totalPage:totalPage,count:user.countData, error: false });
+      }
+      return res.status(400).json({ result: false, user: user, error: true });
+
+  } catch (error) {
+    console.log(error);
+      return res.status(500).json({ result: false, product: null });
+  }
+});
 module.exports = router;

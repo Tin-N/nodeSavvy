@@ -68,12 +68,47 @@ const verifyCode = async (email, verifyCode) => {
 
   }
 }
-const getById = async (id) => {
+const getUserByNameAndFilter = async (username,roleID,isDisabled,sortName,sortFullname,sortEmail,page) => {
   try {
-      return await UserService.getById(id);
+    let skipPage=0;
+      
+    if((typeof limitData !== 'undefined')&&(limitData>0))
+    {
+        if(page<=1)
+        skipPage=0
+        else if(page>1)
+        skipPage=(page-1)*limitData;
+    }
+    else
+    {
+      if(page==1)
+      skipPage=0
+      else if(page>1)
+      skipPage=(page-1)*10;
+
+    }
+
+    console.log("page: "+skipPage,isDisabled);
+      return await userService.getUserByNameAndFilter(username,roleID,isDisabled,sortName,sortFullname,sortEmail,skipPage);
   } catch (error) {
       return null;
   }
 }
 
-module.exports = { login,register,loginGoogle,updateUser,changePassword,sendVerifyCode,verifyCode,getById };
+const disableUser = async (id) => {
+    try {
+        return await userService.getById(id);
+    } catch (error) {
+        return null;
+    }
+  }
+
+const getById = async (id) => {
+    try {
+        return await userService.getById(id);
+    } catch (error) {
+        return null;
+    }
+  }
+
+module.exports = { disableUser,getUserByNameAndFilter,login,register,loginGoogle,updateUser,changePassword,sendVerifyCode,verifyCode,getById };
