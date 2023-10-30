@@ -98,14 +98,44 @@ const getById = async (id) => {
     }
 }
 
-const getUserByNameAndFilter = async (name,sortName,isDisabled)=>{
+const getUserByNameAndFilter = async (username,isDisabled,sortName,sortFullname,sortCreatedDate)=>{
 
     try {
 
-        const option = {name:{option}}
-        const result = UserModel.find(
-            {option}
-        ).sort().limit(size?size:10).skip(page)
+        let option = {isDisabled:isDisabled};
+        let sort = {}
+
+        if(roleID)
+        {
+            option={...option,roleID:roleID}
+        }
+        if(isDisabled)
+        {
+            option={...option,isDisabled:isDisabled};
+        }
+        // Tim kiem
+         if (username) {
+            console.log("getUserByNameAndFilter  username"+username.length);
+            option = {...option,username:{$regex: username, $options: "i"}  };
+          }
+        //   if (roleID) {
+        //     option = {...option,roleID:roleID};
+        //   }
+          
+        //    sap xep
+          if(sortName)
+            sort={...sort,username:sortName}
+          if(sortFullname)
+            sort={...sort,fullname:sortFullname}
+          if(sortCreatedDate)
+            sort={...sort,_id:sortCreatedDate}
+
+
+        const result = await UserModel.find(option)
+        .sort(sort)
+        .limit(size?size:10)
+        .skip(page);
+        return result;
     } catch (error) {
         
     }
