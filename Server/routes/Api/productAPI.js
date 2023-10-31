@@ -119,7 +119,11 @@ router.get('/getProductByCategoryID', async (req, res, next) => {``
 });
 
 // http://localhost:3000/Api/productAPI/searchByName?name=
-
+function calculatePage(countData) {
+    const trangMoiTrang = 6;
+    const soTrang = countData <= trangMoiTrang ? 1 : Math.ceil(countData / trangMoiTrang);
+    return soTrang;
+  } 
 router.get('/searchByName', async (req, res, next) => {``
     try {
         const {
@@ -146,7 +150,7 @@ router.get('/searchByName', async (req, res, next) => {``
             sortRating,
             lte,
             gte);
-            const totalPage=Math.floor(products.count/6)+1;
+            const totalPage=calculatePage(products.count);
             console.log(totalPage,products.count,"TOTAL PAGES");
         return res.status(200).json({
             result:true, products: products.result,totalPage:totalPage
