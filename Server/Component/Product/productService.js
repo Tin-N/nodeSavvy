@@ -173,7 +173,7 @@ let searchoriginal= {
       const result = await productModel
       .find(
         searchoriginal
-       ).sort(sort).limit(limitData?limitData:6).skip(skipData);
+       ).sort(sort).limit(limitData?limitData:20).skip(skipData);
 
        const count = await productModel
       .find(

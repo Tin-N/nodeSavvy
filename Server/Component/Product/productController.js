@@ -129,7 +129,7 @@ const searchByName = async (
         if(skipData==1)
         skip=0
         else if(skipData>1)
-        skip=(skipData-1)*6;
+        skip=(skipData-1)*20;
 
       }
       console.log("page: "+skip);
@@ -144,7 +144,8 @@ const searchByName = async (
       sortPrice,
       sortRating,
       lte,
-      gte);
+      gte
+      );
 
   } catch (error) {
     console.log("searchByName error(contr): " + error);
