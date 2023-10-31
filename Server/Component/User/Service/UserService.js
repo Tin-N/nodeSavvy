@@ -102,8 +102,6 @@ const getUserByNameAndFilter = async (
     )=>{
 
     try {
-        // console.log("PJSF");
-        // console.log("page: "+page,isDisabled);
 
         let option = {isDisabled:isDisabled};
         let sort = {}
@@ -128,8 +126,7 @@ const getUserByNameAndFilter = async (
             sort={...sort,email:sortEmail}
             console.error("page: "+option,sort);
 
-        //   if(sortCreatedDate)
-        //     sort={...sort,_id:sortCreatedDate}
+
 
 
         const result = await userModel.find(option)
@@ -141,7 +138,7 @@ const getUserByNameAndFilter = async (
         .sort(sort)
         .limit()
         .skip().count();
-        return {result:result,countData:count};
+        return {result:result,countData:count,page:page};
     } catch (error) {
         console.error("SearchUSerinAPI: "+error);
     }
@@ -150,38 +147,29 @@ const getUserByNameAndFilter = async (
 
 const disableUser= async (id)=>{
     try {
-        const user= await userModel.findByIdAndUpdate(id,{isDisable:true});
+        console.log(id);
+
+        const user= await userModel.findByIdAndUpdate(id,{isDisabled:true});
         return user
     } catch (error) {
-        console.log("DisableUser service"+error);
+        console.log("DisableUser service: "+error);
+        return null
+    }
+}
+const activateUser= async (id)=>{
+    try {
+        const user= await userModel.findByIdAndUpdate(id,{isDisabled:false});
+        return user
+    } catch (error) {
+        console.log("activateUser service"+error);
         return null
     }
 }
 
-// const loginGoogle = async (email, name) => {
-//   try {
-//       const user = await userModel.findOne({ email: email })
-//       if (user) {
-//           // user.isLogin = true;
-//           return user;
-//       } else {
-//           const newUser = { email, name };
-//           const u = new userModel(newUser);
-//           await u.save();
-//           user.isLogin = true;
-
-//           return newUser;
-//       }
-//   } catch (error) {
-//       console.log('loginGoogle error' + error)
-//       return false;
-//   }
-// }
 
 
 
-
-module.exports={login,getUserByNameAndFilter, disableUser,register, updateUser, changePassword, getById};
+module.exports={activateUser,login,getUserByNameAndFilter, disableUser,register, updateUser, changePassword, getById};
 
 
 

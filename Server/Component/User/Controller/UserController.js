@@ -97,12 +97,18 @@ const getUserByNameAndFilter = async (username,roleID,isDisabled,sortName,sortFu
 
 const disableUser = async (id) => {
     try {
-        return await userService.getById(id);
+        return await userService.disableUser(id);
     } catch (error) {
         return null;
     }
   }
-
+  const activateUser = async (id) => {
+    try {
+        return await userService.activateUser(id);
+    } catch (error) {
+        return null;
+    }
+  }
 const getById = async (id) => {
     try {
         return await userService.getById(id);
@@ -111,4 +117,4 @@ const getById = async (id) => {
     }
   }
 
-module.exports = { disableUser,getUserByNameAndFilter,login,register,loginGoogle,updateUser,changePassword,sendVerifyCode,verifyCode,getById };
+module.exports = { activateUser,disableUser,getUserByNameAndFilter,login,register,loginGoogle,updateUser,changePassword,sendVerifyCode,verifyCode,getById };

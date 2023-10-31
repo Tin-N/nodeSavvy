@@ -95,8 +95,46 @@ router.get('/searchByNameAndSort/', async (req, res, next) => {
       if (user) {
           const totalPage= calculatePage(user.countData)
           console.log(totalPage,user.countData,"TOTAL PAGES");
+          console.log(user.page,"page");
+          return res.status(200).json({ result: true,page:page, user: user.result,totalPage:totalPage,count:user.countData, error: false });
+      }
+      return res.status(400).json({ result: false, user: user, error: true });
 
-          return res.status(200).json({ result: true, user: user.result,totalPage:totalPage,count:user.countData, error: false });
+  } catch (error) {
+    console.log(error);
+      return res.status(500).json({ result: false, product: null });
+  }
+});
+
+//http://localhost:3000/Api/UserApi/disableUser/
+router.post('/disableUser', async (req, res, next) => {
+  try {
+      const {id} = req.query;
+      console.log(id);
+      const user = await userController.disableUser(id);
+
+      if (user) {
+         
+          return res.status(200).json({ result: true, user: user, error: false });
+      }
+      return res.status(400).json({ result: false, user: user, error: true });
+
+  } catch (error) {
+    console.log(error);
+      return res.status(500).json({ result: false, product: null });
+  }
+});
+
+//http:localhost:3000/Api/UserApi/activateUser/
+
+router.post('/activateUser', async (req, res, next) => {
+  try {
+      const {id} = req.query;
+      const user = await userController.activateUser(id);
+
+      if (user) {
+         
+          return res.status(200).json({ result: true, user: user, error: false });
       }
       return res.status(400).json({ result: false, user: user, error: true });
 
