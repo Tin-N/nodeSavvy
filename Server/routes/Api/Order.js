@@ -4,12 +4,13 @@ const orderModel = require('../../Component/order/Orders/orderModel');
 
 router.post('/add', async (req, res) => {
   try {
-    const { orderDetailID, userID, orderDate } = req.body;
+    const { orderDetailID, userID, orderDate, deliveryStatus } = req.body;
 
     const newOrderModel = new orderModel({
       orderDetailID,
       userID,
-      orderDate
+      orderDate,
+      deliveryStatus
     });
 
     const savedOrderModel = await newOrderModel.save();
