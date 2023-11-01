@@ -13,6 +13,7 @@ const orderDetail = require('./routes/Api/OrderDetail')
 
 const categoryApiRouter = require('./routes/api/CategoryApi');
 const userApiRouter = require('./routes/api/UserApi');
+const favoriteApiRouter = require('./routes/api/FavoriteApi');
 
 
 // var express = require('express-session')
@@ -28,6 +29,7 @@ const productAPIRouter = require('./routes/Api/productAPI');
 require('./Component/HistorySearch/historySearchModel')
 const historySearchAPIRouter = require('./routes/Api/historySearchAPI');
 
+require('./Component/Favorite/FavoriteModel')
 
 require('./Component/Options/Color/colorModel')
 const colorAPIRouter = require('./routes/Api/Options/ColorApi');
@@ -59,6 +61,9 @@ app.use('/Api/productAPI', productAPIRouter);
 app.use('/Api/historySearchAPI', historySearchAPIRouter);
 app.use('/Api/Options/colorAPI', colorAPIRouter);
 app.use('/Api/Options/sizeAPI', sizeAPIRouter);
+
+app.use('/Api/favoriteApi',favoriteApiRouter);
+
 
 app.use('/users', usersRouter);
 app.use('/Api/order', orderAPI);

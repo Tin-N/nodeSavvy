@@ -1,11 +1,17 @@
 const { json } = require('express');
 const favoriteModel= require('./FavoriteModel');
 
-const addFavorite = async (productID,userID)=>{
+const addFavorite = async (userID,productID)=>{
     try {
+
+        const check= await favoriteModel.findOne({productID:productID,userID:userID}).exec();
+        console.log(check);
+        if(!check){
         const favorite = {productID:productID,userID:userID};
         const newFavorite= new favoriteModel(favorite);
         return await newFavorite.save();
+    }
+        return {}
     } catch (error) {
         return json({return:false, message:"Error at service: "+error})
     }
@@ -21,8 +27,10 @@ const deleteFavorite = async (id)=>{
 }
 const getFavoriteByUserId = async (userID,productID)=>{
     try {
-        
-        return await favoriteModel.find({userID:userID,productID:productID});
+        const check= await favoriteModel.findOne({productID:productID,userID:userID}).exec();
+        console.log(check);
+                // console.log(">>>>>>>>>>>>>>>,",result,userID,productID);
+        return check;
     } catch (error) {
         return json({return:false, message:"Error at service: "+error})
     }

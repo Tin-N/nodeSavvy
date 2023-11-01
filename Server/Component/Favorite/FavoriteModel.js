@@ -3,7 +3,6 @@ const Schema= mongoose.Schema;
 const ObjectId=Schema.ObjectId;
 
 const favoriteSchema=new Schema({
-    id:{type:ObjectId},
     productID:{type:String},
     userID:{type:String},
 });

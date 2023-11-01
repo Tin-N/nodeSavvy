@@ -9,7 +9,7 @@ const addFavorite = async (userId,productID)=>{
 
 const getFavoriteByFeedbackId = async (userID,productID)=>{
     try {
-        return await likeService.getLikeByUserId(userID,productID);
+        return await FavoriteService.getFavoriteByUserId(userID,productID);
     } catch (error) {
         return json({result:false, message:"Like Controller Error: "+error})
     }
