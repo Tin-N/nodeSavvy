@@ -1,6 +1,7 @@
 const productService = require("./productService");
 
 //
+
 const addProduct = async (
   userID,
   categoryID,
@@ -60,53 +61,54 @@ const addOption = async (
 
 //
 const getAllProductByUserID = async (id) => {
-  try {
-    return await productService.getAllProductByUserID(id);
-  } catch (error) {
-    console.log("getAllProductByUserID error(contr): " + error);
-    return false;
-  }
-};
+
+    try {
+        return await productService.getAllProductByUserID(id);
+    } catch (error) {
+        console.log('getAllProductByUserID error(contr): ' + error);
+        return false;
+    }
+}
 
 //
 const getProductByID = async (id) => {
-  try {
-    return await productService.getProductByID(id);
-  } catch (error) {
-    console.log("getProductByID error(contr): " + error);
-    return false;
-  }
-};
+    try {
+        return await productService.getProductByID(id);
+    } catch (error) {
+        console.log('getProductByID error(contr): ' + error);
+        return false;
+    }
+}
 
-const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
-  try {
-    console.log(categoryID, limitData, skipPage);
-    let page = 0;
-    // if(limitData<24)
-    page = 10 * skipPage;
-    return await productService.getProductByCategoryID(
-      categoryID,
-      limitData,
-      page
-    );
-  } catch (error) {
-    console.log("getProductByCategoryID error(contr): " + error);
-    return false;
-  }
-};
-const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
-  try {
-    console.log(userID, limitData, skipPage);
-    return await productService.getProductByCategoryID(
-      userID,
-      limitData,
-      skipPage
-    );
-  } catch (error) {
-    console.log("getAllProductByUserIDByPage error(contr): " + error);
-    return false;
-  }
-};
+// const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
+//   try {
+//     console.log(categoryID, limitData, skipPage);
+//     let page = 0;
+//     // if(limitData<24)
+//     page = 10 * skipPage;
+//     return await productService.getProductByCategoryID(
+//       categoryID,
+//       limitData,
+//       page
+//     );
+//   } catch (error) {
+//     console.log("getProductByCategoryID error(contr): " + error);
+//     return false;
+//   }
+// };
+// const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
+//   try {
+//     console.log(userID, limitData, skipPage);
+//     return await productService.getProductByCategoryID(
+//       userID,
+//       limitData,
+//       skipPage
+//     );
+//   } catch (error) {
+//     console.log("getAllProductByUserIDByPage error(contr): " + error);
+//     return false;
+//   }
+// };
 const searchByName = async (
   name,
   limitData,
@@ -178,13 +180,48 @@ const filterProduct = async (
     return false;
   }
 };
+
+const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
+    try {
+        console.log(categoryID, limitData, skipPage);
+        let page = 0;
+        // if(limitData<24)
+        page = 10 * skipPage;
+        return await productService.getProductByCategoryID(categoryID, limitData, page);
+    } catch (error) {
+        console.log('getProductByCategoryID error(contr): ' + error);
+        return false;
+    }
+}
+const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
+    try {
+        console.log(userID, limitData, skipPage);
+        return await productService.getProductByCategoryID(userID, limitData, skipPage);
+    } catch (error) {
+        console.log('getAllProductByUserIDByPage error(contr): ' + error);
+        return false;
+    }
+}
+const deleteProduct = async (id) => {
+    try {
+        return await productService.deleteProduct(id);
+    } catch (error) {
+        return json({ return: false, message: "Delete product error(Contr): " + error })
+    }
+}
+const updateProduct = async (productID, name, quantity, saleOff) => {
+    try {
+        return await productService.updateProduct(productID, name, quantity, saleOff);
+    } catch (error) {
+        return false;
+    }
+}
 module.exports = {
   filterProduct,
-  addProduct,
-  addOption,
-  getAllProductByUserID,
-  getProductByID,
-  getProductByCategoryID,
-  getAllProductByUserIDByPage,
-  searchByName,
-};
+    addProduct,
+    addOption, getAllProductByUserID,
+    getProductByID, getProductByCategoryID,
+    getAllProductByUserIDByPage, searchByName, 
+    deleteProduct, updateProduct
+}
+

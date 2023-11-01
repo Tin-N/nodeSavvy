@@ -17,14 +17,14 @@ const favoriteApiRouter = require('./routes/api/FavoriteApi');
 
 
 // var express = require('express-session')
-var app = express();
 const session = require('express-session');
 const mongoose = require('mongoose');
 
 
-require('./Component/Product/productModel')
-// const productAPIRouter = require('./routes/Api/productAPI');
+require('./Component/Product/productModel');
+const feedbackAPIRouter = require('./routes/Api/feedbackAPI');
 const productAPIRouter = require('./routes/Api/productAPI');
+var app = express();
 
 require('./Component/HistorySearch/historySearchModel')
 const historySearchAPIRouter = require('./routes/Api/historySearchAPI');
@@ -37,8 +37,6 @@ const colorAPIRouter = require('./routes/Api/Options/ColorApi');
 
 require('./Component/Options/Size/sizeModel')
 const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
-
-
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
@@ -57,6 +55,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+// http://localhost:3000/API/productAPI
 app.use('/Api/productAPI', productAPIRouter);
 app.use('/Api/historySearchAPI', historySearchAPIRouter);
 app.use('/Api/Options/colorAPI', colorAPIRouter);
@@ -74,6 +73,7 @@ app.use('/Api/UserApi', userApiRouter);
 
 
 
+app.use('/Api/feedbackAPI', feedbackAPIRouter)
 // catch 404 and forward to error handler
 app.use(session({
   secret: 'agile',
