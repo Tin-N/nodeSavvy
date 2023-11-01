@@ -132,4 +132,27 @@ router.get('/searchByName', async (req, res, next) => {``
         console.log('searchByName error(Api): '+error);
     }
 });
+
+//http://localhost:3000/Api/productAPI/check-product-by-id/id
+router.post('/check-product-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await productController.checkProductByid(id, true);
+        return res.status(200).json({message: "Check Successful" });
+    } catch (error) {
+        return res.status(500).json({ message: "Check Error" });
+    }
+});
+
+//http://localhost:3000/Api/productAPI/get-product-censorship
+router.get('/get-product-censorship', async (req, res, next) => {
+    try {
+        const products = await productController.getProductNotCensorship();
+        return res.status(200).json({ result: true, product: products });
+    } catch (error) {
+        console.log('Search by name error: ', error);
+        return res.status(500).json({ result: false, product: null });
+    }
+});
 module.exports = router;

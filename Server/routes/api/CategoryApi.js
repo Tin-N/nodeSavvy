@@ -29,8 +29,8 @@ router.post('/:id/delete', async (req, res, next) => {
 });
 
 //them
-//http://localhost:3000/api/Category/
-router.post('/', async (req, res, next) => {
+//http://localhost:3000/api/Category/addCategory
+router.post('/addCategory', async (req, res, next) => {
     try {
         let { body } = req;
         const { name } = body;
@@ -54,7 +54,5 @@ router.post('/:id/update-by-id', async (req, res, next) => {
         console.log('Update product error: ', error);
         return res.status(500).json({ message: "Update Error" });
     }
-
-
 });
 module.exports = router;

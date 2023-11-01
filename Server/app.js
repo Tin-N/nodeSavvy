@@ -15,9 +15,9 @@ const mongoose = require('mongoose');
 
 
 require('./Component/Product/productModel')
-const productAPIRouter = require('./routes/Api/productAPI');
+const productAPIRouter = require('./routes/api/productAPI');
 require('./Component/HistorySearch/historySearchModel')
-const historySearchAPIRouter = require('./routes/Api/historySearchAPI');
+const historySearchAPIRouter = require('./routes/api/historySearchAPI');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {

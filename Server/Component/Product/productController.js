@@ -36,7 +36,7 @@ const getAllProductByUserID = async (id) => {
     try {
         return await productService.getAllProductByUserID(id);
     } catch (error) {
-        console.log('getAllProductByUserID error(contr): '+error);
+        console.log('getAllProductByUserID error(contr): ' + error);
         return false;
     }
 }
@@ -47,38 +47,64 @@ const getProductByID = async (id) => {
     try {
         return await productService.getProductByID(id);
     } catch (error) {
-        console.log('getProductByID error(contr): '+error);
+        console.log('getProductByID error(contr): ' + error);
         return false;
     }
 }
 
 
 
-const getProductByCategoryID = async (categoryID,limitData,skipPage) => {
+const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
     try {
-        console.log(categoryID,limitData,skipPage);
-        return await productService.getProductByCategoryID(categoryID,limitData,skipPage);
+        console.log(categoryID, limitData, skipPage);
+        return await productService.getProductByCategoryID(categoryID, limitData, skipPage);
     } catch (error) {
-        console.log('getProductByCategoryID error(contr): '+error);
+        console.log('getProductByCategoryID error(contr): ' + error);
         return false;
     }
 }
-const getAllProductByUserIDByPage = async (userID,limitData,skipPage) => {
+const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
     try {
-        console.log(userID,limitData,skipPage);
-        return await productService.getProductByCategoryID(userID,limitData,skipPage);
+        console.log(userID, limitData, skipPage);
+        return await productService.getProductByCategoryID(userID, limitData, skipPage);
     } catch (error) {
-        console.log('getAllProductByUserIDByPage error(contr): '+error);
+        console.log('getAllProductByUserIDByPage error(contr): ' + error);
         return false;
     }
 }
-const searchByName = async (name,limitData) => {
+const searchByName = async (name, limitData) => {
     try {
 
-        return await productService.searchByName(name,limitData);
+        return await productService.searchByName(name, limitData);
     } catch (error) {
-        console.log('searchByName error(contr): '+error);
+        console.log('searchByName error(contr): ' + error);
         return false;
     }
 }
-module.exports = { addProduct, addOption, getAllProductByUserID,getProductByID,getProductByCategoryID,getAllProductByUserIDByPage,searchByName }
+
+const checkProductByid = async (id, isApproved) => {
+    try {
+        return await productService.checkProductByid(id, isApproved);
+    } catch (error) {
+        return false;
+    }
+}
+
+const getProductNotCensorship = async (isApproved) => {
+    try {
+        return await productService.getProductNotCensorship(isApproved);
+    } catch (error) {
+        console.log("Get product censorship error: ", error);
+    }
+    return null
+}
+module.exports = {
+    addProduct,
+    addOption,
+    getAllProductByUserID,
+    getProductByID, getProductByCategoryID,
+    getAllProductByUserIDByPage,
+    searchByName,
+    checkProductByid,
+    getProductNotCensorship
+}
