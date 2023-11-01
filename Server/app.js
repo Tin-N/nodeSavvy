@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 const orderAPI = require('./routes/Api/Order')
-const productAPIRouter = require('./routes/Api/productAPI');
+// const productAPIRouter = require('./routes/Api/productAPI');
 const orderDetail = require('./routes/Api/OrderDetail')
 
 const categoryApiRouter = require('./routes/api/CategoryApi');
