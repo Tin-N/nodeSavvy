@@ -15,6 +15,7 @@ const categoryApiRouter = require('./routes/api/CategoryApi');
 const userApiRouter = require('./routes/api/UserApi');
 const favoriteApiRouter = require('./routes/api/FavoriteApi');
 
+const cartAPI = require('./routes/Api/Cart')
 
 // var express = require('express-session')
 const session = require('express-session');
@@ -65,6 +66,8 @@ app.use('/Api/favoriteApi',favoriteApiRouter);
 
 
 app.use('/users', usersRouter);
+app.use('/Api/cart', cartAPI)
+
 app.use('/Api/order', orderAPI);
 app.use('/Api/orderdetail', orderDetail);
 //http://localhost:3000/api/category
