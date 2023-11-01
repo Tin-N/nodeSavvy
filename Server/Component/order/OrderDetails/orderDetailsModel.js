@@ -5,6 +5,7 @@ const ObjectId = Schema.ObjectId;
 const productSchema = new Schema({
     productID: { type: ObjectId, ref: 'products' },
     quantity: { type: Number },
+    itemTotalCost: { type: Number }
     // options: { type: String } // Các tùy chọn khác, có thể là một chuỗi
 });
 
@@ -13,4 +14,4 @@ const orderDetailsSchema = new Schema({
     products: [productSchema],
     totalCost: { type: Number },
 });
-module.exports = mongoose.models.orderDetal || mongoose.model('OrderDetail', orderDetailsSchema);
+module.exports = mongoose.models.orderDetail || mongoose.model('OrderDetail', orderDetailsSchema);

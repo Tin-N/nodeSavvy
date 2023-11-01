@@ -5,22 +5,24 @@ const orderDetailModel = require('../../Component/order/OrderDetails/orderDetail
 router.post('/add', async (req, res) => {
   try {
 
-    const { orderDetailRequestData } = req.body;
-    const { products } = orderDetailRequestData.products;
-    const { totalCost } = orderDetailRequestData.totalCost;
+    const {orderDetailID, products, totalCost } = req.body;
+
     const newOrderDetail = new orderDetailModel({
+      orderDetailID,
       products,
       totalCost
     });
 
     await newOrderDetail.save();
 
-    res.status(201).json("Thành Công");
+    res.status(201).json({ error: false, message: "Thành Công", data: newOrderDetail });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm chi tiết đơn hàng đơn hàng.' });
   }
-})
+});
+
 
 router.put('/update/:orderDetailID', async (req, res) => {
   try {

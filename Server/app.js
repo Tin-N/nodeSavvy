@@ -48,12 +48,12 @@ app.use('/Api/historySearchAPI', historySearchAPIRouter);
 
 app.use('/users', usersRouter);
 
-app.use('/order', orderAPI);
-app.use('/orderdetail', orderDetail);
+app.use('/Api/order', orderAPI);
+app.use('/Api/orderdetail', orderDetail);
 
 //http://localhost:3000/api/category
-app.use('/api/category', categoryApiRouter);
-app.use('/api/UserApi', userApiRouter);
+app.use('/Api/category', categoryApiRouter);
+app.use('/Api/UserApi', userApiRouter);
 
 
 // catch 404 and forward to error handler
