@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+<<<<<<< Updated upstream
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
@@ -15,3 +16,16 @@ const orderDetailsSchema = new Schema({
     totalCost: { type: Number },
 });
 module.exports = mongoose.models.orderDetail || mongoose.model('OrderDetail', orderDetailsSchema);
+=======
+const Schema= mongoose.Schema;
+const ObjectId=Schema.ObjectId;
+
+const orderDetailsSchema=new Schema({
+    id:{type:ObjectId},
+    productID:{type:String},
+    orderID:{type:String},
+    totalCost:{type:Number},
+    quantity:{type:Number}
+});
+module.exports = mongoose.models.orderdetal || mongoose.model('orderdetail',orderDetailsSchema);
+>>>>>>> Stashed changes
