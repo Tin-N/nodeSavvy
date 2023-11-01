@@ -1,8 +1,8 @@
 const colorService = require('./colorService');
-const addColor = async (productID,color,title,image) =>{
+const addColor = async (colorArray) =>{
     try {
        
-        return await colorService.addColor(productID,color,title,image);
+        return await colorService.addColor(colorArray);
     } catch (error) {
         return json({return:false, message:"Service Error: "+error})
     }

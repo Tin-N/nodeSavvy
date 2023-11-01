@@ -1,13 +1,11 @@
 const sizeService = require('./sizeService');
-const addSize = async (productID,size) =>{
-    try {
-       
-        return await sizeService.addsize(productID,size);
+const addSize = async (sizeArray) =>{
+    try {  
+        return await sizeService.addsize(sizeArray);
     } catch (error) {
         return json({return:false, message:"Controller Error: "+error})
     }
 }
-
 const deleteSize = async (id) =>{
     try {
        

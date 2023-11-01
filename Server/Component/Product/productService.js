@@ -10,7 +10,7 @@ const addProduct = async (
             isApproved, name, quantity, sold, rating, options
         };
         const newP = new productModel(newProduct);
-        await newP.save();
+        return await newP.save();
     } catch (err) {
         console.log("Lỗi không thêm được: " + err);
         return false;

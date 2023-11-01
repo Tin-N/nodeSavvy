@@ -20,7 +20,7 @@ const productSchema=new Schema({
     isApproved:{type:Boolean, default: false},
     name:{type:String},
     quantity:{type:Number},
-    sold:{type:Number},
+    sold:{type:Number, default: 0},
     rating:{type:Number, default: 0},
     isShow:{type:Boolean, default: true},
     saleOff:{type:Number, default: 0},

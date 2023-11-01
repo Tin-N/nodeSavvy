@@ -10,11 +10,11 @@ router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
         const { userID, categoryID, price,
             detail, image, isApproved,
             name, quantity, sold, rating, options } = body;
-        await productController.addProduct(
+        const request = await productController.addProduct(
             userID, categoryID, price,
             detail, image, isApproved,
             name, quantity, sold, rating, options);
-        return res.status(200).json({ result: true })
+        return res.status(200).json({ result: true,  productID: request._id })
     } catch (err) {
         console.log('Không thêm được  sản phẩm: ' + err);
         return res.status(500).json({ result: false })
