@@ -102,7 +102,7 @@ router.get('/getProductByID', async (req, res, next) => {
 
 
 
-// http://localhost:3000/Api/productAPI/getAllProductByUserIDByPage?id=
+// http://localhost:3000/Api/productAPI/getAllProductByUserIDByPage?id=     &limitData=  &skipPage=0
 
 // Paging
 router.get('/getAllProductByUserIDByPage', async (req, res, next) => {
@@ -134,6 +134,7 @@ router.get('/getAllProductByUserIDByPage', async (req, res, next) => {
 // Viewmore
 
 // http://localhost:3000/Api/productAPI/getProductByCategoryID?id=
+// http://localhost:3000/Api/productAPI/getProductByCategoryID?id=     &limitData=  &skipPage=0
 
 router.get('/getProductByCategoryID', async (req, res, next) => {``
     try {
@@ -151,13 +152,78 @@ router.get('/getProductByCategoryID', async (req, res, next) => {``
 });
 
 // http://localhost:3000/Api/productAPI/searchByName?name=
-
+function calculatePage(countData) {
+    const trangMoiTrang = 6;
+    const soTrang = countData <= trangMoiTrang ? 1 : Math.ceil(countData / trangMoiTrang);
+    return soTrang;
+  } 
 router.get('/searchByName', async (req, res, next) => {``
     try {
-        const {name,limitData} = req.query;
+        const {
+            name,
+            limitData,
+            categoryID,
+            userID,
+            skipData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte} = req.query;
+
+            console.log(typeof name);
+        const products = await productController.searchByName(
+            name,
+            limitData,
+            categoryID,
+            userID,
+            skipData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte);
+            const totalPage=calculatePage(products.count);
+            console.log(totalPage,products.count,"TOTAL PAGES");
+        return res.status(200).json({
+            result:true, products: products.result,totalPage:totalPage,
+            count:products.count
+        })
+    } catch (error) {
+        console.log('searchByName error(Api): '+error);
+    }
+});
 
 
-        const products = await productController.searchByName(name,limitData);
+
+
+// Filter 
+// http://localhost:3000/Api/productAPI/filterProduct
+
+router.get('/filterProduct', async (req, res, next) => {``
+    try {
+        const {
+            categoryID,
+            skipData,
+            limitData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte
+        } = req.body;
+
+
+        const products = await productController.filterProduct(
+            categoryID,
+            skipData,
+            limitData,
+            sortName,
+            sortPrice,
+            sortRating,
+            lte,
+            gte
+            );
         return res.status(200).json({
             result:true, products: products
         })
@@ -165,4 +231,5 @@ router.get('/searchByName', async (req, res, next) => {``
         console.log('searchByName error(Api): '+error);
     }
 });
+
 module.exports = router;
