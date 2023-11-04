@@ -92,7 +92,7 @@ const getById = async (id) => {
             return user
         } return false
     } catch (error) {
-        console.log("Get product by id error " + error);
+        console.log("Get user by id error " + error);
         return null;
     }
 }

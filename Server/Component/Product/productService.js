@@ -103,7 +103,7 @@ const searchByName = async (name, limitData) => {
     }
 }
 
-
+//duyet san pham
 const checkProductByid = async (id, isApproved) => {
     try {
         const product = await productModel.findById(id);
@@ -119,6 +119,7 @@ const checkProductByid = async (id, isApproved) => {
     }
 }
 
+//san pham chua duyet
 const getProductNotCensorship = async (isApproved) => {
     try {
         return await productModel.find({ isApproved: false })
