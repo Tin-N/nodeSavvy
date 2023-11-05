@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const orderDetailModel = require('../../Component/order/OrderDetails/orderDetailsModel');
+const orderDetailModel = require('../../Component/order/orderDetailsModel');
+const CartModel = require('../../Component/Cart/CartModel');
 
 router.post('/add', async (req, res) => {
   try {
@@ -10,7 +11,7 @@ router.post('/add', async (req, res) => {
     const newOrderDetail = new orderDetailModel({
       orderDetailID,
       products,
-      totalCost
+      totalCost,
     });
 
     await newOrderDetail.save();
@@ -22,7 +23,6 @@ router.post('/add', async (req, res) => {
     res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm chi tiết đơn hàng đơn hàng.' });
   }
 });
-
 
 router.put('/update/:orderDetailID', async (req, res) => {
   try {
@@ -47,6 +47,30 @@ router.put('/update/:orderDetailID', async (req, res) => {
   }
 });
 
+router.put('/removeSelectedProducts/:userID', async (req, res) => {
+  try {
+    const userID = req.params.userID;
+
+    // Tìm giỏ hàng của người dùng dựa trên userID
+    const cart = await CartModel.findOne({ userID });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Giỏ hàng không tồn tại.' });
+    }
+
+    // Lọc và xoá sản phẩm có isSelected là true từ mảng products
+    cart.products = cart.products.filter(product => !product.isSelected);
+
+    // Lưu giỏ hàng đã được cập nhật
+    const updatedCart = await cart.save();
+
+    res.status(200).json({ message: 'Những sản phẩm có isSelected là true đã được xoá.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Lỗi server' });
+  }
+});
+
 router.delete('/delete/:orderDetailID', async (req, res) => {
   try {
     const { orderDetailID } = req.params; // Lấy orderDetailID từ URL
@@ -65,4 +89,5 @@ router.delete('/delete/:orderDetailID', async (req, res) => {
     res.status(500).json({ error: 'Đã xảy ra lỗi khi xoá bản ghi.' });
   }
 });
+
 module.exports = router;
