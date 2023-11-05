@@ -11,7 +11,7 @@ const feedbackSchema=new Schema({
     userID:{type:String},
     rating:{type:Number},
     feedback:{type:String},
-    reply:[replySchema],
+    // reply:[replySchema],
     image:{type:[String]}
 });
 module.exports = mongoose.models.feedback || mongoose.model('feedback',feedbackSchema);
