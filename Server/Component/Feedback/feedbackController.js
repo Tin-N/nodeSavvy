@@ -1,10 +1,12 @@
 const feedbackService = require('./feedbackService');
 const addFeedback = async (
     productID, userID,
-    rating, feedback, reply) => {
+    rating, feedback,image) => {
     try {
         return await feedbackService.addFeedback(
-            productID, userID, rating, feedback, reply
+            productID, userID, rating, feedback
+            // , reply
+            ,image
         );
     } catch (err) {
         console.log('Không thể thêm bình luận(Contr): ' + err);
@@ -24,4 +26,11 @@ const getFeedbackByProductID = async (id) => {
         console.log('getFeedBackByProductID error(Contr): '+error);
     }
 }
-module.exports = { addFeedback, addReply, getFeedbackByProductID }
+const deleteFeedback = async (id) => {
+    try {
+        return await feedbackService.deleteFeedback(id);
+    } catch (error) {
+        console.log('getFeedBackByProductID error(Contr): '+error);
+    }
+}
+module.exports = { deleteFeedback,addFeedback, addReply, getFeedbackByProductID }
