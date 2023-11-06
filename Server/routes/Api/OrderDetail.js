@@ -6,7 +6,7 @@ const CartModel = require('../../Component/Cart/CartModel');
 router.post('/add', async (req, res) => {
   try {
 
-    const {orderDetailID, products, totalCost } = req.body;
+    const { orderDetailID, products, totalCost } = req.body;
 
     const newOrderDetail = new orderDetailModel({
       orderDetailID,
@@ -21,6 +21,46 @@ router.post('/add', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm chi tiết đơn hàng đơn hàng.' });
+  }
+});
+
+// Lấy thông tin đơn hàng cho người bán
+router.get('/getOrderHistoryForSeller/:orderDetailID/:ownerID', async (req, res) => {
+  try {
+    const ownerID = req.params.ownerID;
+    const orderDetailID = req.params.orderDetailID;
+
+    const orders = await orderModel.find({
+      'orderDetails': {
+        $elemMatch: {
+          'orderDetailID': orderDetailID,
+          'products': {
+            $elemMatch: {
+              'ownerID': ownerID
+            }
+          }
+        }
+      }
+    });
+
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
+// Lấy thông tin đơn hàng cho khách hàng
+router.get('/getOrderHistoryForSeller/:orderDetailID', async (req, res) => {
+  try {
+    const orderDetailID = req.params.orderDetailID;
+
+    const orders = await orderModel.find({ orderDetailID })
+
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Lỗi server' });
   }
 });
 
