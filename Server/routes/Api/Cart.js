@@ -1,42 +1,35 @@
 const express = require('express');
 const router = express.Router();
 const cartModel = require('../../Component/Cart/CartModel');
-const CartModel = require('../../Component/Cart/CartModel');
 
 router.post('/add', async (req, res) => {
     try {
         const { userID, products } = req.body;
+        // Tìm giỏ hàng của userID, nếu không tìm thấy, tạo giỏ hàng mới
+        let cart = await cartModel.findOne({ userID });
 
-        const newCartModel = new cartModel({ userID, products });
-
-        console.log(userID)
-        console.log(products)
-
-        const savedCartModel = await newCartModel.save();
-
-        res.status(201).json({ message: "Thêm vào thành công.", data: savedCartModel });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Đã xảy ra lỗi thêm vào giỏ hàng" });
-    }
-});
-
-router.post('/add', async (req, res) => {
-    try {
-        const { userID, products } = req.body;
-        let existingCart = await cartModel.findOne({ userID });
-
-        if (existingCart) {
-            // Nếu giỏ hàng đã tồn tại, thêm sản phẩm vào mảng products của giỏ hàng hiện tại
-            existingCart.products.push(...products);
-            await existingCart.save();
-            res.status(200).json({ message: "Thêm vào thành công.", data: existingCart });
+        if (!cart) {
+            // Nếu không tìm thấy giỏ hàng, tạo giỏ hàng mới với mảng products
+            const newCartModel = new cartModel({ userID, products: [products] });
+            cart = await newCartModel.save();
         } else {
-            // Nếu giỏ hàng không tồn tại, tạo giỏ hàng mới
-            const newCartModel = new cartModel({ userID, products });
-            const savedCartModel = await newCartModel.save();
-            res.status(201).json({ message: "Giỏ hàng mới đã được tạo.", data: savedCartModel });
+            // Sử dụng let thay cho const
+            let productsArray = products;
+
+            // Đảm bảo productsArray là một mảng
+            if (!Array.isArray(productsArray)) {
+                productsArray = [productsArray];
+            }
+
+            // Thêm sản phẩm vào giỏ hàng
+            cart.products.push(...productsArray);
+
+            // Lưu lại giỏ hàng sau khi đã thêm sản phẩm
+            await cart.save();
         }
+
+
+        res.status(201).json({ message: "Thêm vào thành công." });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Đã xảy ra lỗi thêm vào giỏ hàng" });
@@ -50,7 +43,7 @@ router.get('/getCartByUserID/:userID', async (req, res) => {
         if (!cart) {
             return res.status(404).json({ message: 'Không tìm thấy giỏ hàng cho userID đã cung cấp.' });
         }
-        res.status(200).json(cart);
+        res.status(200).json(cart[0].products);
     } catch (error) {
         // Xử lý lỗi
         console.error(error);
@@ -61,15 +54,15 @@ router.get('/getCartByUserID/:userID', async (req, res) => {
 router.put('/update/:userID/:productId', async (req, res) => {
     try {
         const userID = req.params.userID;
-        const _idOfCartProduct = req.params.productId;
-        const { isSelected, quantity, options, totalItemCost } = req.body;
+        const productID = req.params.productId;
+        const { isSelected, quantity, options, itemTotalCost } = req.body;
 
-        const cart = await CartModel.findOne({ userID: userID });
+        const cart = await cartModel.findOne({ userID: userID });
         if (!cart) {
             return res.status(404).json({ message: 'Giỏ hàng không tồn tại' });
         }
 
-        const product = cart.products.find((p) => p._id.toString() === _idOfCartProduct);
+        const product = cart.products.find((p) => p.productID.toString() === productID);
         if (!product) {
             return res.status(404).json({ message: 'Sản phẩm không tồn tại trong giỏ hàng' });
         }
@@ -85,8 +78,8 @@ router.put('/update/:userID/:productId', async (req, res) => {
         }
 
         // Cập nhật thuộc tính quantity (nếu có)
-        if (totalItemCost !== undefined) {
-            product.totalItemCost = totalItemCost;
+        if (itemTotalCost !== undefined) {
+            product.itemTotalCost = itemTotalCost;
         }
 
         // Cập nhật thuộc tính options (nếu có)
@@ -120,6 +113,29 @@ router.delete('/deleteCartByUserID/:userID', async (req, res) => {
     }
 });
 
-
+router.delete('/deleteProduct/:userID/:productID', async (req, res) => {
+    try {
+      const userID = req.params.userID;
+      const productID = req.params.productID;
+  
+      // Tìm người dùng có userID
+      const user = await cartModel.findOne({ userID });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Người dùng không tồn tại' });
+      }
+  
+      // Lọc các sản phẩm có productID trùng và loại bỏ chúng khỏi mảng products
+      user.products = user.products.filter(product => product.productID !== productID);
+  
+      // Lưu lại thông tin người dùng với sản phẩm đã xóa
+      await user.save();
+  
+      res.json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Lỗi server' });
+    }
+  });
 
 module.exports = router;
