@@ -16,6 +16,7 @@ const addProduct = async (
         return false;
     }
 }
+
 const addOption = async (
     productID,
     title, titleColor, color, size, weight, imageOption) => {
@@ -43,6 +44,7 @@ const addOption = async (
         return false;
     }
 }
+
 const getAllProductByUserID = async (id) => {
     try {
         return await productModel.find({ userID: id });
@@ -50,6 +52,15 @@ const getAllProductByUserID = async (id) => {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
+
+const getListProductSelling = async (id, isShow, page, size) => {
+    try {
+        return await productModel.find({ userID: id, isShow: isShow}).limit(size).skip(page);
+    } catch (error) {
+        console.log('getListProductSelling error (Ser): ' + error);
+    }
+}
+
 const getProductByID = async (id) => {
     try {
         return await productModel.findById(id);
@@ -57,6 +68,7 @@ const getProductByID = async (id) => {
         console.log('getProductByID error: ' + error);
     }
 }
+
 const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
     try {
         return await productModel.find({ categoryID: categoryID }).limit(limitData).skip(skipPage);
@@ -93,20 +105,56 @@ const searchByName = async (name, limitData) => {
         console.log('searchByName error: ' + error);
     }
 }
-const deleteProduct = async (id) => {
+
+const deleteProduct = async (productID, isShow) => {
     try {
-        return await productModel.findByIdAndDelete(id);
+        const result = await productModel.findByIdAndUpdate(
+            productID,
+            { $set: { isShow: isShow } },
+            { new: true }
+        );
+        return result !== null;
     } catch (error) {
-        return json({ return: false, message: "Delete product error(Service): " + error })
+        console.log("Delete product error(Service): " + error);
+        return false;
     }
 }
-const updateProduct = async (productID, name, quantity, saleOff) => {
+
+const updateQuantityProductForCustomer = async (productID, quantity) => {
+    try {
+        const result = await productModel.findByIdAndUpdate(
+            productID,
+            { $inc: { quantity: -quantity } },
+            { new: true }
+        );
+        return result !== null;
+    } catch (error) {
+        console.log("Update quantity error(Service): " + error);
+        return false;
+    }
+}
+
+const updateSoldProduct = async (productID, sold) => {
+    try {
+        const result = await productModel.findByIdAndUpdate(
+            productID,
+            { $inc: { sold: sold } },
+            { new: true }
+        );
+        return result !== null;
+    } catch (error) {
+        console.log("Update sold error(Service): " + error);
+        return false;
+    }
+}
+
+const updateProduct = async (productID, name, detail, categoryID) => {
     try {
         const product = await productModel.findById(productID);
-        if(product){
-            product.name = name ? name: product.name;
-            product.quantity = quantity ? quantity: product.quantity;
-            product.saleOff = saleOff ? saleOff: product.saleOff;
+        if (product) {
+            product.name = name ? name : product.name;
+            product.detail = detail ? detail : product.detail;
+            product.categoryID = categoryID ? categoryID : product.categoryID;
             await product.save();
             return true;
         }
@@ -116,6 +164,7 @@ const updateProduct = async (productID, name, quantity, saleOff) => {
         return false;
     }
 }
+
 module.exports = {
     searchByName,
     addProduct,
@@ -124,5 +173,6 @@ module.exports = {
     getProductByID,
     getProductByCategoryID,
     getAllProductByUserIDByPage,
-    deleteProduct, updateProduct
+    deleteProduct, updateProduct, getListProductSelling,
+    updateQuantityProductForCustomer, updateSoldProduct
 }

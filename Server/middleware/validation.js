@@ -26,4 +26,15 @@ const validationAddFeeback = async (req, res, next) => {
         next();
     }
 }
-module.exports = {validationAddProduct, validationAddFeeback}
+const validationUpdateQuantity = async (req, res, next) => {
+    const {quantity} = req.body;
+    if(isNaN(quantity)){
+        return res.status(400).json({
+            result: false,
+            message: 'Số lượng sản phẩm không đúng định dạng'
+        })
+    }else{
+        next()
+    }
+}
+module.exports = {validationAddProduct, validationAddFeeback, validationUpdateQuantity}

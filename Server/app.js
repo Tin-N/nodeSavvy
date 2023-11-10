@@ -27,7 +27,8 @@ const colorAPIRouter = require('./routes/Api/Options/ColorApi');
 require('./Component/Options/Size/sizeModel')
 const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
 
-
+require('./Component/SaleOff/SaleOffModel')
+const saleOffRouter = require('./routes/Api/saleOffAPI');
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -48,7 +49,7 @@ app.use('/Api/productAPI', productAPIRouter);
 app.use('/Api/historySearchAPI', historySearchAPIRouter);
 app.use('/Api/Options/colorAPI', colorAPIRouter);
 app.use('/Api/Options/sizeAPI', sizeAPIRouter);
-
+app.use('/Api/saleOffAPI', saleOffRouter)
 app.use('/users', usersRouter);
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
 // catch 404 and forward to error handler

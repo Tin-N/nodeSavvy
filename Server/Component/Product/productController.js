@@ -38,7 +38,14 @@ const getAllProductByUserID = async (id) => {
         return false;
     }
 }
-
+const getListProductSelling = async (id, isShow, page, size) => {
+    try {
+        return await productService.getListProductSelling(id, isShow, page, size);
+    } catch (error) {
+        console.log('getListProductSelling error(contr): ' + error);
+        return false;
+    }
+}
 
 // 
 const getProductByID = async (id) => {
@@ -82,16 +89,30 @@ const searchByName = async (name, limitData) => {
         return false;
     }
 }
-const deleteProduct = async (id) => {
+const deleteProduct = async (productID, isShow) => {
     try {
-        return await productService.deleteProduct(id);
+        return await productService.deleteProduct(productID, isShow);
     } catch (error) {
         return json({ return: false, message: "Delete product error(Contr): " + error })
     }
 }
-const updateProduct = async (productID, name, quantity, saleOff) => {
+const updateQuantityProductForCustomer = async (productID, quantity) => {
     try {
-        return await productService.updateProduct(productID, name, quantity, saleOff);
+        return await productService.updateQuantityProductForCustomer(productID, quantity);
+    } catch (error) {
+        return json({ return: false, message: "Update quantity error(Contr): " + error })
+    }
+}
+const updateSoldProduct = async (productID, sold) => {
+    try {
+        return await productService.updateSoldProduct(productID, sold);
+    } catch (error) {
+        return json({ return: false, message: "Update sold error(Contr): " + error })
+    }
+}
+const updateProduct = async (productID, name, detail, categoryID) => {
+    try {
+        return await productService.updateProduct(productID, name, detail, categoryID);
     } catch (error) {
         return false;
     }
@@ -101,5 +122,6 @@ module.exports = {
     addOption, getAllProductByUserID,
     getProductByID, getProductByCategoryID,
     getAllProductByUserIDByPage, searchByName, 
-    deleteProduct, updateProduct
+    deleteProduct, updateProduct, getListProductSelling,
+    updateQuantityProductForCustomer, updateSoldProduct
 }

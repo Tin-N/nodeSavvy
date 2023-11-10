@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const productController = require('../../Component/Product/productController');
 const { validationAddProduct } = require('../../middleware/validation')
-
+const { validationUpdateQuantity } = require('../../middleware/validation')
 // http://localhost:3000/Api/productAPI/addProduct
 router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
     try {
@@ -14,7 +14,7 @@ router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
             userID, categoryID, price,
             detail, image, isApproved,
             name, quantity, sold, rating, options);
-        return res.status(200).json({ result: true,  productID: request._id })
+        return res.status(200).json({ result: true, productID: request._id })
     } catch (err) {
         console.log('Không thêm được  sản phẩm: ' + err);
         return res.status(500).json({ result: false })
@@ -43,6 +43,17 @@ router.get('/getAllProductByUserID', async (req, res, next) => {
         const { id } = req.query;
         const products = await productController.getAllProductByUserID(id);
         console.log(products);
+        return res.status(200).json({
+            result: true, products: products
+        })
+    } catch (error) {
+        console.log('getAllProductByUserID error(Api): ' + error);
+    }
+});
+router.get('/getListProductSelling', async (req, res, next) => {
+    try {
+        const { id, isShow, page, size } = req.query;
+        const products = await productController.getListProductSelling(id, isShow, page, size);
         return res.status(200).json({
             result: true, products: products
         })
@@ -136,22 +147,42 @@ router.get('/searchByName', async (req, res, next) => {
 // http://localhost:3000/Api/productAPI/deleteProduct
 router.post('/deleteProduct', async (req, res, next) => {
     try {
-        let { id } = req.query;
-        const result = await productController.deleteProduct(id);
-        return res.status(200).json({ result: true, color: result })
+        const { productID, isShow } = req.body;
+        const result = await productController.deleteProduct(productID, isShow);
+        return res.status(200).json({ result: true, product: result })
     } catch (err) {
-        console.log('Không xoa được màu api: ' + err);
+        console.log('Delete product error(Api): ' + err);
+        return res.status(500).json({ result: false })
+    }
+});
+router.post('/updateQuantityProductForCustomer', [validationUpdateQuantity],async (req, res, next) => {
+    try {
+        const { productID, quantity } = req.body;
+        const result = await productController.updateQuantityProductForCustomer(productID, quantity);
+        return res.status(200).json({ result: true, product: result })
+    } catch (err) {
+        console.log('Update quantity error(Api): ' + err);
+        return res.status(500).json({ result: false })
+    }
+});
+router.post('/updateSoldProduct' ,async (req, res, next) => {
+    try {
+        const { productID, sold } = req.body;
+        const result = await productController.updateSoldProduct(productID, sold);
+        return res.status(200).json({ result: true, product: result })
+    } catch (err) {
+        console.log('Update sold error(Api): ' + err);
         return res.status(500).json({ result: false })
     }
 });
 router.post('/updateProduct', async (req, res, next) => {
     try {
         let { body } = req
-        const { productID, name, quantity, saleOff } = body;
+        const { productID, name, detail, categoryID } = body;
         const result = await productController.updateProduct(
-            productID, name, quantity, saleOff
+            productID, name, detail, categoryID
         )
-        return res.status(200).json({ result: true})
+        return res.status(200).json({ result: true })
     } catch (error) {
         return res.status(500).json({
             result: false,
