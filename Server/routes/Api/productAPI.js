@@ -120,7 +120,7 @@ router.get('/getProductByCategoryID', async (req, res, next) => {``
 
 // http://localhost:3000/Api/productAPI/searchByName?name=
 function calculatePage(countData) {
-    const trangMoiTrang = 6;
+    const trangMoiTrang = 20;
     const soTrang = countData <= trangMoiTrang ? 1 : Math.ceil(countData / trangMoiTrang);
     return soTrang;
   } 
@@ -165,34 +165,33 @@ router.get('/searchByName', async (req, res, next) => {``
 
 
 // Filter 
-// http://localhost:3000/Api/productAPI/filterProduct
+// http://localhost:3000/Api/productAPI/filterProductByName
 
-router.get('/filterProduct', async (req, res, next) => {``
+router.get('/filterProductByName', async (req, res, next) => {``
     try {
         const {
-            categoryID,
-            skipData,
-            limitData,
-            sortName,
+            name,
+            sortNew,
             sortPrice,
             sortRating,
-            lte,
-            gte
-        } = req.body;
-
-
-        const products = await productController.filterProduct(
-            categoryID,
+            sortDiscount,
             skipData,
             limitData,
-            sortName,
+        } = req.query;
+
+
+        const products = await productController.FilterProductByName(
+            name,
+            skipData,
+            limitData,
+            sortNew,
             sortPrice,
             sortRating,
-            lte,
-            gte
+            sortDiscount
             );
+            console.log(skipData,"dddddddddddd");
         return res.status(200).json({
-            result:true, products: products
+            result:true, products: products.product,count:products.count,totalPage:calculatePage(products.count)
         })
     } catch (error) {
         console.log('searchByName error(Api): '+error);

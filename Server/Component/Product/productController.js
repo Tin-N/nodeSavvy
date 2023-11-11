@@ -118,55 +118,23 @@ const searchByName = async (
   sortRating,
   lte,
   gte
-  ) => {
+) => {
   try {
-    let skip=0;
-      
-      if((typeof limitData !== 'undefined')&&(limitData>0))
-        skip=(skipData-1)*limitData;
-      else
-      {
-        if(skipData==1)
-        skip=0
-        else if(skipData>1)
-        skip=(skipData-1)*20;
+    let skip = 0;
 
-      }
-      console.log("page: "+skip);
-    return await productService.searchByName
-    (
+    if (typeof limitData !== "undefined" && limitData > 0)
+      skip = (skipData - 1) * limitData;
+    else {
+      if (skipData == 1) skip = 0;
+      else if (skipData > 1) skip = (skipData - 1) * 20;
+    }
+    console.log("page: " + skip);
+    return await productService.searchByName(
       name,
       limitData,
       categoryID,
       userID,
       skip,
-      sortName,
-      sortPrice,
-      sortRating,
-      lte,
-      gte
-      );
-
-  } catch (error) {
-    console.log("searchByName error(contr): " + error);
-    return false;
-  }
-};
-const filterProduct = async (
-  categoryID,
-  skipData,
-  limitData,
-  sortName,
-  sortPrice,
-  sortRating,
-  lte,
-  gte
-) => {
-  try {
-    return await productService.FilterProduct(
-      categoryID,
-      skipData,
-      limitData,
       sortName,
       sortPrice,
       sortRating,
@@ -178,8 +146,40 @@ const filterProduct = async (
     return false;
   }
 };
+const FilterProductByName = async (
+  name,
+  skipData,
+  limitData,
+  sortNew,
+  sortPrice,
+  sortRating,
+  sortDiscount
+) => {
+  try {
+    let skip = 0;
+
+    if (typeof limitData !== "undefined" && limitData > 0)
+      skip = (skipData - 1) * limitData;
+    else {
+      if (skipData == 1) skip = 0;
+      else if (skipData > 1) skip = (skipData - 1) * 20;
+    }
+    console.log("page: " + skip);
+    return await productService.FilterProductByName(
+      name,
+      skip,
+      limitData,
+      sortNew,
+      sortPrice,
+      sortRating,sortDiscount
+    );
+  } catch (error) {
+    console.log("searchByName error(contr): " + error);
+    return false;
+  }
+};
 module.exports = {
-  filterProduct,
+
   addProduct,
   addOption,
   getAllProductByUserID,
@@ -187,4 +187,5 @@ module.exports = {
   getProductByCategoryID,
   getAllProductByUserIDByPage,
   searchByName,
+  FilterProductByName
 };
