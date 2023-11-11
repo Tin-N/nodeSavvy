@@ -7,7 +7,8 @@ const productSchema = new Schema({
     productID: { type: ObjectId},
     quantity: { type: Number },
     itemTotalCost: { type: Number },
-    options: [{ type: String }]
+    options: [{ type: String }],
+    deliveryStatus: { type: String },
 });
 
 const orderDetailsSchema = new Schema({

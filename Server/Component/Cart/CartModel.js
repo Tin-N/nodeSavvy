@@ -13,7 +13,7 @@ const productSchema = new Schema({
     productID: { type: ObjectId },
     quantity: { type: Number },
     itemTotalCost: { type: Number },
-    options: { productsOptionsSchema }
+    options: { productsOptionsSchema },
 });
 
 const cartSchema = new Schema({
