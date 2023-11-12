@@ -110,9 +110,9 @@ const updateSoldProduct = async (productID, sold) => {
         return json({ return: false, message: "Update sold error(Contr): " + error })
     }
 }
-const updateProduct = async (productID, name, detail, categoryID) => {
+const updateProduct = async (productID, name, price, detail, categoryID) => {
     try {
-        return await productService.updateProduct(productID, name, detail, categoryID);
+        return await productService.updateProduct(productID, name, price, detail, categoryID);
     } catch (error) {
         return false;
     }
