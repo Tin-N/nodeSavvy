@@ -25,8 +25,21 @@ router.post('/add', async (req, res) => {
   }
 });
 
+router.get('/getOrderByOrderID/:orderID/', async (req, res) => {
+  try {
+    const orderID = req.params.orderID;
+
+    const orders = await orderModel.find({ orderID });
+
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
 // Lấy thông tin đơn hàng cho người mua
-router.get('/getOrderHistoryForCustomer/:userID', async (req, res) => {
+router.get('/getOrderForCustomer/:userID', async (req, res) => {
   const { userID } = req.params;
 
   try {
@@ -41,7 +54,7 @@ router.get('/getOrderHistoryForCustomer/:userID', async (req, res) => {
 });
 
 // Lấy thông tin đơn hàng cho người bán
-router.get('/getOrderHistoryForSeller/:ownerID/', async (req, res) => {
+router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
   try {
     const ownerID = req.params.ownerID;
 
