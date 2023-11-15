@@ -117,9 +117,10 @@ const updateQuantityProduct = async (productID, quantity) => {
       return false;
   }
 }
-const updateProduct = async (productID, name, detail, categoryID) => {
+
+const updateProduct = async (productID, name, price, detail, categoryID) => {
     try {
-        return await productService.updateProduct(productID, name, detail, categoryID);
+        return await productService.updateProduct(productID, name, price, detail, categoryID);
     } catch (error) {
         return false;
     }

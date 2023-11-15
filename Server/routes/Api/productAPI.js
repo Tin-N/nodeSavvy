@@ -190,9 +190,9 @@ router.post('/updateQuantity' ,async (req, res, next) => {
 router.post('/updateProduct', async (req, res, next) => {
     try {
         let { body } = req
-        const { productID, name, detail, categoryID } = body;
+        const { productID, name, price, detail, categoryID } = body;
         const result = await productController.updateProduct(
-            productID, name, detail, categoryID
+            productID, name, price, detail, categoryID
         )
         return res.status(200).json({ result: true })
     } catch (error) {

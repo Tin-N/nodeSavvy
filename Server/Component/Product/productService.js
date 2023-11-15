@@ -160,11 +160,12 @@ const updateSoldProduct = async (productID, sold) => {
     }
 }
 
-const updateProduct = async (productID, name, detail, categoryID) => {
+const updateProduct = async (productID, name, price, detail, categoryID) => {
     try {
         const product = await productModel.findById(productID);
         if (product) {
             product.name = name ? name : product.name;
+            product.price = price ? price : product.price;
             product.detail = detail ? detail : product.detail;
             product.categoryID = categoryID ? categoryID : product.categoryID;
             await product.save();
