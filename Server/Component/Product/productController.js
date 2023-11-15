@@ -110,6 +110,13 @@ const updateSoldProduct = async (productID, sold) => {
         return json({ return: false, message: "Update sold error(Contr): " + error })
     }
 }
+const updateQuantityProduct = async (productID, quantity) => {
+  try {
+      return await productService.updateQuantityProduct(productID, quantity);
+  } catch (error) {
+      return false;
+  }
+}
 const updateProduct = async (productID, name, detail, categoryID) => {
     try {
         return await productService.updateProduct(productID, name, detail, categoryID);
@@ -118,7 +125,7 @@ const updateProduct = async (productID, name, detail, categoryID) => {
     }
 }
 module.exports = {
-    addProduct,
+    addProduct,updateQuantityProduct,
     addOption, getAllProductByUserID,
     getProductByID, getProductByCategoryID,
     getAllProductByUserIDByPage, searchByName, 

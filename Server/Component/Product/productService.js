@@ -133,7 +133,19 @@ const updateQuantityProductForCustomer = async (productID, quantity) => {
         return false;
     }
 }
-
+const updateQuantityProduct = async (productID, quantity) => {
+    try {
+        const result = await productModel.findByIdAndUpdate(
+            productID,
+            { quantity: quantity  },
+            { new: true }
+        );
+        return result !== null;
+    } catch (error) {
+        console.log("Update quantity error(Service): " + error);
+        return false;
+    }
+}
 const updateSoldProduct = async (productID, sold) => {
     try {
         const result = await productModel.findByIdAndUpdate(
@@ -175,4 +187,5 @@ module.exports = {
     getAllProductByUserIDByPage,
     deleteProduct, updateProduct, getListProductSelling,
     updateQuantityProductForCustomer, updateSoldProduct
+    ,updateQuantityProduct
 }

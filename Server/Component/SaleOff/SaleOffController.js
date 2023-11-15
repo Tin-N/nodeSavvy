@@ -11,4 +11,20 @@ const addSaleOff = async (
         throw err;
     }
 }
-module.exports = {addSaleOff}
+const getSaleOffCurrent = async (productID) => {
+    try {
+        return await saleOffService.getSaleOffCurrent(productID)
+    } catch (err) {
+        throw err;
+    }
+}
+const getSaleOffByProduct = async (productID, page, size) => {
+    try {
+        return await saleOffService.getSaleOffByProduct(
+            productID, page, size
+        )
+    } catch (err) {
+        throw err;
+    }
+}
+module.exports = {addSaleOff,getSaleOffCurrent,getSaleOffByProduct}

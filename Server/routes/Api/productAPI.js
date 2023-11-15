@@ -169,6 +169,18 @@ router.post('/updateSoldProduct' ,async (req, res, next) => {
     try {
         const { productID, sold } = req.body;
         const result = await productController.updateSoldProduct(productID, sold);
+        console.log(result,sold,productID );
+        return res.status(200).json({ result: true, product: result })
+    } catch (err) {
+        console.log('Update sold error(Api): ' + err);
+        return res.status(500).json({ result: false })
+    }
+});
+router.post('/updateQuantity' ,async (req, res, next) => {
+    try {
+        const { productID,quantity } = req.body;
+        const result = await productController.updateQuantityProduct(productID, quantity);
+        console.log(result,productID );
         return res.status(200).json({ result: true, product: result })
     } catch (err) {
         console.log('Update sold error(Api): ' + err);

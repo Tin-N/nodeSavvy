@@ -22,6 +22,14 @@ const deleteColor = async (id) => {
         return json({ return: false, message: "Service Error: " + error })
     }
 }
+const deleteManyColor = async (id) => {
+    try {
+
+        return await colorModel.findByIdAndDelete(id);
+    } catch (error) {
+        return json({ return: false, message: "Service Error: " + error })
+    }
+}
 const getColorByProductId = async (productID) => {
     try {
         console.log(productID);
