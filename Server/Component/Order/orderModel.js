@@ -7,7 +7,6 @@ const orderSchema = new Schema({
     orderDetailID: { type: ObjectId },
     userID: { type: ObjectId },
     orderDate: { type: Date },
-    deliveryStatus: { type: String },
     paymentStatus: { type: String },
     paymentMethods: { type: String },
     ownerID: [{type: ObjectId}]

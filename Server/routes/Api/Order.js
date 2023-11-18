@@ -4,7 +4,8 @@ const orderModel = require('../../Component/order/orderModel');
 
 router.post('/add', async (req, res) => {
   try {
-    const { orderDetailID, userID, orderDate, deliveryStatus, paymentStatus, paymentMethods } = req.body;
+
+    const { orderDetailID, userID, orderDate, deliveryStatus, paymentStatus, paymentMethods, ownerID } = req.body;
 
     const newOrderModel = new orderModel({
       orderDetailID,
@@ -12,7 +13,8 @@ router.post('/add', async (req, res) => {
       orderDate,
       deliveryStatus,
       paymentStatus,
-      paymentMethods
+      paymentMethods,
+      ownerID
     });
 
     const savedOrderModel = await newOrderModel.save();
@@ -20,30 +22,25 @@ router.post('/add', async (req, res) => {
     res.status(201).json(savedOrderModel);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm đơn hàng.', orderDetailID: orderDetailID });
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi thêm đơn hàng.' });
   }
 });
 
-// Chỉnh sửa trạng thái giao hàng bên cửa hàng
-router.put('/update/:ownerID', async (req, res) => {
+router.get('/getOrderByOrderID/:orderID/', async (req, res) => {
   try {
-    const ownerID = req.params.ownerID;
-    const { deliveryStatus } = req.body;
+    const orderID = req.params.orderID;
 
-    const order = await orderModel.findOne({ orderID, ownerID });
-    if (!order) {
-      return res.status(404).json({ message: 'Không tìm thấy đơn hàng' });
-    }
+    const orders = await orderModel.find({ orderID });
 
-    order.deliveryStatus = deliveryStatus;
+    res.json(orders);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Lỗi server' });
   }
-})
+});
 
 // Lấy thông tin đơn hàng cho người mua
-router.get('/getOrderHistoryForCustomer/:userID', async (req, res) => {
+router.get('/getOrderForCustomer/:userID', async (req, res) => {
   const { userID } = req.params;
 
   try {
@@ -58,7 +55,7 @@ router.get('/getOrderHistoryForCustomer/:userID', async (req, res) => {
 });
 
 // Lấy thông tin đơn hàng cho người bán
-router.get('/getOrderHistoryForSeller/:ownerID/', async (req, res) => {
+router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
   try {
     const ownerID = req.params.ownerID;
 
