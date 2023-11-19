@@ -56,11 +56,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+
 // http://localhost:3000/API/productAPI
 app.use('/Api/productAPI', productAPIRouter);
 app.use('/Api/historySearchAPI', historySearchAPIRouter);
 app.use('/Api/Options/colorAPI', colorAPIRouter);
 app.use('/Api/Options/sizeAPI', sizeAPIRouter);
+app.use('/users', usersRouter);
+//http://localhost:3000/api/category
+app.use('/Api/category', categoryApiRouter);
+app.use('/Api/UserApi', userApiRouter);
+
 
 app.use('/Api/favoriteApi',favoriteApiRouter);
 
