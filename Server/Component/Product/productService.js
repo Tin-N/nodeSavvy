@@ -166,15 +166,14 @@ let searchoriginal= {
 
 
 // Filter
-const FilterProduct = async (
-  categoryID,
+const FilterProductByName = async (
+  name,
   skipData,
   limitData,
-  sortName,
+  sortNew,
   sortPrice,
   sortRating,
-  lte,
-  gte
+  sortDiscount
 ) => {
   try {
     // let page=0
@@ -183,48 +182,38 @@ const FilterProduct = async (
     // else
     //     page=24*skipPage;
     // console.error(name,limitData);
-    const option = [
-      {
-        $match: {
-          price: {
-            $lte: lte ? lte : Number.MAX_VALUE,
-            $gte: gte ? gte : 0,
-          },
-        },
-      },
-    ];
-
-    if (sortName) {
-      option.push({
-        $sort: {
-          name: sortName,
-        },
-      });
+    let searchoriginal= {
+      // name:{$regex: name, $options: "i"},
+      // price: {
+      //   $lte: lte ? lte : MAX_VALUE,
+      //   $gte: gte ? gte : 0,
+      // }
     }
 
+   let option={};
+    if(name)
+      searchoriginal={...searchoriginal,name:{$regex: name, $options: "i"}}
+    if (sortNew) {
+      option={...option,_id:-1}
+    }
     if (sortPrice) {
-      option.push({
-        $sort: {
-          sold: sortPrice,
-        },
-      });
+      option={...option,price:-1}
     }
 
     if (sortRating) {
-      option.push({
-        $sort: {
-          rating: sortRating,
-        },
-      });
+      option={...option,rating:-1}
     }
-
-    if (categoryID) {
-      option[0].$match.categoryID = categoryID;
-    }
-    return await productModel
-      .aggregate(option)
-      .limit(limitData ? limitData : 30)
-      .skip(skipData ? skipData : 0);
+    // if (sortDiscount) {
+    //   option={...option,rating:1}
+    // }
+    const count =await productModel
+    .find(searchoriginal).sort(option)
+    .count();
+    const product=await productModel
+    .find(searchoriginal).sort(option)
+    .limit(limitData ? limitData : 20)
+    .skip(skipData ? skipData : 0)
+    return {product:product,count:count};
   } catch (error) {
     console.log("filterProduct error: " + error);
   }
@@ -305,7 +294,7 @@ const getProductNotCensorship = async (isApproved) => {
     }
 }
 module.exports = {
-  FilterProduct,
+FilterProductByName,
     searchByName,
     addProduct,
     addOption,
@@ -317,3 +306,4 @@ module.exports = {
     checkProductByid,
     getProductNotCensorship,
 }
+

@@ -120,23 +120,18 @@ const searchByName = async (
   sortRating,
   lte,
   gte
-  ) => {
+) => {
   try {
-    let skip=0;
-      
-      if((typeof limitData !== 'undefined')&&(limitData>0))
-        skip=(skipData-1)*limitData;
-      else
-      {
-        if(skipData==1)
-        skip=0
-        else if(skipData>1)
-        skip=(skipData-1)*20;
+    let skip = 0;
 
-      }
-      console.log("page: "+skip);
-    return await productService.searchByName
-    (
+    if (typeof limitData !== "undefined" && limitData > 0)
+      skip = (skipData - 1) * limitData;
+    else {
+      if (skipData == 1) skip = 0;
+      else if (skipData > 1) skip = (skipData - 1) * 20;
+    }
+    console.log("page: " + skip);
+    return await productService.searchByName(
       name,
       limitData,
       categoryID,
@@ -148,31 +143,39 @@ const searchByName = async (
       lte,
       gte
       );
+
   } catch (error) {
     console.log("searchByName error(contr): " + error);
     return false;
   }
 };
-const filterProduct = async (
-  categoryID,
+
+const FilterProductByName = async (
+  name,
   skipData,
   limitData,
-  sortName,
+  sortNew,
   sortPrice,
   sortRating,
-  lte,
-  gte
+  sortDiscount
 ) => {
   try {
-    return await productService.FilterProduct(
-      categoryID,
-      skipData,
+    let skip = 0;
+
+    if (typeof limitData !== "undefined" && limitData > 0)
+      skip = (skipData - 1) * limitData;
+    else {
+      if (skipData == 1) skip = 0;
+      else if (skipData > 1) skip = (skipData - 1) * 20;
+    }
+    console.log("page: " + skip);
+    return await productService.FilterProductByName(
+      name,
+      skip,
       limitData,
-      sortName,
+      sortNew,
       sortPrice,
-      sortRating,
-      lte,
-      gte
+      sortRating,sortDiscount
     );
   } catch (error) {
     console.log("searchByName error(contr): " + error);
@@ -236,7 +239,7 @@ const getProductNotCensorship = async (isApproved) => {
 }
 
 module.exports = {
-  filterProduct,
+FilterProductByName,
     addProduct,
     addOption, getAllProductByUserID,
     getProductByID, getProductByCategoryID,
@@ -245,3 +248,4 @@ module.exports = {
     getProductNotCensorship,
     deleteProduct, updateProduct
 }
+
