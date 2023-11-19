@@ -3,13 +3,18 @@ var router = express.Router();
 const feedbackController = require('../../Component/Feedback/feedbackController');
 const {validationAddFeeback} = require('../../middleware/validation')
 // http://localhost:3000/Api/feedbackAPI/addFeedback
-router.post('/addFeedback', [validationAddFeeback],async (req, res, next) => {
+router.post('/addFeedback'
+// ,[validationAddFeeback]
+ ,async (req, res, next) => {
     try {
-        let { body } = req;
-        const { productID, userID, rating, feedback, reply } = body;
-        await feedbackController.addFeedback(productID, userID, rating, feedback, reply);
+        let { productID, userID, rating, feedback
+            // , reply
+            ,image } = req.body;
+        const result=await feedbackController.addFeedback(productID, userID, rating, feedback
+            // , reply
+            ,image);
         return res.status(200).json({
-            result: true
+            result: true,id:result._id
         })
     } catch (error) {
         console.log('Không thể thêm bình luận(Api): ' + error);
@@ -43,6 +48,24 @@ router.get('/getFeedbackByProductID', async (req, res, next) => {
         return res.status(200).json({
             result: true,
             feedbacks: feedbacks
+        })
+    } catch (error) {
+        console.log('getFeedbackByProductID error(Api catch): '+console.error());
+        return res.status(500).json({
+            result:false,
+            message: 'getFeedbackByProductID error(Api)'
+        })
+    }
+})
+// http://localhost:3000/API/feedbackAPI/deleteFeedback?id=
+
+router.post('/deleteFeedback', async (req, res, next) => {
+    try {
+        const {id} = req.query;
+        const feedbacks = await feedbackController.deleteFeedback(id); 
+        return res.status(200).json({
+            result: true,
+            // feedbacks: feedbacks
         })
     } catch (error) {
         console.log('getFeedbackByProductID error(Api catch): '+console.error());

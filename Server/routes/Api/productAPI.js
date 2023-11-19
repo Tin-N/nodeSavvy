@@ -75,7 +75,6 @@ router.get('/getAllProductByUserID', async (req, res, next) => {
     try {
         const { id } = req.query;
         const products = await productController.getAllProductByUserID(id);
-        console.log(products);
         return res.status(200).json({
             result: true, products: products
         })

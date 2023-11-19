@@ -1,13 +1,20 @@
 const feedbackModel = require('./feedbackModel')
 const addFeedback = async (
-    productID, userID, rating, feedback, reply
+    productID, userID, rating, feedback
+            // , reply
+            ,image
     ) => {
     try {
-        const newFeedback = {
-            productID, userID, rating, feedback, reply
+        let newFeedback = {
+            productID, userID, rating, feedback
+            // , reply
+            
         };
+        if(typeof image!=='undefined')
+            newFeedback={...newFeedback,image}
+
         const newP = new feedbackModel(newFeedback);
-        await newP.save();
+      return  await newP.save();
     } catch (err) {
         console.log("Không bình luận được(Ser): " + err);
         return false;
@@ -42,4 +49,11 @@ const getFeedbackByProductID = async(id) => {
         console.log('getFeedbackByProductID error(Ser): '+error);
     }
 }
-module.exports = {addFeedback, addReply, getFeedbackByProductID}
+const deleteFeedback = async(id) => {
+    try {
+        return await feedbackModel.findByIdAndDelete(id);
+    } catch (error) {
+        console.log('getFeedbackByProductID error(Ser): '+error);
+    }
+}
+module.exports = {deleteFeedback,addFeedback, addReply, getFeedbackByProductID}
