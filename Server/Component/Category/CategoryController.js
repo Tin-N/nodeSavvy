@@ -1,35 +1,59 @@
 const categorySevice = require('./CategoryService');
 
-const getAPICategory = async(page, size) =>{
+const getAPICategoryNotDelete = async(isDelete) =>{
     try{
-        return await categorySevice.getAPICategory(page, size);
+        return await categorySevice.getAPICategoryNotDelete(isDelete);
     }catch(error){
         throw error;
     }
 }
 
-const deleteCategoryById = async (id) =>{
+const getAPICategoryDelete = async(isDelete) =>{
     try{
-        return await categorySevice.deleteCategoryById(id);
+        return await categorySevice.getAPICategoryDelete(isDelete);
     }catch(error){
-        return false;
+        throw error;
     }
 }
 
-const addCategory = async (name) => {
+const getAPICategory = async() =>{
+    try{
+        return await categorySevice.getAPICategory();
+    }catch(error){
+        throw error;
+    }
+}
+const deleteCategoryById = async (id, isDelete) =>{
     try {
-        return await categorySevice.addCategory(name);
+        return await categorySevice.deleteCategoryById(id, isDelete);
     } catch (error) {
         return false;
     }
 }
 
-const updateCategoryByid = async (id, name) =>{
+const addCategory = async (name, images, color, isDelete) => {
     try {
-        return await categorySevice.updateCategoryByid(id, name);
+        return await categorySevice.addCategory(name, images, color, isDelete);
     } catch (error) {
         return false;
     }
 }
 
-module.exports = {getAPICategory, deleteCategoryById, addCategory, updateCategoryByid};
+const updateCategoryByid = async (id, name, images, color ) =>{
+    try {
+        return await categorySevice.updateCategoryByid(id, name, images, color);
+    } catch (error) {
+        return false;
+    }
+}
+
+const searchCategoryName = async (name) => {
+    try {
+
+        return await categorySevice.searchCategoryName(name);
+    } catch (error) {
+        console.log('searchByName error(contr): ' + error);
+        return false;
+    }
+}
+module.exports = {getAPICategory, deleteCategoryById, addCategory, updateCategoryByid, getAPICategoryNotDelete, getAPICategoryDelete};

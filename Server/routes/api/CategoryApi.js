@@ -17,14 +17,33 @@ router.get('/getCategory', async (req, res, next) => {
     }
 });
 
+router.get('/getCategoryNotDelete', async (req, res, next) => {
+    try {
+        const categories = await categoryController.getAPICategoryNotDelete();
+        return res.status(200).json({ result: true, categories: categories });
+    } catch (error) {
+        return res.status(500).json({ result: false, category: null });
+    }
+});
+
+router.get('/getCategoryDelete', async (req, res, next) => {
+    try {
+        const categories = await categoryController.getAPICategoryDelete();
+        return res.status(200).json({ result: true, categories: categories });
+    } catch (error) {
+        return res.status(500).json({ result: false, category: null });
+    }
+});
+
 //http://localhost:3000/api/Category/1/delete
 router.post('/:id/delete', async (req, res, next) => {
     try {
         const { id } = req.params;
-        const result = await categoryController.deleteCategoryById(id);
-        return res.status(200).json({ result: true });
+        await categoryController.deleteCategoryById(id, true);
+        return res.status(200).json({ result: true, message: "Delete Successful" });
     } catch (error) {
-        return res.status(500).json({ result: false });
+        console.log('Delete product error: ', error);
+        return res.status(500).json({ message: "Delete Error" });
     }
 });
 
@@ -33,8 +52,8 @@ router.post('/:id/delete', async (req, res, next) => {
 router.post('/addCategory', async (req, res, next) => {
     try {
         let { body } = req;
-        const { name } = body;
-        await categoryController.addCategory(name);
+        const { name, images, color } = body;
+        await categoryController.addCategory(name, images, color, false);
         return res.status(200).json("add thanh cong");
     } catch (error) {
         console.log('New product error: ', error);
@@ -46,13 +65,26 @@ router.post('/addCategory', async (req, res, next) => {
 router.post('/:id/update-by-id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { name } = req.body;
-
-        await categoryController.updateCategoryByid(id, name);
+        const { name, images, color } = req.body;
+        await categoryController.updateCategoryByid(id, name, images, color);
         return res.status(200).json({ result: true, message: "Update Successful" });
     } catch (error) {
         console.log('Update product error: ', error);
         return res.status(500).json({ message: "Update Error" });
     }
 });
+
+// router.get('/searchCategoryName', async (req, res, next) => {``
+//     try {
+//         const {name} = req.query;
+
+
+//         const categories = await categoryController.searchCategoryName(name);
+//         return res.status(200).json({
+//             result:true, categories: categories
+//         })
+//     } catch (error) {
+//         console.log('searchByName error(Api): '+error);
+//     }
+// });
 module.exports = router;

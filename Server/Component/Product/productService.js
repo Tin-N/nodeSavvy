@@ -119,10 +119,10 @@ const checkProductByid = async (id, isApproved) => {
     }
 }
 
-//san pham chua duyet
+//lay san pham chua duyet
 const getProductNotCensorship = async (isApproved) => {
     try {
-        return await productModel.find({ isApproved: false })
+        return await productModel.find({ isApproved: 1 })
     } catch (error) {
         console.log("Get product censorship error: ", error);
         return null;

@@ -134,14 +134,28 @@ router.get('/searchByName', async (req, res, next) => {``
 });
 
 //http://localhost:3000/Api/productAPI/check-product-by-id/id
+// dong y duyet san pham isApproved = 2
 router.post('/check-product-by-id/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         
-        await productController.checkProductByid(id, true);
-        return res.status(200).json({message: "Check Successful" });
+        await productController.checkProductByid(id, 2);
+        return res.status(200).json({message: "Chấp nhận duyệt sản phẩm" });
     } catch (error) {
-        return res.status(500).json({ message: "Check Error" });
+        return res.status(500).json({ message: "Chấp nhận duyệt sản phẩm Error" });
+    }
+});
+
+//http://localhost:3000/Api/productAPI/rejectProduct-by-id/id
+// tu choi duyet san pham isApproved = 3
+router.post('/rejectProduct-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await productController.checkProductByid(id, 3);
+        return res.status(200).json({message: "Từ chối duyệt sản phẩm" });
+    } catch (error) {
+        return res.status(500).json({ message: "Từ chối duyệt sản phẩm Error" });
     }
 });
 
