@@ -2,8 +2,6 @@
 const userModel=require('..//UserModel');
 const bcrypt = require('bcrypt');
 
-const userModel = require("../Model/UserModel");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto"); // may be sai dấu ' hoặc "
 const { sendVerificationEmail } = require("../../utils/sendVerificationEmail");
