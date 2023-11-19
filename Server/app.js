@@ -31,8 +31,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 //http://localhost:3000/api/category
-app.use('/api/category', categoryApiRouter);
-app.use('/api/UserApi', userApiRouter);
+app.use('/Api/category', categoryApiRouter);
+app.use('/Api/UserApi', userApiRouter);
 
 // catch 404 and forward to error handler
 app.use(session({

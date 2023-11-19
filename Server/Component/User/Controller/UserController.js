@@ -1,79 +1,62 @@
+const { trace } = require("../../../routes/api/UserApi");
 const userService = require("../Service/UserService");
+
+const createToken = (_id) => {
+  const jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+  return jwt.sign({ _id }, jwtSecretKey, { expiresIn: "3d" });
+};
 
 const login = async (email, password) => {
   return await userService.login(email, password);
 };
-const register = async (email,password,roleID) => {
-  return await userService.register(email,password,roleID);
+const register = async (email,password) => {
+  return await userService.register(email,password);
 };
 
 const loginGoogle = async ( email, name, avatar) => {
   try {
-      return await UserService.loginGoogle( email, name, avatar);
+      return await userService.loginGoogle( email, name, avatar);
   } catch (error) {
       return false;
   }
 }
-const updateUser = async (email, password, name, description, gender, dob, avatar, role, createAt, updateAt, isLogin) => {
+const changePassword = async (email, newPassword) => {
   try {
-      return await UserService.updateUser(email, password, name, description, gender, dob, avatar, role, createAt, updateAt, isLogin);
-
-  } catch (error) {
-      return false;
-  }
-}
-const changePassword = async (email, oldPassword, newPassword) => {
-  try {
-      return await UserService.changePassword(email, oldPassword, newPassword);
+      return await userService.changePassword(email, newPassword);
   } catch (error) {
       throw error;
   }
 }
-const sendVerifyCode = async (email, subject, verifyCode) => {
 
+const checkEmail = async (email) => {
   try {
-      const mailOptions = {
-          from: "Lucas <nguyenvanson2622003@gmail.com>",
-          to: email,
-          subject: subject,
-          html: "Your authentication code is : " + verifyCode
-      }
-      await UserModel.updateOne({ email }, { verificationCode: verifyCode, });
-
-      return await transporter.sendMail(mailOptions);
-
+      return await userService.checkEmail(email);
   } catch (error) {
-      console.log("Send email error:", error);
-  }
-  return false;
-}
-const verifyCode = async (email, verifyCode) => {
-  try {
-      const user = await UserModel.findOne({ email });
-      console.log(user)
-      if (user) {
-          if (user.verificationCode === verifyCode) {
-              console.log(user.verificationCode)
-              await UserModel.updateOne({ email }, { isVerified: true });
-              return true;
-          } else {
-              return false;
-
-          }
-      } else {
-          return false;
-      }
-  } catch (error) {
-      console.log("Verify email error:", error);
-
-  }
-}
-const getById = async (id) => {
-  try {
-      return await UserService.getById(id);
-  } catch (error) {
-      return null;
+      throw error;
   }
 }
 
-module.exports = { login,register,loginGoogle,updateUser,changePassword,sendVerifyCode,verifyCode,getById };
+const changeUserInfo = async (id, address, phoneNumber, fullname,avatar) => {
+  try {
+      return await userService.changeUserInfo(id, address, phoneNumber, fullname, avatar);
+  } catch (error) {
+      throw error;
+  }
+}
+const verifyEmail = async (emailToken, email) => {
+  try {
+    return await userService.verifyEmail(emailToken, email);
+} catch (error) {
+    throw error;
+}
+}
+const emailVerify = async (email) => {
+  try {
+    return await userService.emailVerify(email);
+} catch (error) {
+    console.log(error);
+}
+}
+
+module.exports = { login,register,loginGoogle,changePassword, checkEmail,changeUserInfo,verifyEmail,emailVerify };
