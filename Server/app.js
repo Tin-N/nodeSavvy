@@ -12,6 +12,8 @@ const orderAPI = require('./routes/Api/Order')
 const orderDetail = require('./routes/Api/OrderDetail')
 
 const categoryApiRouter = require('./routes/api/CategoryApi');
+require("./Component/User/Model/UserModel")
+
 const userApiRouter = require('./routes/api/UserApi');
 const favoriteApiRouter = require('./routes/api/FavoriteApi');
 
@@ -39,6 +41,9 @@ const colorAPIRouter = require('./routes/Api/Options/ColorApi');
 require('./Component/Options/Size/sizeModel')
 const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
 
+require('./Component/Notification/NotificationModel')
+const notificationApiRouter = require('./routes/api/NotificationApi');
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
   useNewUrlParser: true,
@@ -63,6 +68,7 @@ app.use('/Api/historySearchAPI', historySearchAPIRouter);
 app.use('/Api/Options/colorAPI', colorAPIRouter);
 app.use('/Api/Options/sizeAPI', sizeAPIRouter);
 app.use('/users', usersRouter);
+
 //http://localhost:3000/api/category
 app.use('/Api/category', categoryApiRouter);
 app.use('/Api/UserApi', userApiRouter);
@@ -76,13 +82,12 @@ app.use('/Api/cart', cartAPI)
 
 app.use('/Api/order', orderAPI);
 app.use('/Api/orderdetail', orderDetail);
-//http://localhost:3000/api/category
-app.use('/Api/category', categoryApiRouter);
-app.use('/Api/UserApi', userApiRouter);
 
 
 
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
+app.use('/Api/notificationApi', notificationApiRouter);
+
 // catch 404 and forward to error handler
 app.use(session({
   secret: 'agile',

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema= mongoose.Schema;
 const ObjectId=Schema.ObjectId;
 const optionSchema=new Schema({
@@ -16,7 +17,11 @@ const productSchema=new Schema({
     price:{type:Number},
     detail:{type:String},
     image:{type:[String]},
-    isApproved:{type:Boolean, default: false},
+        // 1 - Đang chờ, 2 - Đã duyệt, 3 - Hủy
+    // Seller gửi yêu cầu => 1 
+    // Admin chấp nhận => 2 
+    // Admin từ chối => 3 cho vào  list hủy bên seller, cho seller sửa thông tin lại => khi seller gửi yêu cầu lại thì sửa thành 1
+    isApproved: { type: Number },
     name:{type:String},
     quantity:{type:Number},
     sold:{type:Number, default: 0},

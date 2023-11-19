@@ -148,7 +148,6 @@ const searchByName = async (
       lte,
       gte
       );
-
   } catch (error) {
     console.log("searchByName error(contr): " + error);
     return false;
@@ -202,6 +201,7 @@ const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
         return false;
     }
 }
+
 const deleteProduct = async (id) => {
     try {
         return await productService.deleteProduct(id);
@@ -216,12 +216,32 @@ const updateProduct = async (productID, name, quantity, saleOff) => {
         return false;
     }
 }
+
+
+const checkProductByid = async (id, isApproved) => {
+    try {
+        return await productService.checkProductByid(id, isApproved);
+    } catch (error) {
+        return false;
+    }
+}
+
+const getProductNotCensorship = async (isApproved) => {
+    try {
+        return await productService.getProductNotCensorship(isApproved);
+    } catch (error) {
+        console.log("Get product censorship error: ", error);
+    }
+    return null
+}
+
 module.exports = {
   filterProduct,
     addProduct,
     addOption, getAllProductByUserID,
     getProductByID, getProductByCategoryID,
-    getAllProductByUserIDByPage, searchByName, 
+    getAllProductByUserIDByPage, searchByName,
+    checkProductByid,
+    getProductNotCensorship,
     deleteProduct, updateProduct
 }
-

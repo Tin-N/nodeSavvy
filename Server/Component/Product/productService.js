@@ -59,6 +59,7 @@ const getAllProductByUserID = async (id) => {
   }
 };
 
+
 const getProductByID = async (id) => {
   try {
     return await productModel.findById(id);
@@ -254,11 +255,12 @@ const FilterProduct = async (
 
 const deleteProduct = async (id) => {
     try {
-        return await productModel.findByIdAndDelete(id);
+        return await productModel.findByIdAndDelete(id);y
     } catch (error) {
         return json({ return: false, message: "Delete product error(Service): " + error })
     }
 }
+
 const updateProduct = async (productID, name, quantity, saleOff) => {
     try {
         const product = await productModel.findById(productID);
@@ -275,6 +277,33 @@ const updateProduct = async (productID, name, quantity, saleOff) => {
         return false;
     }
 }
+
+
+//duyet san pham
+const checkProductByid = async (id, isApproved) => {
+    try {
+        const product = await productModel.findById(id);
+        if (product) {
+            product.isApproved = isApproved ? isApproved : product.isApproved;
+            await product.save();
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.log('Check product by id error: ', error);
+        return false;
+    }
+}
+
+//lay san pham chua duyet
+const getProductNotCensorship = async (isApproved) => {
+    try {
+        return await productModel.find({ isApproved: 1 })
+    } catch (error) {
+        console.log("Get product censorship error: ", error);
+        return null;
+    }
+}
 module.exports = {
   FilterProduct,
     searchByName,
@@ -284,5 +313,7 @@ module.exports = {
     getProductByID,
     getProductByCategoryID,
     getAllProductByUserIDByPage,
-    deleteProduct, updateProduct
+    deleteProduct, updateProduct,
+    checkProductByid,
+    getProductNotCensorship,
 }

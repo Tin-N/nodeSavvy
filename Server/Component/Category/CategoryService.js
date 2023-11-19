@@ -1,49 +1,93 @@
 const categoryModel = require('./CategoryModel');
 
-const getAPICategory = async (page, size) => {
-    try {
-        // return data;
-        return await categoryModel.find();
-    } catch (error) {
-        console.log('Get all categories aerror: ', error);
-        throw error;
-    }
-}
-
-const deleteCategoryById = async (id) => {
-    try {
-        await categoryModel.findByIdAndDelete(id);
-        return true;
-    } catch (error) {
-        console.log('Deletee category by id error: ', error);
-        return false;
-    }
-}
-
-const addCategory = async (name) => {
-    try {
-        const newCategory = { name };
-        const c = new categoryModel(newCategory);
-        await c.save();
-        return true;
-    
-      } catch (error) {
-        console.log('Addd new category error: ', error);
-        return false;
-      }
-}
-const updateCategoryByid = async (id, name) => {
-    try {
-      const category = await categoryModel.findById(id);
-      if (category) {
-        category.name = name ? name : category.name;
-        await category.save();
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.log('Update category by id error: ', error);
-      return false;
-    }
+//lay category chua xoa
+const getAPICategoryNotDelete = async (isDelete) => {
+  try {
+    // return data;
+    return await categoryModel.find({ isDelete: false });
+  } catch (error) {
+    console.log('Get all categories aerror: ', error);
+    throw error;
   }
-module.exports = { getAPICategory, deleteCategoryById, addCategory, updateCategoryByid};
+}
+
+//lay category da chua xoa
+const getAPICategoryDelete = async (isDelete) => {
+  try {
+    // return data;
+    return await categoryModel.find({ isDelete: true });
+  } catch (error) {
+    console.log('Get all categories aerror: ', error);
+    throw error;
+  }
+}
+
+//getAll category
+const getAPICategory = async () => {
+  try {
+    // return data;
+    return await categoryModel.find();
+  } catch (error) {
+    console.log('Get all categories aerror: ', error);
+    throw error;
+  }
+}
+
+
+const deleteCategoryById = async (id, isDelete) => {
+  try {
+    const category = await categoryModel.findById(id);
+    if (category) {
+      category.isDelete = isDelete ? isDelete : category.isDelete;
+      await category.save();
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.log('Deletee category by id error: ', error);
+    return false;
+  }
+}
+
+
+const addCategory = async (name, images, color, isDelete) => {
+  try {
+    const newCategory = { name, images, color, isDelete };
+    const c = new categoryModel(newCategory);
+    await c.save();
+    return true;
+
+  } catch (error) {
+    console.log('Addd new category error: ', error);
+    return false;
+  }
+}
+
+
+const updateCategoryByid = async (id, name, images, color) => {
+  try {
+    console.log(name);
+    const category = await categoryModel.findById(id);
+    if (category) {
+      category.name = name ? name : category.name;
+      category.images = images ? images : category.images;
+      category.color = color ? color : category.color;
+      await category.save();
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.log('Update category by id error: ', error);
+    return false;
+  }
+}
+
+// const searchCategoryName = async (name) =>{
+//   try {
+//     return await categoryModel.find({ name: { $regex: name, $options: "i" } })
+//   } catch (error) {
+//     console.log('searchByName error: ' + error);
+//   }
+// }
+
+module.exports = { getAPICategoryNotDelete, deleteCategoryById, addCategory, updateCategoryByid, getAPICategoryDelete, getAPICategory, };
