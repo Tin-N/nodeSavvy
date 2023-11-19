@@ -194,7 +194,6 @@ router.get('/searchByName', async (req, res, next) => {``
 
 
 
-
 // Filter 
 // http://localhost:3000/Api/productAPI/filterProduct
 
@@ -257,4 +256,42 @@ router.post('/updateProduct', async (req, res, next) => {
         })
     }
 })
+
+//http://localhost:3000/Api/productAPI/check-product-by-id/id
+// dong y duyet san pham isApproved = 2
+router.post('/check-product-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await productController.checkProductByid(id, 2);
+        return res.status(200).json({message: "Chấp nhận duyệt sản phẩm" });
+    } catch (error) {
+        return res.status(500).json({ message: "Chấp nhận duyệt sản phẩm Error" });
+    }
+});
+
+//http://localhost:3000/Api/productAPI/rejectProduct-by-id/id
+// tu choi duyet san pham isApproved = 3
+router.post('/rejectProduct-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await productController.checkProductByid(id, 3);
+        return res.status(200).json({message: "Từ chối duyệt sản phẩm" });
+    } catch (error) {
+        return res.status(500).json({ message: "Từ chối duyệt sản phẩm Error" });
+    }
+});
+
+//http://localhost:3000/Api/productAPI/get-product-censorship
+router.get('/get-product-censorship', async (req, res, next) => {
+    try {
+        const products = await productController.getProductNotCensorship();
+        return res.status(200).json({ result: true, product: products });
+    } catch (error) {
+        console.log('Search by name error: ', error);
+        return res.status(500).json({ result: false, product: null });
+    }
+});
+
 module.exports = router;
