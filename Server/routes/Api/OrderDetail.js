@@ -82,6 +82,33 @@ router.put('/update/updateAllProductDeliveryStatus/:orderDetailID/:ownerID', asy
   }
 });
 
+router.put('/updateDeliveryStatus/:orderDetailID', async (req, res) => {
+  const orderDetailID = req.params.orderDetailID;
+  const { deliveryStatus } = req.body;
+
+  try {
+    // Use Mongoose to find the order details with the given orderDetailID
+    const orderDetails = await orderDetailModel.findOne({ orderDetailID });
+
+    if (!orderDetails) {
+      return res.status(404).json({ success: false, error: 'No order details found for the given orderDetailID' });
+    }
+
+    // Update deliveryStatus in all products
+    orderDetails.products.forEach((product) => {
+      product.deliveryStatus = deliveryStatus;
+    });
+
+    // Save the updated order details
+    await orderDetails.save();
+
+    res.status(200).json({ success: true, data: orderDetails });
+  } catch (error) {
+    console.error('Error updating deliveryStatus:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 router.get('/getOrderDetailByOwnerAndOrderDetailID/:orderDetailID/:ownerID', async (req, res) => {
   try {
     const ownerID = req.params.ownerID;
@@ -153,37 +180,18 @@ router.get('/getOrderDetailByOwner/:ownerID', async (req, res) => {
   }
 });
 
-router.get('/getOrderDetailByShiper/:ownerID', async (req, res) => {
+// Get All where deliveryStatus == 'Delivering'
+router.get('/getAllForShipper', async (req, res) => {
   try {
-    const ownerID = req.params.ownerID;
+    // Fetch order details with deliveryStatus 'Delivering' from the database
+    const deliveringOrders = await orderDetailModel.find({ 'products.deliveryStatus': 'Delivering' });
 
-    const orderDetails = await orderDetailModel.find({
-      'products.ownerID': ownerID,
-      'products.deliveryStatus': 'Delivering'
-    });
-
-    // Kiểm tra nếu không tìm thấy order details
-    if (!orderDetails || orderDetails.length === 0) {
-      return res.status(404).json({ error: 'No order details found for the specified ownerID' });
-    }
-
-    // Lấy danh sách sản phẩm thuộc ownerID
-    const products = orderDetails.map(orderDetail => orderDetail.products.filter(product => product.ownerID.toString() === ownerID && product.deliveryStatus === 'Delivering'));
-
-    // Flatten array nếu cần thiết
-    const flattenedProducts = [].concat(...products);
-
-    // Lấy orderDetailID và trả về dữ liệu
-    const responseData = orderDetails.map(orderDetail => ({
-      orderDetailID: orderDetail.orderDetailID,
-      products: orderDetail.products.filter(product => product.ownerID.toString() === ownerID && product.deliveryStatus === 'Delivering'),
-    }));
-
-    // Trả về dữ liệu
-    res.json({ responseData, products });
+    // Send the response with the retrieved order details
+    res.status(200).json({ success: true, data: deliveringOrders });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    // Handle any errors that may occur during the database query
+    console.error('Error fetching delivering order details:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 

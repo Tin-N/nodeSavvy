@@ -30,7 +30,4 @@ const productSchema=new Schema({
     saleOff:{type:Number, default: 0},
     options:[optionSchema]
 });
-
-
-
 module.exports = mongoose.models.product || mongoose.model('product',productSchema);
