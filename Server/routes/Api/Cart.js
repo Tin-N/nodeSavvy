@@ -6,7 +6,6 @@ router.post('/add', async (req, res) => {
     try {
         const { userID, products, quantity } = req.body;
 
-
         // Kiểm tra sản phẩm có sẵn trong giỏ hàng hay không
         const cart = await cartModel.findOne({ userID });
 
@@ -30,7 +29,6 @@ router.post('/add', async (req, res) => {
             // Lưu lại giỏ hàng sau khi đã thêm sản phẩm
             await cart.save();
         }
-
 
         res.status(201).json({ message: "Thêm vào thành công." });
     } catch (error) {
