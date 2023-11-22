@@ -68,6 +68,9 @@ const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
 require('./Component/Notification/NotificationModel')
 const notificationApiRouter = require('./routes/api/NotificationApi');
 
+const productCpanelRouter= require('./routes/cpanel/ProductCpanel')
+const userCpanelRouter= require('./routes/cpanel/UserCpanel')
+const categoryCpanelRouter= require('./routes/cpanel/CategoryCpanel')
 
 mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
   useNewUrlParser: true,
@@ -111,6 +114,19 @@ app.use('/Api/orderdetail', orderDetail);
 
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
 app.use('/Api/notificationApi', notificationApiRouter);
+
+
+
+// cpanel
+
+// localhost:3000/cpanel/product
+app.use("/cpanel/product", productCpanelRouter);
+// localhost:3000/cpanel/product
+
+app.use("/cpanel/category", categoryCpanelRouter);
+// localhost:3000/cpanel/product
+
+app.use("/cpanel/user", userCpanelRouter);
 
 // catch 404 and forward to error handler
 app.use(session({

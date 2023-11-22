@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
-const productController = require("../../Components/Product/ProductController");
-const categoryController = require("../../Components/Category/CategoryController");
-const uploadFile = require("../../Middleware/UploadFile");
+const productController = require("../../Component/Product/ProductController");
+const categoryController = require("../../Component/Category/CategoryController");
+// const uploadFile = require("../../Middleware/UploadFile");
 // localhost:3000/cpanel/product
 
 router.get("/", async (req, res, next) => {
@@ -73,7 +73,7 @@ router.get("/:id/edit", async (req, res, next) => {
 
 });
 // update post
-router.post("/:id/edit", [uploadFile.single('image')], async (req, res, next) => {
+router.post("/:id/edit", [], async (req, res, next) => {
   // Xu ly trang form
   try {
     let { body, file } = req;
@@ -94,7 +94,7 @@ router.post("/:id/edit", [uploadFile.single('image')], async (req, res, next) =>
     next(error)
   }
 });
-router.post("/form", [uploadFile.single('image')], async (req, res, next) => {
+router.post("/form", [], async (req, res, next) => {
   // Xu ly trang form
   try {
     let { body, file } = req;
