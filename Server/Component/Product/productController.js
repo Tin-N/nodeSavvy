@@ -71,6 +71,26 @@ const getAllProductByUserID = async (id) => {
 }
 
 //
+
+const getAllProductByUserIDAndQuantity = async (id) => {
+    try {
+        return await productService.getAllProductByUserIDAndQuantity(id);
+    } catch (error) {
+        console.log('getAllProductByUserIDAndQuantity error(contr): ' + error);
+        return false;
+    }
+}
+const getListProductSelling = async (id, isShow, size) => {
+    try {
+        return await productService.getListProductSelling(id, isShow, size);
+    } catch (error) {
+        console.log('getListProductSelling error(contr): ' + error);
+        return false;
+    }
+}
+
+// 
+
 const getProductByID = async (id) => {
     try {
         return await productService.getProductByID(id);
@@ -205,16 +225,40 @@ const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
     }
 }
 
-const deleteProduct = async (id) => {
+
+const deleteProduct = async (productID, isShow) => {
+
     try {
-        return await productService.deleteProduct(id);
+        return await productService.deleteProduct(productID, isShow);
     } catch (error) {
         return json({ return: false, message: "Delete product error(Contr): " + error })
     }
 }
-const updateProduct = async (productID, name, quantity, saleOff) => {
+const updateQuantityProductForCustomer = async (productID, quantity) => {
     try {
-        return await productService.updateProduct(productID, name, quantity, saleOff);
+        return await productService.updateQuantityProductForCustomer(productID, quantity);
+    } catch (error) {
+        return json({ return: false, message: "Update quantity error(Contr): " + error })
+    }
+}
+const updateSoldProduct = async (productID, sold) => {
+    try {
+        return await productService.updateSoldProduct(productID, sold);
+    } catch (error) {
+        return json({ return: false, message: "Update sold error(Contr): " + error })
+    }
+}
+const updateQuantityProduct = async (productID, quantity) => {
+    try {
+        return await productService.updateQuantityProduct(productID, quantity);
+    } catch (error) {
+        return false;
+    }
+}
+
+const updateProduct = async (productID, name, price, detail, categoryID) => {
+    try {
+        return await productService.updateProduct(productID, name, price, detail, categoryID);
     } catch (error) {
         return false;
     }
@@ -239,6 +283,7 @@ const getProductNotCensorship = async (isApproved) => {
 }
 
 module.exports = {
+
 FilterProductByName,
     addProduct,
     addOption, getAllProductByUserID,
@@ -246,6 +291,12 @@ FilterProductByName,
     getAllProductByUserIDByPage, searchByName,
     checkProductByid,
     getProductNotCensorship,
-    deleteProduct, updateProduct
+    deleteProduct, updateProduct,
+    addOption, getAllProductByUserID,
+    getProductByID, getProductByCategoryID,
+    getAllProductByUserIDByPage, searchByName,
+    deleteProduct, updateProduct, getListProductSelling,
+    updateQuantityProductForCustomer, updateSoldProduct,
+    getAllProductByUserIDAndQuantity
 }
 
