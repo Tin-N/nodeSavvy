@@ -1,4 +1,4 @@
-const productService = require("./productService");
+const productService = require('./productService');
 
 //
 
@@ -62,73 +62,44 @@ const addOption = async (
 //
 const getAllProductByUserID = async (id) => {
 
-    try {
-        return await productService.getAllProductByUserID(id);
-    } catch (error) {
-        console.log('getAllProductByUserID error(contr): ' + error);
-        return false;
-    }
+  try {
+    return await productService.getAllProductByUserID(id);
+  } catch (error) {
+    console.log('getAllProductByUserID error(contr): ' + error);
+    return false;
+  }
 }
 
 //
 
 const getAllProductByUserIDAndQuantity = async (id) => {
-    try {
-        return await productService.getAllProductByUserIDAndQuantity(id);
-    } catch (error) {
-        console.log('getAllProductByUserIDAndQuantity error(contr): ' + error);
-        return false;
-    }
+  try {
+    return await productService.getAllProductByUserIDAndQuantity(id);
+  } catch (error) {
+    console.log('getAllProductByUserIDAndQuantity error(contr): ' + error);
+    return false;
+  }
 }
 const getListProductSelling = async (id, isShow, size) => {
-    try {
-        return await productService.getListProductSelling(id, isShow, size);
-    } catch (error) {
-        console.log('getListProductSelling error(contr): ' + error);
-        return false;
-    }
+  try {
+    return await productService.getListProductSelling(id, isShow, size);
+  } catch (error) {
+    console.log('getListProductSelling error(contr): ' + error);
+    return false;
+  }
 }
 
 // 
 
 const getProductByID = async (id) => {
-    try {
-        return await productService.getProductByID(id);
-    } catch (error) {
-        console.log('getProductByID error(contr): ' + error);
-        return false;
-    }
+  try {
+    return await productService.getProductByID(id);
+  } catch (error) {
+    console.log('getProductByID error(contr): ' + error);
+    return false;
+  }
 }
 
-// const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
-//   try {
-//     console.log(categoryID, limitData, skipPage);
-//     let page = 0;
-//     // if(limitData<24)
-//     page = 10 * skipPage;
-//     return await productService.getProductByCategoryID(
-//       categoryID,
-//       limitData,
-//       page
-//     );
-//   } catch (error) {
-//     console.log("getProductByCategoryID error(contr): " + error);
-//     return false;
-//   }
-// };
-// const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
-//   try {
-//     console.log(userID, limitData, skipPage);
-//     return await productService.getProductByCategoryID(
-//       userID,
-//       limitData,
-//       skipPage
-//     );
-//   } catch (error) {
-//     console.log("getAllProductByUserIDByPage error(contr): " + error);
-//     return false;
-//   }
-// };
 const searchByName = async (
   name,
   limitData,
@@ -162,7 +133,7 @@ const searchByName = async (
       sortRating,
       lte,
       gte
-      );
+    );
 
   } catch (error) {
     console.log("searchByName error(contr): " + error);
@@ -195,7 +166,7 @@ const FilterProductByName = async (
       limitData,
       sortNew,
       sortPrice,
-      sortRating,sortDiscount
+      sortRating, sortDiscount
     );
   } catch (error) {
     console.log("searchByName error(contr): " + error);
@@ -204,99 +175,98 @@ const FilterProductByName = async (
 };
 
 const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
-    try {
-        console.log(categoryID, limitData, skipPage);
-        let page = 0;
-        // if(limitData<24)
-        page = 10 * skipPage;
-        return await productService.getProductByCategoryID(categoryID, limitData, page);
-    } catch (error) {
-        console.log('getProductByCategoryID error(contr): ' + error);
-        return false;
-    }
+  try {
+    console.log(categoryID, limitData, skipPage);
+    let page = 0;
+    // if(limitData<24)
+    page = 10 * skipPage;
+    return await productService.getProductByCategoryID(categoryID, limitData, page);
+  } catch (error) {
+    console.log('getProductByCategoryID error(contr): ' + error);
+    return false;
+  }
 }
 const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
-    try {
-        console.log(userID, limitData, skipPage);
-        return await productService.getProductByCategoryID(userID, limitData, skipPage);
-    } catch (error) {
-        console.log('getAllProductByUserIDByPage error(contr): ' + error);
-        return false;
-    }
+  try {
+    console.log(userID, limitData, skipPage);
+    return await productService.getProductByCategoryID(userID, limitData, skipPage);
+  } catch (error) {
+    console.log('getAllProductByUserIDByPage error(contr): ' + error);
+    return false;
+  }
 }
 
 
 const deleteProduct = async (productID, isShow) => {
 
-    try {
-        return await productService.deleteProduct(productID, isShow);
-    } catch (error) {
-        return json({ return: false, message: "Delete product error(Contr): " + error })
-    }
+  try {
+    return await productService.deleteProduct(productID, isShow);
+  } catch (error) {
+    return json({ return: false, message: "Delete product error(Contr): " + error })
+  }
 }
 const updateQuantityProductForCustomer = async (productID, quantity) => {
-    try {
-        return await productService.updateQuantityProductForCustomer(productID, quantity);
-    } catch (error) {
-        return json({ return: false, message: "Update quantity error(Contr): " + error })
-    }
+  try {
+    return await productService.updateQuantityProductForCustomer(productID, quantity);
+  } catch (error) {
+    return json({ return: false, message: "Update quantity error(Contr): " + error })
+  }
 }
 const updateSoldProduct = async (productID, sold) => {
-    try {
-        return await productService.updateSoldProduct(productID, sold);
-    } catch (error) {
-        return json({ return: false, message: "Update sold error(Contr): " + error })
-    }
+  try {
+    return await productService.updateSoldProduct(productID, sold);
+  } catch (error) {
+    return json({ return: false, message: "Update sold error(Contr): " + error })
+  }
 }
 const updateQuantityProduct = async (productID, quantity) => {
-    try {
-        return await productService.updateQuantityProduct(productID, quantity);
-    } catch (error) {
-        return false;
-    }
+  try {
+    return await productService.updateQuantityProduct(productID, quantity);
+  } catch (error) {
+    return false;
+  }
 }
 
 const updateProduct = async (productID, name, price, detail, categoryID) => {
-    try {
-        return await productService.updateProduct(productID, name, price, detail, categoryID);
-    } catch (error) {
-        return false;
-    }
+  try {
+    return await productService.updateProduct(productID, name, price, detail, categoryID);
+  } catch (error) {
+    return false;
+  }
 }
 
 
 const checkProductByid = async (id, isApproved) => {
-    try {
-        return await productService.checkProductByid(id, isApproved);
-    } catch (error) {
-        return false;
-    }
+  try {
+    return await productService.checkProductByid(id, isApproved);
+  } catch (error) {
+    return false;
+  }
 }
 
 const getProductNotCensorship = async (isApproved) => {
-    try {
-        return await productService.getProductNotCensorship(isApproved);
-    } catch (error) {
-        console.log("Get product censorship error: ", error);
-    }
-    return null
+  try {
+    return await productService.getProductNotCensorship(isApproved);
+  } catch (error) {
+    console.log("Get product censorship error: ", error);
+  }
+  return null
 }
 
 module.exports = {
-
-FilterProductByName,
-    addProduct,
-    addOption, getAllProductByUserID,
-    getProductByID, getProductByCategoryID,
-    getAllProductByUserIDByPage, searchByName,
-    checkProductByid,
-    getProductNotCensorship,
-    deleteProduct, updateProduct,
-    addOption, getAllProductByUserID,
-    getProductByID, getProductByCategoryID,
-    getAllProductByUserIDByPage, searchByName,
-    deleteProduct, updateProduct, getListProductSelling,
-    updateQuantityProductForCustomer, updateSoldProduct,
-    getAllProductByUserIDAndQuantity
+  FilterProductByName,
+  addProduct,
+  addOption, getAllProductByUserID,
+  getProductByID, getProductByCategoryID,
+  getAllProductByUserIDByPage, searchByName,
+  checkProductByid,
+  getProductNotCensorship,
+  deleteProduct, updateProduct,
+  getAllProductByUserID,
+  getProductByID, getProductByCategoryID,
+  getAllProductByUserIDByPage, searchByName,
+  getListProductSelling,
+  updateQuantityProductForCustomer, updateSoldProduct,
+  getAllProductByUserIDAndQuantity, updateQuantityProduct
 }
 

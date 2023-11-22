@@ -7,10 +7,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
-
-
-
 var indexRouter = require('./routes/index');
+
 var usersRouter = require('./routes/users');
 
 const orderAPI = require('./routes/Api/Order')
@@ -18,15 +16,18 @@ const orderAPI = require('./routes/Api/Order')
 const orderDetail = require('./routes/Api/OrderDetail')
 
 const categoryApiRouter = require('./routes/api/CategoryApi');
-require("./Component/User/Model/UserModel")
+
+require('./Component/User/UserModel')
 
 const userApiRouter = require('./routes/api/UserApi');
+
 const favoriteApiRouter = require('./routes/api/FavoriteApi');
 
 const cartAPI = require('./routes/Api/Cart')
 
 // var express = require('express-session')
 const session = require('express-session');
+
 const mongoose = require('mongoose');
 
 //Nhat code
@@ -93,32 +94,33 @@ app.use('/', indexRouter);
 
 // http://localhost:3000/API/productAPI
 app.use('/Api/productAPI', productAPIRouter);
+
 app.use('/Api/historySearchAPI', historySearchAPIRouter);
+
 app.use('/Api/Options/colorAPI', colorAPIRouter);
+
 app.use('/Api/Options/sizeAPI', sizeAPIRouter);
 
 app.use('/users', usersRouter);
 
-//http://localhost:3000/api/category
 app.use('/Api/category', categoryApiRouter);
+
 app.use('/Api/UserApi', userApiRouter);
 
-
 app.use('/Api/favoriteApi',favoriteApiRouter);
-
-
 
 app.use('/Api/saleOffAPI', saleOffRouter)
 
 app.use('/users', usersRouter);
+
 app.use('/Api/cart', cartAPI)
 
 app.use('/Api/order', orderAPI);
+
 app.use('/Api/orderdetail', orderDetail);
 
-
-
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
+
 app.use('/Api/notificationApi', notificationApiRouter);
 
 // catch 404 and forward to error handler

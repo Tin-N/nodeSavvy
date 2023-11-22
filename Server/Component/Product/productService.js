@@ -47,10 +47,6 @@ const addOption = async (
     return false;
   }
 
-  // } catch (error) {
-  //   console.log("Lỗi không thêm được: " + error);
-  //   return false;
-  // }
 };
 const getAllProductByUserID = async (id) => {
   try {
@@ -61,21 +57,7 @@ const getAllProductByUserID = async (id) => {
 };
 
 
-// const getProductByID = async (id) => {
-//   try {
-//     return await productModel.findById(id);
-//   } catch (error) {
-//     console.log("getProductByID error: " + error);
-//   }
-// };
 
-// const getAllProductByUserID = async (id) => {
-//     try {
-//         return await productModel.find({ userID: id });
-//     } catch (error) {
-//         console.log('getAllProductByUserID error: ' + error);
-//     }
-// }
 const getAllProductByUserIDAndQuantity = async (id) => {
   try {
     return await productModel.find({ userID: id, quantity: { $lt: 5 } });
@@ -196,7 +178,6 @@ const searchByName = async (
   }
 };
 
-
 // Filter
 const FilterProductByName = async (
   name,
@@ -251,49 +232,19 @@ const FilterProductByName = async (
   }
 };
 
-
-// const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
-//     try {
-//         return await productModel.find({ categoryID: categoryID }).limit(limitData).skip(skipPage);
-//     } catch (error) {
-//         console.log('getAllProductByUserID error: ' + error);
-//     }
-// }
-
-// const getAllProductByUserIDByPage = async (userID, limitData, skipPage) => {
-//     try {
-//         // let page=0
-//         // if (limitData<=2) 
-//         //     page=0;
-//         // else
-//         //     page=24*skipPage;
-//         console.log(categoryID);
-//         return await productModel.find({ userID: userID }).limit(limitData).skip(skipPage);
-//     } catch (error) {
-//         console.log('getAllProductByUserID error: ' + error);
-//     }
-// }
-
-// const deleteProduct = async (id) => {
-//     try {
-//         return await productModel.findByIdAndDelete(id);
-
-// }
-
-// const deleteProduct = async (productID, isShow) => {
-//     try {
-//         const result = await productModel.findByIdAndUpdate(
-//             productID,
-//             { $set: { isShow: isShow } },
-//             { new: true }
-//         );
-//         return result !== null;
-//     } catch (error) {
-//         console.log("Delete product error(Service): " + error);
-//         return false;
-//     }
-// }
-
+const deleteProduct = async (productID, isShow) => {
+  try {
+      const result = await productModel.findByIdAndUpdate(
+          productID,
+          { $set: { isShow: isShow } },
+          { new: true }
+      );
+      return result !== null;
+  } catch (error) {
+      console.log("Delete product error(Service): " + error);
+      return false;
+  }
+}
 
 const updateQuantityProductForCustomer = async (productID, quantity) => {
   try {
@@ -383,15 +334,15 @@ const getProductNotCensorship = async (isApproved) => {
 module.exports = {
   FilterProductByName,
   searchByName,
-  addProduct,
+  addProduct, deleteProduct,
   addOption,
   getAllProductByUserID,
   getProductByID,
   getProductByCategoryID,
   getAllProductByUserIDByPage,
-  deleteProduct, updateProduct,
+  updateProduct,
   checkProductByid,
-  getProductNotCensorship, deleteProduct, updateProduct, getListProductSelling,
+  getProductNotCensorship, getListProductSelling,
   updateQuantityProductForCustomer, updateSoldProduct, 
   updateQuantityProduct, getAllProductByUserIDAndQuantity
 }
