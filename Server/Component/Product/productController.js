@@ -38,9 +38,17 @@ const getAllProductByUserID = async (id) => {
         return false;
     }
 }
-const getListProductSelling = async (id, isShow, page, size) => {
+const getAllProductByUserIDAndQuantity = async (id) => {
     try {
-        return await productService.getListProductSelling(id, isShow, page, size);
+        return await productService.getAllProductByUserIDAndQuantity(id);
+    } catch (error) {
+        console.log('getAllProductByUserIDAndQuantity error(contr): ' + error);
+        return false;
+    }
+}
+const getListProductSelling = async (id, isShow, size) => {
+    try {
+        return await productService.getListProductSelling(id, isShow, size);
     } catch (error) {
         console.log('getListProductSelling error(contr): ' + error);
         return false;
@@ -111,11 +119,11 @@ const updateSoldProduct = async (productID, sold) => {
     }
 }
 const updateQuantityProduct = async (productID, quantity) => {
-  try {
-      return await productService.updateQuantityProduct(productID, quantity);
-  } catch (error) {
-      return false;
-  }
+    try {
+        return await productService.updateQuantityProduct(productID, quantity);
+    } catch (error) {
+        return false;
+    }
 }
 
 const updateProduct = async (productID, name, price, detail, categoryID) => {
@@ -126,10 +134,11 @@ const updateProduct = async (productID, name, price, detail, categoryID) => {
     }
 }
 module.exports = {
-    addProduct,updateQuantityProduct,
+    addProduct, updateQuantityProduct,
     addOption, getAllProductByUserID,
     getProductByID, getProductByCategoryID,
-    getAllProductByUserIDByPage, searchByName, 
+    getAllProductByUserIDByPage, searchByName,
     deleteProduct, updateProduct, getListProductSelling,
-    updateQuantityProductForCustomer, updateSoldProduct
+    updateQuantityProductForCustomer, updateSoldProduct,
+    getAllProductByUserIDAndQuantity
 }

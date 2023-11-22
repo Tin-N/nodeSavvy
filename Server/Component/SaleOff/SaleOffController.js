@@ -27,4 +27,15 @@ const getSaleOffByProduct = async (productID, page, size) => {
         throw err;
     }
 }
-module.exports = {addSaleOff,getSaleOffCurrent,getSaleOffByProduct}
+const updatesaleOffByProduct = async (
+    saleOffID, titleSale, saleOff, startDay, endDay) => {
+    try {
+        return await saleOffService.updatesaleOffByProduct(
+            saleOffID, titleSale, saleOff, startDay, endDay
+        )
+    } catch (error) {
+        console.log('update saleOff error(contr): ' + error);
+        return false;
+    }
+}
+module.exports = { addSaleOff, getSaleOffCurrent, getSaleOffByProduct, updatesaleOffByProduct }

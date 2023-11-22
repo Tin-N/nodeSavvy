@@ -6,7 +6,7 @@ const saleOffSchema = new Schema({
     userID: {type: String},
     titleSale: {type: String},
     productID: {type: String},
-    saleOff: { type: Number, default: 0 },
+    saleOff: { type: Number},
     startDay: {type: Number},
     endDay: {type: Number}
 });

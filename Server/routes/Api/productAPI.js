@@ -50,10 +50,22 @@ router.get('/getAllProductByUserID', async (req, res, next) => {
         console.log('getAllProductByUserID error(Api): ' + error);
     }
 });
+router.get('/getAllProductByUserIDAndQuantity', async (req, res, next) => {
+    try {
+        const { id } = req.query;
+        const products = await productController.getAllProductByUserIDAndQuantity(id);
+        console.log(products);
+        return res.status(200).json({
+            result: true, products: products
+        })
+    } catch (error) {
+        console.log('getAllProductByUserIDAndQuantity error(Api): ' + error);
+    }
+});
 router.get('/getListProductSelling', async (req, res, next) => {
     try {
-        const { id, isShow, page, size } = req.query;
-        const products = await productController.getListProductSelling(id, isShow, page, size);
+        const { id, isShow, size } = req.query;
+        const products = await productController.getListProductSelling(id, isShow, size);
         return res.status(200).json({
             result: true, products: products
         })

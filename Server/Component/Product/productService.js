@@ -52,10 +52,17 @@ const getAllProductByUserID = async (id) => {
         console.log('getAllProductByUserID error: ' + error);
     }
 }
-
-const getListProductSelling = async (id, isShow, page, size) => {
+const getAllProductByUserIDAndQuantity = async (id) => {
     try {
-        return await productModel.find({ userID: id, isShow: isShow}).limit(size).skip(page);
+        return await productModel.find({ userID: id,  quantity: { $lt: 5 } });
+    } catch (error) {
+        console.log('getAllProductByUserIDAndQuantity error: ' + error);
+    }
+}
+
+const getListProductSelling = async (id, isShow, size) => {
+    try {
+        return await productModel.find({ userID: id, isShow: isShow}).limit(size);
     } catch (error) {
         console.log('getListProductSelling error (Ser): ' + error);
     }
@@ -188,5 +195,5 @@ module.exports = {
     getAllProductByUserIDByPage,
     deleteProduct, updateProduct, getListProductSelling,
     updateQuantityProductForCustomer, updateSoldProduct
-    ,updateQuantityProduct
+    ,updateQuantityProduct, getAllProductByUserIDAndQuantity
 }
