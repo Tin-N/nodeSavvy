@@ -76,7 +76,7 @@ router.get('/get-by-id/', async (req, res, next) => {
       return res.status(400).json({ result: false, user: null, error: true });
 
   } catch (error) {
-      return res.status(500).json({ result: false, product: null });
+      return res.status(500).json({ result: false, user: null });
   }
 });
 
@@ -136,4 +136,41 @@ router.post('/email-verify', [], async (req, res, next) => {
         }
 });
 
+//lay danh sach user dang ki lam seller 2
+//http://localhost:3000/api/UserApi/get-seller-censorship
+router.get('/get-seller-censorship/', async (req, res, next) => {
+    try {
+        const user = await userController.getByRollID();
+        return res.status(200).json({ result: true, user: user });
+    } catch (error) {
+        console.log('Get seller censorship error: ', error);
+        return res.status(500).json({ result: false, user: null });
+    }
+});
+
+//lay danh sach user lam seller 3
+//http://localhost:3000/api/UserApi/check-seller-by-id/:id
+router.post('/check-seller-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await userController.checkUserByid(id, 3);
+        return res.status(200).json({message: "Chấp nhận user làm seller" });
+    } catch (error) {
+        return res.status(500).json({ message: "Chấp nhận duyệt Error" });
+    }
+});
+
+//lay danh sach user lam seller 1
+//http://localhost:3000/api/UserApi/reject-seller-by-id/:id
+router.post('/reject-seller-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await userController.checkUserByid(id, 1);
+        return res.status(200).json({message: "Từ chối user làm seller" });
+    } catch (error) {
+        return res.status(500).json({ message: "Từ chối Error" });
+    }
+});
 module.exports = router;

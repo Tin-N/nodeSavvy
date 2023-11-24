@@ -4,7 +4,7 @@ const ObjectId=Schema.ObjectId;
 
 const userSchema=new Schema({
     id:{type:ObjectId},
-    roleID:{type:Number, default:1},
+    roleID:{type:Number, default:1}, //1 user | 2 cho duyet | 3 seller
     password:{type:String},
     fullname:{type:String},
     username:{type:String},

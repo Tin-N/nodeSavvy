@@ -59,4 +59,29 @@ const emailVerify = async (email) => {
 }
 }
 
-module.exports = { login,register,loginGoogle,changePassword, checkEmail,changeUserInfo,verifyEmail,emailVerify };
+const getById = async (id) => {
+try {
+  return await userService.getById(id);
+} catch (error) {
+  console.log('getProductByID error(contr): ' + error);
+  return false;
+}
+}
+
+const getByRollID = async (roleID) =>{
+  try {
+    return await userService.getByRollID(roleID);
+} catch (error) {
+    console.log("Get seller censorship error: ", error);
+}
+return null
+}
+
+const checkUserByid = async (id, roleID) => {
+  try {
+      return await userService.checkUserByid(id, roleID);
+  } catch (error) {
+      return false;
+  }
+}
+module.exports = { login,register,loginGoogle,changePassword, checkEmail,changeUserInfo,verifyEmail,emailVerify, getById, getByRollID, checkUserByid };

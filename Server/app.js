@@ -18,7 +18,7 @@ const orderAPI = require('./routes/Api/Order')
 const orderDetail = require('./routes/Api/OrderDetail')
 
 const categoryApiRouter = require('./routes/api/CategoryApi');
-require("./Component/User/Model/UserModel")
+require("./Component/User/UserModel")
 
 const userApiRouter = require('./routes/api/UserApi');
 const favoriteApiRouter = require('./routes/api/FavoriteApi');
