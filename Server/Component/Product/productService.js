@@ -286,7 +286,7 @@ const updateSoldProduct = async (productID, sold) => {
   }
 }
 
-const updateProduct = async (productID, name, price, detail, categoryID) => {
+const updateProduct = async (productID, name, price, detail, categoryID, saleOffID) => {
   try {
     const product = await productModel.findById(productID);
     if (product) {
@@ -294,6 +294,7 @@ const updateProduct = async (productID, name, price, detail, categoryID) => {
       product.price = price ? price : product.price;
       product.detail = detail ? detail : product.detail;
       product.categoryID = categoryID ? categoryID : product.categoryID;
+      product.saleOffID = saleOffID ? saleOffID : product.saleOffID;
       await product.save();
       return true;
     }

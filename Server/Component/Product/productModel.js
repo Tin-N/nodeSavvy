@@ -27,7 +27,7 @@ const productSchema=new Schema({
     sold:{type:Number, default: 0},
     rating:{type:Number, default: 0},
     isShow:{type:Boolean, default: true},
-    saleOff:{type:Number, default: 0},
+    saleOffID:{type:String},
     options:[optionSchema]
 });
 

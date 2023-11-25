@@ -26,21 +26,7 @@ router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
     }
 });
 // http://localhost:3000/Api/productAPI/updateProduct
-router.post('/updateProduct', async (req, res, next) => {
-    try {
-        let { id,detail,name,quantity } = req.query;
-        console.log(id,detail,name,quantity, "API");
-        const result= await productController.updateProduct(id,detail,quantity,name);
-        
-        if(result)
-            return res.status(200).json({ result: true,message:"Sửa thành công" });
-        else
-            return res.status(400).json({ result: false,message:"Lỗi không thể sửa" });
-    } catch (err) {
-        console.log('Không thêm được  sản phẩm: ' + err);
-        return res.status(500).json({ result: false })
-    }
-});
+
 // http://localhost:3000/Api/productAPI/deleteProduct
 
 router.post('/deleteProduct', async (req, res, next) => {
@@ -302,9 +288,9 @@ router.post('/updateQuantity' ,async (req, res, next) => {
 router.post('/updateProduct', async (req, res, next) => {
     try {
         let { body } = req
-        const { productID, name, price, detail, categoryID } = body;
+        const { productID, name, price, detail, categoryID, saleOffID } = body;
         const result = await productController.updateProduct(
-            productID, name, price, detail, categoryID
+            productID, name, price, detail, categoryID, saleOffID
         )
         return res.status(200).json({ result: true })
     } catch (error) {

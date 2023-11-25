@@ -11,17 +11,26 @@ const addSaleOff = async (
         throw err;
     }
 }
-const getSaleOffCurrent = async (productID) => {
+const getSaleOffCurrent = async (saleOffID) => {
     try {
-        return await saleOffService.getSaleOffCurrent(productID)
+        return await saleOffService.getSaleOffCurrent(saleOffID)
     } catch (err) {
         throw err;
     }
 }
-const getSaleOffByProduct = async (productID, page, size) => {
+const getSaleApplyByIDSale = async (saleID) => {
+    try {
+        return await saleOffService.getSaleApplyByIDSale(
+            saleID
+        )
+    } catch (err) {
+        throw err;
+    }
+}
+const getSaleOffByProduct = async (userID, page, size) => {
     try {
         return await saleOffService.getSaleOffByProduct(
-            productID, page, size
+            userID, page, size
         )
     } catch (err) {
         throw err;
@@ -38,4 +47,4 @@ const updatesaleOffByProduct = async (
         return false;
     }
 }
-module.exports = { addSaleOff, getSaleOffCurrent, getSaleOffByProduct, updatesaleOffByProduct }
+module.exports = { addSaleOff, getSaleOffCurrent, getSaleOffByProduct, updatesaleOffByProduct, getSaleApplyByIDSale }
