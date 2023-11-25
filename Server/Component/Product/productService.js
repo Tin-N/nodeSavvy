@@ -70,10 +70,14 @@ const getProductByID = async (id) => {
 
 const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
   try {
-    return await productModel
+    console.log(limitData,typeof limitData!=='undefined'?limitData:5);
+    const result= await productModel
       .find({ categoryID: categoryID })
-      .limit(limitData)
+      .limit(typeof limitData!=='undefined'?limitData:10)
       .skip(skipPage);
+      const count= await productModel
+      .find({ categoryID: categoryID }).count();
+      return {result:result, count:count}
   } catch (error) {
     console.log("getAllProductByUserID error: " + error);
   }
