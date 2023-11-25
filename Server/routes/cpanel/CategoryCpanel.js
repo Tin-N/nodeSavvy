@@ -3,8 +3,8 @@ var router = express.Router();
 // const productController = require("../../Component/Product/ProductController");
 const categoryController = require("../../Component/Category/CategoryController");
 // const uploadFile = require("../../Middleware/UploadFile");
-// localhost:3000/cpanel/product
 
+//localhost:3000/cpanel/category
 router.get("/", async (req, res, next) => {
   const category = await categoryController.getAPICategory(1, 10);
   res.render("product/list", { category });
@@ -115,4 +115,11 @@ router.post("/form", [], async (req, res, next) => {
     next(error)
   }
 });
+
+// http://localhost:3000/cpanel/category/getCategory
+router.get('/getCategory', async (req, res, next)=>{
+  const categories = await categoryController.getAPICategoryNotDelete();
+  res.render('manager/CensorshipCategory', {categories});
+});
+
 module.exports = router;

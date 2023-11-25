@@ -120,7 +120,7 @@ app.use('/Api/notificationApi', notificationApiRouter);
 // cpanel
 
 // localhost:3000/cpanel/product
-// app.use("/cpanel/product", productCpanelRouter);
+app.use("/cpanel/product", productCpanelRouter);
 // localhost:3000/cpanel/category
 
 app.use("/cpanel/category", categoryCpanelRouter);

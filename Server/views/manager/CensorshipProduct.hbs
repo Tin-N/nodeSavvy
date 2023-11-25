@@ -535,36 +535,43 @@
           <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Basic Table</h4>
-                <p class="card-description">
+                <h4 class="card-title">Kiểm duyệt người bán</h4>
+                {{!-- <p class="card-description">
                   Add class
                   <code>.table</code>
-                </p>
+                </p> --}}
                 <div class="table-responsive">
                   <table class="table">
                     <thead>
                       <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Action</th>
-
+                        <th>Ảnh sản phẩm</th>
+                        <th>Tên</th>
+                        <th>Giá</th>
+                        <th>Loại sản phẩm</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {{#each categories}}
+                      {{#each product}}
                       <tr>
                         <td>
-                          <img src={{this.images}} class="w-30 h-30" style="background: {{this.color}}"/>
+                        {{#each this.image}}
+                        {{#if @first}}
+                          <img src={{this}} class="w-40 h-40" style="background: {{this.color}};"/>
+                          {{/if}}
+                          {{/each}}
                         </td>
                         <td>{{this.name}}</td>
+                        <td>{{this.price}}</td>
+                        <td>{{this.categoryID}}</td>
                         {{! <td><label class="badge badge-danger">Pending</label></td>
                         }}
 
                         <td>
                           <a href="http://localhost:3000/cpanel/product/{{this._id}}/edit" class="btn
-                            btn-primary">Edit</a>
+                            btn-primary">Đồng ý</a>
                           <a class="btn btn-danger"
-                            onclick="confirmDelete('{{this._id}}')">Delete</a>
+                            onclick="confirmDelete('{{this._id}}')">Từ chối</a>
                         </td>
                       </tr>
                       {{/each}}

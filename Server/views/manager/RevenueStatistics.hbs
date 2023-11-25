@@ -532,106 +532,73 @@
     <div class="main-panel">
       <div class="content-wrapper">
         <div class="row">
-          <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Basic Table</h4>
-                <p class="card-description">
-                  Add class
-                  <code>.table</code>
-                </p>
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Action</th>
-
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each categories}}
-                      <tr>
-                        <td>
-                          <img src={{this.images}} class="w-30 h-30" style="background: {{this.color}}"/>
-                        </td>
-                        <td>{{this.name}}</td>
-                        {{! <td><label class="badge badge-danger">Pending</label></td>
-                        }}
-
-                        <td>
-                          <a href="http://localhost:3000/cpanel/product/{{this._id}}/edit" class="btn
-                            btn-primary">Edit</a>
-                          <a class="btn btn-danger"
-                            onclick="confirmDelete('{{this._id}}')">Delete</a>
-                        </td>
-                      </tr>
-                      {{/each}}
-
-                      {{! <tr>
-                        <td>Messsy</td>
-                        <td>53275532</td>
-                        <td>15 May 2017</td>
-                        <td><label class="badge badge-warning">In progress</label></td>
-                      </tr>
-                      <tr>
-                        <td>John</td>
-                        <td>53275533</td>
-                        <td>14 May 2017</td>
-                        <td><label class="badge badge-info">Fixed</label></td>
-                      </tr>
-                      <tr>
-                        <td>Peter</td>
-                        <td>53275534</td>
-                        <td>16 May 2017</td>
-                        <td><label class="badge badge-success">Completed</label></td>
-                      </tr>
-                      <tr>
-                        <td>Dave</td>
-                        <td>53275535</td>
-                        <td>20 May 2017</td>
-                        <td><label class="badge badge-warning">In progress</label></td>
-                      </tr> }}
-                    </tbody>
-                  </table>
-                  <script>
-                    const fetchAPI = async (url, option) => {
-                        const res = await fetch(url, option);
-                      return res.json();
-                    } 
-                    const deleteProduct = async (id) => {
-                      const url = `/cpanel/product/${id}/delete`;
-                       const option = {
-                        method: 'POST', headers: {
-                          'Content-Type':
-                            'application/json'
-                        }
-                       }
-                      try {
-                        const res = await fetchAPI(url, option);
-                           if (res.result) { 
-                            window.location.reload(); 
-                            } else {
-                            console.log(res.id); 
-                            swal("Lỗi!", "Không thể xóa sản phẩm này!", "error"); 
-                            } 
-                            
-                            } catch (err) { console.log(err);
-                               swal("Lỗi!", "Không thể xóa sản phẩm này!", "error");
-                          }
-                      }
-                    const confirmDelete = (id) => {
-                        swal({title: "Xác nhận?",text: "Bạn có chắc chắn muốn xóa sản phẩm này không?", icon:"warning", buttons: true, dangerMode: true})
-                        .then((willDelete) => {
-                          if (willDelete) 
-                          { deleteProduct(id) }
-                        });
-                      }
-                  </script>
-                </div>
+          {{!-- Thong so tren dau --}}
+          <div class="col-sm-12">
+            <div class="statistics-details d-flex align-items-center justify-content-between">
+              <div>
+                <p class="statistics-title">Tổng doanh thu</p>
+                <h3 class="rate-percentage">320.000 VNĐ</h3>
+                <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span></span></p>
               </div>
+              {{!-- <div> 
+                <p class="statistics-title">Page Views</p>
+                <h3 class="rate-percentage">7,682</h3>
+                <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>+0.1%</span></p>
+              </div>
+              <div>
+                <p class="statistics-title">New Sessions</p>
+                <h3 class="rate-percentage">68.8</h3>
+                <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p>
+              </div>
+              <div class="d-none d-md-block">
+                <p class="statistics-title">Avg. Time on Site</p>
+                <h3 class="rate-percentage">2m:35s</h3>
+                <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>+0.8%</span></p>
+              </div>
+              <div class="d-none d-md-block">
+                <p class="statistics-title">New Sessions</p>
+                <h3 class="rate-percentage">68.8</h3>
+                <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p>
+              </div>
+              <div class="d-none d-md-block">
+                <p class="statistics-title">Avg. Time on Site</p>
+                <h3 class="rate-percentage">2m:35s</h3>
+                <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>+0.8%</span></p>
+              </div> --}}
             </div>
+          </div>
+          {{!-- bar chart --}}
+          <div class="col-sm-11">
+                      <div class="card card-rounded"> 
+                      <div class="card-body">
+                        <div class="d-sm-flex justify-content-between align-items-start">
+                          <div>
+                            <h4 class="card-title card-title-dash">Thống Kê Doanh Thu</h4>
+                            <p class="card-subtitle card-subtitle-dash"></p>
+                          </div>
+                          <div>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Tháng này </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <h6 class="dropdown-header">Settings</h6>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                          <div class="d-sm-flex align-items-center mt-4 justify-content-between"><h2 class="me-2 fw-bold">$36,2531.00</h2><h4 class="me-2">VNĐ</h4><h4 class="text-success">(+1.37%)</h4></div>
+                          <div class="me-3"><div id="marketing-overview-legend"><div class="chartjs-legend"><ul><li class="text-muted text-small"><span style="background-color:#52CDFF"></span>Tuần trước</li><li class="text-muted text-small"><span style="background-color:#1F3BB3"></span>Tuần này</li></ul></div></div></div>
+                        </div>
+                        <div class="chartjs-bar-wrapper mt-3"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                          <canvas id="barChart" ></canvas>
+                        </div>
+                      </div>
+                    </div>
           </div>
 
         </div>
