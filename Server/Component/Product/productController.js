@@ -183,13 +183,19 @@ const FilterProductByName = async (
   }
 };
 
-const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
+const getProductByCategoryID = async (categoryID, limitData, skipPage,sortName, sortPrice, sortRating, lte, gte) => {
     try {
         console.log(categoryID, limitData, skipPage);
-        let page = 0;
-        // if(limitData<24)
-        page = 10 * skipPage;
-        return await productService.getProductByCategoryID(categoryID, limitData, page);
+        let skip = 0;
+
+        if (typeof limitData !== "undefined" && limitData > 0)
+          skip = (skipPage - 1) * limitData;
+        else {
+          if (skipPage == 1) skip = 0;
+          else if (skipPage > 1) skip = (skipPage - 1) * 20;
+        }
+        console.log("page: " + skip);
+        return await productService.getProductByCategoryID(categoryID, limitData, skip,sortName, sortPrice, sortRating, lte, gte);
     } catch (error) {
         console.log('getProductByCategoryID error(contr): ' + error);
         return false;
