@@ -35,8 +35,19 @@ const getFavoriteByUserId = async (userID,productID)=>{
         return json({return:false, message:"Error at service: "+error})
     }
 }
+const getFavorite = async (userID)=>{
+    try {
+        const check= await favoriteModel.find({userID:userID});
+        console.log(check);
+                // console.log(">>>>>>>>>>>>>>>,",result,userID,productID);
+        return check;
+    } catch (error) {
+        return json({return:false, message:"Error at service: "+error})
+    }
+}
 module.exports={
     addFavorite,
     deleteFavorite,
-    getFavoriteByUserId
+    getFavoriteByUserId,
+    getFavorite
 }
