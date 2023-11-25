@@ -115,4 +115,16 @@ router.post("/form", [], async (req, res, next) => {
     next(error)
   }
 });
+
+//http://localhost:3000/cpanel/product/getCensorshipProduct
+router.get('/getCensorshipProduct', async (req, res, next) => {
+  const product = await productController.getProductNotCensorship();
+ res.render('manager/CensorshipProduct', { product });
+});
+
+//http://localhost:3000/cpanel/product/getCensorshipProduct1
+router.get('/getCensorshipProduct1', async (req, res, next) => {
+  const product = await productController.getProductNotCensorship();
+ res.render('product/EditCategory', { product });
+});
 module.exports = router;
