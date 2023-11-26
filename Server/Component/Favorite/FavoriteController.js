@@ -14,6 +14,13 @@ const getFavoriteByFeedbackId = async (userID,productID)=>{
         return json({result:false, message:"Like Controller Error: "+error})
     }
 }
+const getFavoriteByUserID = async (userID)=>{
+    try {
+        return await FavoriteService.getFavoriteByUserId(userID);
+    } catch (error) {
+        return json({result:false, message:"Like Controller Error: "+error})
+    }
+}
 const deleteFavorite = async (id)=>{
     try {
         return await FavoriteService.deleteFavorite(id);
@@ -24,6 +31,6 @@ const deleteFavorite = async (id)=>{
 module.exports={
     deleteFavorite,
     addFavorite,
-    // getFavoriteByUserIdAndFeedbackId,
+    getFavoriteByUserID,
     getFavoriteByFeedbackId
 }
