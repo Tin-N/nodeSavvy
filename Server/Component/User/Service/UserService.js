@@ -127,6 +127,7 @@ const getById = async (id) => {
   }
 };
 
+
 const getByRollID = async () =>{
   try {
     return await userModel.find({ roleID: 2})

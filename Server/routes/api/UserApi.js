@@ -148,7 +148,7 @@ router.get('/get-seller-censorship/', async (req, res, next) => {
     }
 });
 
-//lay danh sach user lam seller 3
+//chap nhan user lam seller 3
 //http://localhost:3000/api/UserApi/check-seller-by-id/:id
 router.post('/check-seller-by-id/:id', async (req, res, next) => {
     try {
@@ -161,7 +161,7 @@ router.post('/check-seller-by-id/:id', async (req, res, next) => {
     }
 });
 
-//lay danh sach user lam seller 1
+//Tu choi user lam seller 1
 //http://localhost:3000/api/UserApi/reject-seller-by-id/:id
 router.post('/reject-seller-by-id/:id', async (req, res, next) => {
     try {

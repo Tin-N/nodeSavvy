@@ -122,4 +122,15 @@ router.get('/getCategory', async (req, res, next)=>{
   res.render('manager/CensorshipCategory', {categories});
 });
 
+// http://localhost:3000/cpanel/category/addCategory
+router.get('/addCategory', async (req, res, next)=>{
+  // const categories = await categoryController.getAPICategoryNotDelete();
+  res.render('manager/AddCategory');
+});
+
+// http://localhost:3000/cpanel/category/editCategory
+router.get('/editCategory', async (req, res, next)=>{
+  // const categories = await categoryController.getAPICategoryNotDelete();
+  res.render('manager/EditCategory');
+});
 module.exports = router;

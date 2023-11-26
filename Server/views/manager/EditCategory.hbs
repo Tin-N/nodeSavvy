@@ -663,7 +663,7 @@
                         placeholder="Name"
                       />
                     </div>
-                    <div class="form-group">
+                    {{!-- <div class="form-group">
                       <label for="exampleInputEmail1">Price</label>
                       <input
                         name="price"
@@ -673,16 +673,20 @@
                         id="exampleInputEmail1"
                         placeholder="Price"
                       />
-                    </div>
+                    </div> --}}
                     <div class="form-group">
-                      <label>Quantity</label>
+                      {{!-- <label>Quantity</label>
                       <input
                         name="quantity"
                         value="{{product.quantity}}"
                         type="text"
                         class="form-control"
                         placeholder="Quantity"
-                      />
+                      /> --}}
+                      <form action="/action_page.php">
+                        <label for="favcolor">Chọn màu nền: </label>
+                        <input type="color" id="favcolor" name="favcolor" value="#ff0000"><br><br>
+                      </form>
                     </div>
                     <div class="form-group">
                       <input
@@ -699,7 +703,7 @@
                       />
                     </div>
 
-                    <div class="form-group">
+                    {{!-- <div class="form-group">
                       <label>Category</label>
                       <select name="category" class="form-control">
                         {{#each categories}}
@@ -714,11 +718,11 @@
                         {{/each}}
 
                       </select>
-                    </div>
+                    </div> --}}
                     <button
                       type="submit"
                       class="btn btn-primary me-2"
-                    >Submit</button>
+                    >Cập nhật</button>
                   </form>
                 </div>
               </div>
