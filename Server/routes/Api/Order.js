@@ -4,8 +4,7 @@ const orderModel = require('../../Component/order/orderModel');
 
 router.post('/add', async (req, res) => {
   try {
-
-    const { orderDetailID, userID, orderDate, deliveryStatus, paymentStatus, paymentMethods, ownerID } = req.body;
+    const { orderDetailID, userID, orderDate, deliveryStatus, paymentStatus, paymentMethods, ownerID, address } = req.body;
 
     const newOrderModel = new orderModel({
       orderDetailID,
@@ -14,7 +13,8 @@ router.post('/add', async (req, res) => {
       deliveryStatus,
       paymentStatus,
       paymentMethods,
-      ownerID
+      ownerID,
+      address
     });
 
     const savedOrderModel = await newOrderModel.save();
@@ -68,6 +68,24 @@ router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
   }
 });
 
+router.get('/getOrderByOrderDetailID/:orderDetailID', async (req, res) => {
+  const orderDetailID = req.params.orderDetailID;
+
+  try {
+    // Use Mongoose to find orders with the given orderDetailID
+    const orders = await orderModel.find({ orderDetailID });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ success: false, error: 'No orders found for the given orderDetailID' });
+    }
+
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    console.error('Error fetching orders by orderDetailID:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 router.delete('/delete/:orderID', async (req, res) => {
   try {
     const { orderID } = req.params; // Lấy orderID từ URL
@@ -86,5 +104,7 @@ router.delete('/delete/:orderID', async (req, res) => {
     res.status(500).json({ error: 'Đã xảy ra lỗi khi xoá bản ghi.' });
   }
 });
+
+
 
 module.exports = router;

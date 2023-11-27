@@ -5,7 +5,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const hbs = require('hbs')
 
 var indexRouter = require('./routes/index');
 
@@ -17,7 +17,7 @@ const orderDetail = require('./routes/Api/OrderDetail')
 
 const categoryApiRouter = require('./routes/api/CategoryApi');
 
-require('./Component/User/UserModel')
+require("./Component/User/UserModel")
 
 const userApiRouter = require('./routes/api/UserApi');
 
@@ -55,6 +55,9 @@ const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
 require('./Component/Notification/NotificationModel')
 const notificationApiRouter = require('./routes/api/NotificationApi');
 
+const productCpanelRouter= require('./routes/cpanel/ProductCpanel')
+const userCpanelRouter= require('./routes/cpanel/UserCpanel')
+const categoryCpanelRouter= require('./routes/cpanel/CategoryCpanel')
 
 
 require('./Component/SaleOff/SaleOffModel')
@@ -66,8 +69,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary
 }).then(() => console.log('Database Connected!')).catch(err => console.log('Database Error: ', err));
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "hbs");
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -107,6 +110,19 @@ app.use('/Api/orderdetail', orderDetail);
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
 
 app.use('/Api/notificationApi', notificationApiRouter);
+
+
+
+// cpanel
+
+// localhost:3000/cpanel/product
+app.use("/cpanel/product", productCpanelRouter);
+// localhost:3000/cpanel/category
+
+app.use("/cpanel/category", categoryCpanelRouter);
+// localhost:3000/cpanel/product
+
+app.use("/cpanel/user", userCpanelRouter);
 
 // catch 404 and forward to error handler
 app.use(session({

@@ -1,6 +1,6 @@
 
-const userModel=require('..//UserModel');
-const bcrypt = require('bcrypt');
+const userModel = require("../UserModel");
+const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto"); // may be sai dấu ' hoặc "
@@ -127,6 +127,29 @@ const getById = async (id) => {
   }
 };
 
+const getByRollID = async () =>{
+  try {
+    return await userModel.find({ roleID: 2})
+} catch (error) {
+    console.log("Get seller censorship error: ", error);
+    return null;
+}
+}
+
+const checkUserByid = async (id, roleID) => {
+  try {
+      const user = await userModel.findById(id);
+      if (user) {
+        user.roleID = roleID ? roleID : user.roleID;
+          await user.save();
+          return true;
+      }
+      return false;
+  } catch (error) {
+      console.log('Check user by id error: ', error);
+      return false;
+  }
+}
 // const loginGoogle = async (email, name) => {
 //   try {
 //       const user = await userModel.findOne({ email: email })
@@ -214,4 +237,6 @@ module.exports = {
   changeUserInfo,
   verifyEmail,
   emailVerify,
+  getByRollID,
+  checkUserByid,
 };

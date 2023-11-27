@@ -30,7 +30,4 @@ const productSchema=new Schema({
     saleOffID:{type:String},
     options:[optionSchema]
 });
-
-
-
 module.exports = mongoose.models.product || mongoose.model('product',productSchema);
