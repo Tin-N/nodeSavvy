@@ -5,10 +5,10 @@ const categoryController = require("../../Component/Category/CategoryController"
 // const uploadFile = require("../../Middleware/UploadFile");
 // localhost:3000/cpanel/product
 
-router.get("/", async (req, res, next) => {
-  const products = await productController.getAllProduct(1, 10);
-  res.render("product/list", { products });
-});
+// router.get("/", async (req, res, next) => {
+//   const products = await productController(1, 10);
+//   res.render("product/list", { products });
+// });
 
 router.post("/:id/delete", async function (req, res, next) {
   try {
