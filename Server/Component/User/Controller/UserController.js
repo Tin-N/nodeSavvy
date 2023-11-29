@@ -1,4 +1,3 @@
-const { trace } = require("../../../routes/api/UserApi");
 const userService = require("../Service/UserService");
 
 const createToken = (_id) => {
