@@ -90,30 +90,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 // http://localhost:3000/API/productAPI
-app.use('/Api/productAPI', productAPIRouter);
-app.use('/Api/historySearchAPI', historySearchAPIRouter);
-app.use('/Api/Options/colorAPI', colorAPIRouter);
-app.use('/Api/Options/sizeAPI', sizeAPIRouter);
-app.use('/users', usersRouter);
+// app.use('/Api/productAPI', productAPIRouter);
+// app.use('/Api/historySearchAPI', historySearchAPIRouter);
+// app.use('/Api/Options/colorAPI', colorAPIRouter);
+// app.use('/Api/Options/sizeAPI', sizeAPIRouter);
+// app.use('/users', usersRouter);
 
 //http://localhost:3000/api/category
-app.use('/Api/category', categoryApiRouter);
-app.use('/Api/UserApi', userApiRouter);
+// app.use('/Api/category', categoryApiRouter);
+// app.use('/Api/UserApi', userApiRouter);
 
 
-app.use('/Api/favoriteApi',favoriteApiRouter);
+// app.use('/Api/favoriteApi',favoriteApiRouter);
 
 
-app.use('/users', usersRouter);
-app.use('/Api/cart', cartAPI)
+// app.use('/users', usersRouter);
+// app.use('/Api/cart', cartAPI)
 
-app.use('/Api/order', orderAPI);
-app.use('/Api/orderdetail', orderDetail);
+// app.use('/Api/order', orderAPI);
+// app.use('/Api/orderdetail', orderDetail);
 
 
 
-app.use('/Api/feedbackAPI', feedbackAPIRouter)
-app.use('/Api/notificationApi', notificationApiRouter);
+// app.use('/Api/feedbackAPI', feedbackAPIRouter)
+// app.use('/Api/notificationApi', notificationApiRouter);
 
 
 
