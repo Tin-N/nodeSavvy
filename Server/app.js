@@ -17,11 +17,11 @@ const orderAPI = require('./routes/Api/Order')
 // const productAPIRouter = require('./routes/Api/productAPI');
 const orderDetail = require('./routes/Api/OrderDetail')
 
-const categoryApiRouter = require('./routes/api/CategoryApi');
+const categoryApiRouter = require('./routes/Api/CategoryApi');
 require("./Component/User/UserModel")
 
-const userApiRouter = require('./routes/api/UserApi');
-const favoriteApiRouter = require('./routes/api/FavoriteApi');
+const userApiRouter = require('./routes/Api/UserApi');
+const favoriteApiRouter = require('./routes/Api/FavoriteApi');
 
 const cartAPI = require('./routes/Api/Cart')
 
