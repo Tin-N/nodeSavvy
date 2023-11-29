@@ -11,62 +11,38 @@ const hbs = require('hbs')
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
-const orderAPI = require('./routes/Api/Order')
+
 // const productAPIRouter = require('./routes/Api/productAPI');
-const orderDetail = require('./routes/Api/OrderDetail')
 
-const categoryApiRouter = require('./routes/Api/CategoryApi');
+
+
 require("./Component/User/UserModel")
 
-const userApiRouter = require('./routes/Api/UserApi');
-const favoriteApiRouter = require('./routes/Api/FavoriteApi');
 
-const cartAPI = require('./routes/Api/Cart')
+
 
 // var express = require('express-session')
 const session = require('express-session');
 const mongoose = require('mongoose');
 
 //Nhat code
-const httpServer = createServer();
 
-const io = new Server(5000,
-  {cors:{
-    origin:process.env.NODE_ENV ==="production"?false :["http://localhost:5000"]
-  }}
-)
-
-io.on("connection",socket=>{
-  console.log(`a user connected with id ${socket.id}`);
-  socket.on('message',data=>{
-    console.log(data);
-    io.emit('message',`${socket.id.substring(0,5)}: ${data}`)
-  })
-  
-})
-httpServer.listen(3500,()=>console.log("Listening on port 3500 ..."))
 
 require('./Component/Product/productModel');
-const feedbackAPIRouter = require('./routes/Api/feedbackAPI');
-const productAPIRouter = require('./routes/Api/productAPI');
+
 var app = express();
 
 require('./Component/HistorySearch/historySearchModel')
-const historySearchAPIRouter = require('./routes/Api/historySearchAPI');
 
 require('./Component/Favorite/FavoriteModel')
 
 require('./Component/Options/Color/colorModel')
-const colorAPIRouter = require('./routes/Api/Options/ColorApi');
 
 
 require('./Component/Options/Size/sizeModel')
-const sizeAPIRouter = require('./routes/Api/Options/SizeApi');
 
 require('./Component/Notification/NotificationModel')
-const notificationApiRouter = require('./routes/api/NotificationApi');
 
 const productCpanelRouter= require('./routes/cpanel/ProductCpanel')
 const userCpanelRouter= require('./routes/cpanel/UserCpanel')
