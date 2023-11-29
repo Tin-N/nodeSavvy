@@ -37,4 +37,15 @@ router.get('/getFavorite', async (req, res, next) => {
         return res.status(500).json({ result: false })
     }
 });
+
+router.get('/getFavoriteByUserID', async (req, res, next) => {
+    try {
+        let { userID,productID} = req.query;
+        const result=  await FavoriteController.getFavoriteByUserID(userID);
+        return res.status(200).json({ result: true,favorite:result })
+    } catch (err) {
+        console.log('Không lay được màu api: ' + err);
+        return res.status(500).json({ result: false })
+    }
+});
 module.exports=router;
