@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const productController = require("../../Component/Product/ProductController");
+const productController = require("../../Component/Product/productController");
 const categoryController = require("../../Component/Category/CategoryController");
 // const uploadFile = require("../../Middleware/UploadFile");
 // localhost:3000/cpanel/product
