@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const orderDetailModel = require('../../Component/order/orderDetailsModel');
+const orderDetailModel = require('../../Component/Order/orderDetailsModel');
 
 
 router.post('/add', async (req, res) => {
