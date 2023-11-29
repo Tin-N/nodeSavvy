@@ -127,4 +127,16 @@ router.get('/getCensorshipProduct1', async (req, res, next) => {
   const product = await productController.getProductNotCensorship();
  res.render('product/EditCategory', { product });
 });
+
+//http://localhost:3000/cpanel/product/Revenue
+router.get("/Revenue", function (req, res, next) {
+  // Hien thi trang login
+  res.render("manager/RevenueStatistics");
+});
+
+//http://localhost:3000/cpanel/product/User
+router.get("/User", function (req, res, next) {
+  // Hien thi trang login
+  res.render("manager/UserStatistics");
+});
 module.exports = router;

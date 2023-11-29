@@ -291,15 +291,22 @@
               aria-controls="form-elements"
             >
               <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Duyệt người bán</span>
+              <span class="menu-title">Kiểm Duyệt</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="http://localhost:3000/cpanel/user/getSeller"
+                  >Người bán</a></li>
+              </ul>
+              <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="http://localhost:3000/cpanel/product/form"
-                  >Basic form</a></li>
+                    href="http://localhost:3000/cpanel/product/getCensorshipProduct"
+                  >Sản phẩm</a></li>
               </ul>
             </div>
           </li>
@@ -307,7 +314,7 @@
             <a
               class="nav-link"
               data-bs-toggle="collapse"
-              href="#charts"
+              href="/cpanel/product/chart"
               aria-expanded="false"
               aria-controls="charts"
             >
@@ -318,7 +325,11 @@
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/cpanel/product/chart">ChartJs</a></li>
+                  <a class="nav-link" href="http://localhost:3000/cpanel/product/Revenue">Doanh thu</a></li>
+              </ul>
+                            <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="http://localhost:3000/cpanel/product/User">Người dùng</a></li>
               </ul>
             </div>
           </li>
@@ -337,7 +348,7 @@
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/cpanel/product/">Basic table</a></li>
+                  <a class="nav-link" href="http://localhost:3000/cpanel/category/getCategory">Basic table</a></li>
               </ul>
             </div>
           </li>
@@ -346,7 +357,7 @@
             <a
               class="nav-link"
               data-bs-toggle="collapse"
-              href="#auth"
+              href="/cpanel/user/ManagerSeller"
               aria-expanded="false"
               aria-controls="auth"
             >
@@ -359,15 +370,13 @@
                 <li class="nav-item">
                   <a class="nav-link" href="http://localhost:3000/login"> Login </a></li>
                 <li class="nav-item">
-                  <a class="nav-link" href="register.html"> Sign Up </a></li>
-
+                  <a class="nav-link" href="http://localhost:3000/register"> Sign Up </a></li>
               </ul>
             </div>
           </li>
-
         </ul>
       </nav>
-      <!-- partial -->
+      <!-- partial -->s
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
