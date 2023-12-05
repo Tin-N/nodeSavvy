@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const categoryController = require('../../Component/Category/CategoryController');
-const { modelNames } = require('mongoose');
 /* GET home page. */
 router.get('/damn', function (req, res, next) {
     res.render('index', { title: 'Express123' });
