@@ -42,9 +42,12 @@ const addReply = async (feedbackID, userID, reply) => {
         return false;
     }
 }
-const getFeedbackByProductID = async(id) => {
+const getFeedbackByProductID = async(id,limit,skip) => {
     try {
-        return await feedbackModel.find({productID: id});
+        const result=await feedbackModel.find({productID: id}).limit(limit?limit:10).skip(skip);
+        const count=await feedbackModel.find({productID: id}).count();
+
+        return {result:result,count:count}
     } catch (error) {
         console.log('getFeedbackByProductID error(Ser): '+error);
     }

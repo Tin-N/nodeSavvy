@@ -21,6 +21,9 @@ const categoryApiRouter = require('./routes/Api/CategoryApi');
 require("./Component/User/UserModel")
 
 const userApiRouter = require('./routes/Api/UserApi');
+const statisticSellerApiRouter = require('./routes/Api/StatisticSeller');
+const statisticAdminApiRouter = require('./routes/Api/StatisticAdmin');
+
 const favoriteApiRouter = require('./routes/Api/FavoriteApi');
 
 const cartAPI = require('./routes/Api/Cart')
@@ -97,7 +100,8 @@ app.use('/Api/orderdetail', orderDetail);
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
 app.use('/Api/notificationApi', notificationApiRouter);
 
-
+app.use('/Api/statisticSeller', statisticSellerApiRouter)
+app.use('/Api/statisticAdmin', statisticAdminApiRouter)
 
 // cpanel
 
