@@ -1,7 +1,6 @@
 const productModel = require("../Product/productModel");
 const FeedbackModel = require("../Feedback/feedbackModel");
 const orderDetailsModel = require("../Order/orderDetailsModel");
-const userModel = require("../user/UserModel");
 const mongoose = require("mongoose");
 const feedbackModel = require("../Feedback/feedbackModel");
 const Schema = mongoose.Schema;
@@ -29,8 +28,7 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             "products.deliveryStatus": "Delivered",
           },
         },
-        {$sort:{_id:-1}}
-        ,
+        
         {
           $group: {
             _id: {
@@ -43,6 +41,8 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
+        {$sort:{_id:1}}
+        ,
       ]);    
       return result;
    }else{
@@ -76,8 +76,7 @@ const getStatisticRevenueByMonth = async (ownerID) => {
             "products.deliveryStatus": "Delivered",
           },
         },
-        {$sort:{_id:-1}}
-        ,
+        
         {
           $group: {
             _id: {
@@ -90,6 +89,8 @@ const getStatisticRevenueByMonth = async (ownerID) => {
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
+        {$sort:{_id:1}}
+        ,
       ]);
       return result;
    }else{
@@ -103,14 +104,14 @@ const getStatisticRevenueByMonth = async (ownerID) => {
 const getStatisticRevenueByYear = async (ownerID) => {
   try {
     const now = new Date();
-    const aMonthAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
-    console.log(aMonthAgo);
+    const aYearAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
+    console.log(aYearAgo);
     if(typeof ownerID !=="undefined"){
     const result = await orderDetailsModel.aggregate([
       {
         $match: {
           $expr: {
-            $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+            $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
           },
         },
       },
@@ -123,8 +124,7 @@ const getStatisticRevenueByYear = async (ownerID) => {
           "products.deliveryStatus": "Delivered",
         },
       },
-      {$sort:{_id:-1}}
-      ,
+      
       {
         $group: {
           _id: {
@@ -137,6 +137,8 @@ const getStatisticRevenueByYear = async (ownerID) => {
           totalDeliveredCost: { $sum: "$products.itemTotalCost" },
         },
       },
+      {$sort:{_id:1}}
+      ,
     ]);
     return result;
     }else{
@@ -291,13 +293,117 @@ try {
     return false;
 }
 };
-const getTopRatedByProduct = async (ownerID) => {
+const getTopRatedByProductByWeek = async (ownerID) => {
   try {
     if(typeof ownerID !=="undefined"){
+      const now = new Date();
+      const sevenDaysAgo = new Date(now.getTime() -  24 * 60 * 60 * 1000);
+      console.log(sevenDaysAgo);
         const result = await feedbackModel.aggregate([
             {
                 $match:{
                     "products.ownerID": ownerID,
+                    $expr: {
+                      $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
+                    },
+                }
+            },
+          {
+            $group: {
+              _id: {$toObjectId: "$productID"},
+              rating: {
+                $avg: "$rating",
+              },
+            },
+          },
+          {
+            $sort:{
+                rating:-1,
+            }
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "_id",
+              as: "productInfo",
+            },
+          },{
+            $limit:10
+          }
+        ]);    return result;
+
+    }else{
+        return [];
+    }
+   
+  } catch (err) {
+    console.log("Không lấy được top sản phẩm đánh giá tốt được(Ser): " + err);
+    return false;
+  }
+};
+const getTopRatedByProductByMonth = async (ownerID) => {
+  try {
+    if(typeof ownerID !=="undefined"){
+      const now = new Date();
+      const aMonthAgo = new Date(now.getTime() -  30*24 * 60 * 60 * 1000);
+      console.log(aMonthAgo);
+        const result = await feedbackModel.aggregate([
+            {
+                $match:{
+                    "products.ownerID": ownerID,
+                    $expr: {
+                      $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+                    },
+                }
+            },
+          {
+            $group: {
+              _id: {$toObjectId: "$productID"},
+              rating: {
+                $avg: "$rating",
+              },
+            },
+          },
+          {
+            $sort:{
+                rating:-1,
+            }
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "_id",
+              as: "productInfo",
+            },
+          },{
+            $limit:10
+          }
+        ]);    return result;
+
+    }else{
+        return [];
+    }
+   
+  } catch (err) {
+    console.log("Không lấy được top sản phẩm đánh giá tốt được(Ser): " + err);
+    return false;
+  }
+};
+const getTopRatedByProductByYear = async (ownerID) => {
+  try {
+    if(typeof ownerID !=="undefined"){
+      const now = new Date();
+      const aYearAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
+      console.log(aYearAgo);
+        const result = await feedbackModel.aggregate([
+            {
+                $match:{
+                    "products.ownerID": ownerID,
+                    $expr: {
+                      $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
+                    },
                 }
             },
           {
@@ -335,7 +441,9 @@ const getTopRatedByProduct = async (ownerID) => {
   }
 };
 module.exports = {
-  getTopRatedByProduct,
+  getTopRatedByProductByWeek,
+  getTopRatedByProductByYear,
+  getTopRatedByProductByMonth,
   getStatisticRevenueByWeek,
   getStatisticRevenueByMonth,
   getStatisticRevenueByYear,

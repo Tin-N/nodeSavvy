@@ -1,7 +1,7 @@
 const productModel = require("../Product/productModel");
 const FeedbackModel = require("../Feedback/feedbackModel");
 const orderDetailsModel = require("../Order/orderDetailsModel");
-const userModel= require('../user/UserModel')
+const userModel= require('../User/UserModel');
 const getStatisticRevenueByWeek = async () => {
     try {
       const now = new Date();
@@ -22,8 +22,8 @@ const getStatisticRevenueByWeek = async () => {
           $match: {
             "products.deliveryStatus": "Delivered",
           },
-        },
-  
+        }
+        ,
         {
           $group: {
             _id: {
@@ -42,9 +42,41 @@ const getStatisticRevenueByWeek = async () => {
                 label: "$_id",
                 value: "$totalDeliveredCost",
             },
+        }
+        , {$sort:{_id:1}},
+      ]);
+      const result1 = await orderDetailsModel.aggregate([
+        {
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
+            },
+          },
+        },
+        {
+          $unwind: "$products",
+        },
+        {
+          $match: {
+            "products.deliveryStatus": "Delivered",
+          },
+        },
+  
+        {
+          $group: {
+            _id: 0,
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
+        },
+        {
+            $project: {
+                _id: 0, // 0 để ẩn trường _id
+                label: "$_id",
+                value: "$totalDeliveredCost",
+            },
         },
       ]);
-      return result;
+      return {week:result,total:result1};
     } catch (err) {
       console.log("Không lấy thống kê được(Ser): " + err);
       return false;
@@ -63,6 +95,10 @@ const getStatisticRevenueByWeek = async () => {
             },
           },
         },
+        
+        {
+          $sort: { _id: 1 }, // Sắp xếp theo trường "_id" tăng dần trước khi áp dụng $project
+        },
         {
           $unwind: "$products",
         },
@@ -71,7 +107,6 @@ const getStatisticRevenueByWeek = async () => {
             "products.deliveryStatus": "Delivered",
           },
         },
-  
         {
           $group: {
             _id: {
@@ -91,8 +126,45 @@ const getStatisticRevenueByWeek = async () => {
                 value: "$totalDeliveredCost",
             },
         },
+        {
+          $sort: { totalDeliveredCost: 1 }, // Sắp xếp theo trường "label" tăng dần
+        },
       ]);
-      return result;
+      const result1 = await orderDetailsModel.aggregate([
+        {
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+            },
+          },
+        },
+        {
+          $unwind: "$products",
+        },
+        {
+          $match: {
+            "products.deliveryStatus": "Delivered",
+          },
+        },
+        
+        {
+          $group: {
+            _id: 0,
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
+        },
+        {$sort:{_id:1}},
+
+        {
+            $project: {
+                _id: 0, // 0 để ẩn trường _id
+                label: "$_id",
+                value: "$totalDeliveredCost",
+            },
+        }
+        
+      ]);
+      return {month:result,total:result1};
     } catch (err) {
       console.log("Không lấy thống kê được(Ser): " + err);
       return false;
@@ -102,8 +174,49 @@ const getStatisticRevenueByWeek = async () => {
     try {
       const now = new Date();
       const aYearAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
-      console.log(aMonthAgo);
+      console.log(aYearAgo);
       const result = await orderDetailsModel.aggregate([
+        {
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
+            },
+          },
+        },
+        {
+          $unwind: "$products",
+        },
+        {
+          $match: {
+            "products.deliveryStatus": "Delivered",
+          },
+        },
+        
+       
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                date: "$_id",
+                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
+              },
+            },
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
+        },
+        
+        {
+            $project: {
+                _id: 0, // 0 để ẩn trường _id
+                label: "$_id",
+                value: "$totalDeliveredCost",
+            },
+        },
+        {$sort:{label:1}}
+        ,
+      ]);
+      const result1 = await orderDetailsModel.aggregate([
         {
           $match: {
             $expr: {
@@ -122,13 +235,7 @@ const getStatisticRevenueByWeek = async () => {
   
         {
           $group: {
-            _id: {
-              $dateToString: {
-                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
-                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-              },
-            },
+            _id: 0,
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
@@ -140,7 +247,7 @@ const getStatisticRevenueByWeek = async () => {
             },
         },
       ]);
-      return result;
+      return {year:result,total:result1};
     } catch (err) {
       console.log("Không lấy thống kê năm được(Ser): " + err);
       return false;
@@ -151,7 +258,10 @@ const getStatisticUserByWeek = async () => {
         const now = new Date();
         const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
+            {$sort:{_id:1}}
+            ,
         {
+          
           $match: {
             $expr: {
               $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
@@ -159,8 +269,7 @@ const getStatisticUserByWeek = async () => {
           },
         }
   ,
-        {$sort:{_id:-1}}
-  ,
+       
         {
           $group: {
             _id: {
@@ -173,6 +282,7 @@ const getStatisticUserByWeek = async () => {
             numberOfUsers: { $count: {} },
           },
         },
+        { $sort: { _id: 1 } },
         {
             $project: {
                 _id: 0, // 0 để ẩn trường _id
@@ -193,6 +303,8 @@ const getStatisticUserByMonth = async () => {
         const now = new Date();
       const aMonthAgo = new Date(now.getTime() -  30 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
+            // {$sort:{_id:1}}
+            // ,
         {
           $match: {
             $expr: {
@@ -200,8 +312,7 @@ const getStatisticUserByMonth = async () => {
             },
           },
         },
-        {$sort:{_id:-1}}
-        ,
+        { $sort: { _id: 1 } },
         {
           $group: {
             _id: {
@@ -233,6 +344,8 @@ const getStatisticUserByYear = async () => {
         const now = new Date();
       const aYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
+            {$sort:{_id:1}}
+        ,
         {
           $match: {
             $expr: {
@@ -240,23 +353,28 @@ const getStatisticUserByYear = async () => {
             },
           },
         },
-        {$sort:{_id:-1}}
-        ,
+        {
+          $sort:{
+            _id:1
+          }
+        },
         {
           $group: {
+            
             _id: {
               $dateToString: {
-                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                format: "%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
                 date: "$_id",
-                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
+                // timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
               },
             },
             numberOfUsers: {  $count: {} },
           },
-        },
+        },  
+        { $sort: { _id: 1 } },
         {
             $project: {
-                _id: 0, // 0 để ẩn trường _id
+                _id: "$id", // 0 để ẩn trường _id
                 label: "$_id",
                 value: "$numberOfUsers",
             },
@@ -305,7 +423,7 @@ const getTotalUser = async () => {
 const getTotalUserByYear = async () => {
     try {
         const now = new Date();
-      const aYearAgo = new Date(now.getTime() - 7 * 365 * 24 * 60 * 60 * 1000);
+      const aYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
         {
           $match: {
@@ -339,7 +457,7 @@ const getTotalUserByYear = async () => {
 const getTotalUserByMonth = async () => {
     try {
         const now = new Date();
-      const aYearAgo = new Date(now.getTime() - 7 * 30 * 24 * 60 * 60 * 1000);
+      const aYearAgo = new Date(now.getTime() -  30 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
         {
           $match: {

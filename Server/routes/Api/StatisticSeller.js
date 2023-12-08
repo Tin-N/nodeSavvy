@@ -56,12 +56,42 @@ router.get('/get-statistic-revenue-by-year', async (req, res, next) => {
         return res.status(500).json("thong bao that bai");
     }
 });
-// http://localhost:3000/Api/statisticSeller/get-top-rated-products
-router.get('/get-top-rated-products', async (req, res, next) => {
+// http://localhost:3000/Api/statisticSeller/get-top-rated-products-week
+router.get('/get-top-rated-products-by-week', async (req, res, next) => {
     try {
         const {ownerID}=req.query
 
-        const result =await statisticSeller.getTopRatedByProduct(ownerID);
+        const result =await statisticSeller.getTopRatedByProductByWeek(ownerID);
+        if(result.length>0)
+        return res.status(200).json({result:true,data:result});
+
+        return res.status(200).json({result:false,data:result});
+
+    } catch (error) {
+        console.log('New product error: ', error);
+        return res.status(500).json("thong bao that bai");
+    }
+});// http://localhost:3000/Api/statisticSeller/get-top-rated-products-month
+router.get('/get-top-rated-products-by-month', async (req, res, next) => {
+    try {
+        const {ownerID}=req.query
+
+        const result =await statisticSeller.getTopRatedByProductByMonth(ownerID);
+        if(result.length>0)
+        return res.status(200).json({result:true,data:result});
+
+        return res.status(200).json({result:false,data:result});
+
+    } catch (error) {
+        console.log('New product error: ', error);
+        return res.status(500).json("thong bao that bai");
+    }
+});// http://localhost:3000/Api/statisticSeller/get-top-rated-products-week
+router.get('/get-top-rated-products-by-Year', async (req, res, next) => {
+    try {
+        const {ownerID}=req.query
+
+        const result =await statisticSeller.getTopRatedByProductByYear(ownerID);
         if(result.length>0)
         return res.status(200).json({result:true,data:result});
 
