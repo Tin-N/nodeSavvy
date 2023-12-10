@@ -67,6 +67,34 @@ router.put(
   }
 );
 
+// Cập nhật trạng thái giao hàng cho 1 sản phẩm của người mua
+router.put('/update/updateProductDeliveryStatus/:orderDetailID/:productID', async (req, res) => {
+  try {
+    const orderDetailID = req.params.orderDetailID;
+    const deliveryStatus = req.body.deliveryStatus;
+    const productID = req.params.productID;
+
+    const result = await orderDetailModel.updateMany(
+      {
+        orderDetailID: orderDetailID,
+        'products.productID': productID,
+      },
+      {
+        $set: { 'products.$.deliveryStatus': deliveryStatus },
+      }
+    );
+
+    if (result.nModified === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy đơn hàng hoặc không có sản phẩm phù hợp' });
+    }
+
+    res.status(201).json({ message: 'Cập nhật trạng thái giao hàng thành công' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Lỗi trong quá trình xử lý yêu cầu' });
+  }
+});
+
 // Cập nhật trạng thái giao hàng cho tất cả sản phẩm của người bán sản phẩm
 router.put(
   "/update/updateAllProductDeliveryStatus/:orderDetailID/:ownerID",
@@ -248,10 +276,11 @@ router.get("/getAllForShipper", async (req, res) => {
 });
 
 // Lấy thông tin đơn hàng cho khách hàng
-router.get("/getOrderHistoryForSeller/:orderDetailID", async (req, res) => {
+router.get('/getOrderHistoryForCustomer/:orderDetailID', async (req, res) => {
   try {
     const orderDetailID = req.params.orderDetailID;
-    const orders = await orderModel.find({ orderDetailID });
+
+    const orders = await orderDetailModel.find({ orderDetailID })
     res.json(orders);
   } catch (error) {
     console.error(error);
@@ -259,7 +288,7 @@ router.get("/getOrderHistoryForSeller/:orderDetailID", async (req, res) => {
   }
 });
 
-router.put("/update/:orderDetailID", async (req, res) => {
+router.put('/update/:orderDetailID', async (req, res) => {
   try {
     const { orderDetailID } = req.params; // Lấy orderDetailID từ URL
 
