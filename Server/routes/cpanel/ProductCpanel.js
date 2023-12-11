@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 const productController = require("../../Component/Product/ProductController");
 const categoryController = require("../../Component/Category/CategoryController");
+const userController = require("../../Component/User/Controller/UserController");
+const notificationController = require("../../Component/Notification/NotificationController")
 // const uploadFile = require("../../Middleware/UploadFile");
 // localhost:3000/cpanel/product
 
@@ -116,27 +118,65 @@ router.post("/form", [], async (req, res, next) => {
   }
 });
 
+
+
+
 //http://localhost:3000/cpanel/product/getCensorshipProduct
 router.get('/getCensorshipProduct', async (req, res, next) => {
   const product = await productController.getProductNotCensorship();
- res.render('manager/CensorshipProduct', { product });
+  res.render('manager/CensorshipProduct', { product });
 });
-
-//http://localhost:3000/cpanel/product/getCensorshipProduct1
-router.get('/getCensorshipProduct1', async (req, res, next) => {
+router.get('/dcm', async (req, res, next) => {
   const product = await productController.getProductNotCensorship();
- res.render('product/EditCategory', { product });
+  res.render('manager/CensorshipProduct', { product });
+});
+//http://localhost:3000/cpanel/product/getDetailCensorshipProduct/id
+router.get('/getDetailCensorshipProduct/:id', async (req, res, next) => {
+  try {
+  const { id } = req.params;
+  const product = await productController.getProductByID(id);
+  const categories = await categoryController.getAPICategoryById(product.categoryID);
+  
+  const user = await userController.getById(product.userID);
+  res.render('manager/CensorshipDetailProduct', { product, categories, user });
+} catch (error) {
+  next(error)
+}
 });
 
-//http://localhost:3000/cpanel/product/Revenue
-router.get("/Revenue", function (req, res, next) {
-  // Hien thi trang login
-  res.render("manager/RevenueStatistics");
+//http://localhost:3000/cpanel/product/check-product-by-id/id
+// dong y duyet san pham isApproved = 2
+router.post("/check-product-by-id/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await productController.checkProductByid(id, 2);
+    console.log(">>>>>>>>Đồng ý: ", result);
+    if (result) {
+      return res.status(200).json({result:result})
+      } else {
+        return res.status(400).json({result:result})
+       
+    }
+  } catch (error) {
+    next(error)
+  }
 });
 
-//http://localhost:3000/cpanel/product/User
-router.get("/User", function (req, res, next) {
-  // Hien thi trang login
-  res.render("manager/UserStatistics");
+//http://localhost:3000/cpanel/product/rejectProduct-by-id/id
+// tu choi duyet san pham isApproved = 3
+router.post("/rejectProduct-by-id/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await productController.checkProductByid(id, 3);
+    const product = await productController.getProductByID(id);
+    
+    const notification = await notificationController.rejectNotification(product.userID, product._id, "Từ chối duyệt sản phẩm");
+    console.log(">>>>>>>>notification: ", notification);
+    return res.redirect('/cpanel/product/getCensorshipProduct');
+  } catch (error) {
+    next(error)
+  }
 });
+
+
 module.exports = router;

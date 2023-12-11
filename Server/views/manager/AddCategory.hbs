@@ -272,7 +272,7 @@
               </div>
               <a
                 class="dropdown-item"
-                href="https://savvy-shopping.onrender.com/cpanel/product/profile"
+                href="/cpanel/product/profile"
               ><i
                   class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"
                 ></i>
@@ -566,13 +566,13 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="https://savvy-shopping.onrender.com/cpanel/user/getSeller"
+                    href="/cpanel/user/getSeller"
                   >Người bán</a></li>
               </ul>
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="https://savvy-shopping.onrender.com/cpanel/product/getCensorshipProduct"
+                    href="/cpanel/product/getCensorshipProduct"
                   >Sản phẩm</a></li>
               </ul>
             </div>
@@ -592,11 +592,11 @@
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/cpanel/product/Revenue">Doanh thu</a></li>
+                  <a class="nav-link" href="/cpanel/product/Revenue">Doanh thu</a></li>
               </ul>
                             <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/cpanel/product/User">Người dùng</a></li>
+                  <a class="nav-link" href="/cpanel/product/User">Người dùng</a></li>
               </ul>
             </div>
           </li>
@@ -615,7 +615,7 @@
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/cpanel/category/getCategory">Basic table</a></li>
+                  <a class="nav-link" href="/cpanel/category/getCategory">Basic table</a></li>
               </ul>
             </div>
           </li>
@@ -635,9 +635,9 @@
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/login"> Login </a></li>
+                  <a class="nav-link" href="/login"> Login </a></li>
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/register"> Sign Up </a></li>
+                  <a class="nav-link" href="/register"> Sign Up </a></li>
               </ul>
             </div>
           </li>
@@ -656,14 +656,13 @@
                   <form
                     class="forms-sample"
                     method="post"
-                    action="/cpanel/product/{{product._id}}/edit"
+                    action="/cpanel/category/addCategory1"
                     enctype="multipart/form-data"
                   >
                     <div class="form-group">
                       <label for="exampleInputUsername1">Name</label>
                       <input
                         name="name"
-                        value="{{product.name}}"
                         type="text"
                         class="form-control"
                         id="exampleInputUsername1"
@@ -682,18 +681,8 @@
                       />
                     </div> --}}
                     <div class="form-group">
-                      {{!-- <label>Quantity</label>
-                      <input
-                        name="quantity"
-                        value="{{product.quantity}}"
-                        type="text"
-                        class="form-control"
-                        placeholder="Quantity"
-                      /> --}}
-                      <form action="/action_page.php">
                         <label for="favcolor">Chọn màu nền: </label>
-                        <input type="color" id="favcolor" name="favcolor" value="#ff0000"><br><br>
-                      </form>
+                        <input name="color" type="color" id="favcolor" value="#ff0000"><br><br>
                     </div>
 
                     <div class="form-group">
@@ -705,28 +694,10 @@
                       />
                       <img
                         id="img"
-                        src={{product.images}}
                         width="100"
                         height="100"
                       />
                     </div>
-
-                    {{!-- <div class="form-group">
-                      <label>Category</label>
-                      <select name="category" class="form-control">
-                        {{#each categories}}
-                          {{#if this.selected}}
-                            <option
-                              selected
-                              value="{{this._id}}"
-                            >{{this.name}}</option>
-                          {{else}}
-                            <option value="{{this._id}}">{{this.name}}</option>
-                          {{/if}}
-                        {{/each}}
-
-                      </select>
-                    </div> --}}
                     <button
                       type="submit"
                       class="btn btn-primary me-2"

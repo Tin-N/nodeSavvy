@@ -209,7 +209,7 @@
               <p class="fw-light text-muted mb-0">allenmoreno@gmail.com</p>
             </div>
             <a class="dropdown-item"
-              href="https://savvy-shopping.onrender.com/cpanel/product/profile"><i
+              href="/cpanel/product/profile"><i
                 class="dropdown-item-icon mdi mdi-account-outline text-primary
                 me-2"></i>
               My Profile
@@ -459,13 +459,13 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="https://savvy-shopping.onrender.com/cpanel/user/getSeller"
+                    href="/cpanel/user/getSeller"
                   >Người bán</a></li>
               </ul>
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="https://savvy-shopping.onrender.com/cpanel/product/getCensorshipProduct"
+                    href="/cpanel/product/getCensorshipProduct"
                   >Sản phẩm</a></li>
               </ul>
             </div>
@@ -485,11 +485,11 @@
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/cpanel/product/Revenue">Doanh thu</a></li>
+                  <a class="nav-link" href="/cpanel/product/Revenue">Doanh thu</a></li>
               </ul>
                             <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/cpanel/product/User">Người dùng</a></li>
+                  <a class="nav-link" href="/cpanel/product/User">Người dùng</a></li>
               </ul>
             </div>
           </li>
@@ -508,7 +508,7 @@
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/cpanel/category/getCategory">Basic table</a></li>
+                  <a class="nav-link" href="/cpanel/category/getCategory">Basic table</a></li>
               </ul>
             </div>
           </li>
@@ -528,9 +528,9 @@
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/login"> Login </a></li>
+                  <a class="nav-link" href="/login"> Login </a></li>
                 <li class="nav-item">
-                  <a class="nav-link" href="https://savvy-shopping.onrender.com/register"> Sign Up </a></li>
+                  <a class="nav-link" href="/register"> Sign Up </a></li>
               </ul>
             </div>
           </li>
@@ -543,7 +543,7 @@
           <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Kiểm duyệt người bán</h4>
+                <h4 class="card-title">Kiểm duyệt sản phẩm</h4>
                 {{!-- <p class="card-description">
                   Add class
                   <code>.table</code>
@@ -555,7 +555,6 @@
                         <th>Ảnh sản phẩm</th>
                         <th>Tên</th>
                         <th>Giá</th>
-                        <th>Loại sản phẩm</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -564,59 +563,44 @@
                       <tr>
                         <td>
                         {{#each this.image}}
-                        {{#if @first}}
-                          <img src={{this}} class="w-40 h-40" style="background: {{this.color}};"/>
+                          {{#if @first}}
+                            <img src={{this}} class="w-40 h-40" />
                           {{/if}}
-                          {{/each}}
+                        {{/each}}
                         </td>
                         <td>{{this.name}}</td>
                         <td>{{this.price}}</td>
-                        <td>{{this.categoryID}}</td>
                         {{! <td><label class="badge badge-danger">Pending</label></td>
                         }}
 
                         <td>
-                          <a href="https://savvy-shopping.onrender.com/cpanel/product/{{this._id}}/edit" class="btn
-                            btn-primary">Đồng ý</a>
-                          <a class="btn btn-danger"
-                            onclick="confirmDelete('{{this._id}}')">Từ chối</a>
+                          <a  class="btn btn-primary"
+                            href="/cpanel/product/getDetailCensorshipProduct/{{this._id}}">Xem chi tiết</a>
                         </td>
                       </tr>
                       {{/each}}
-
-                      {{! <tr>
-                        <td>Messsy</td>
-                        <td>53275532</td>
-                        <td>15 May 2017</td>
-                        <td><label class="badge badge-warning">In progress</label></td>
-                      </tr>
-                      <tr>
-                        <td>John</td>
-                        <td>53275533</td>
-                        <td>14 May 2017</td>
-                        <td><label class="badge badge-info">Fixed</label></td>
-                      </tr>
-                      <tr>
-                        <td>Peter</td>
-                        <td>53275534</td>
-                        <td>16 May 2017</td>
-                        <td><label class="badge badge-success">Completed</label></td>
-                      </tr>
-                      <tr>
-                        <td>Dave</td>
-                        <td>53275535</td>
-                        <td>20 May 2017</td>
-                        <td><label class="badge badge-warning">In progress</label></td>
-                      </tr> }}
                     </tbody>
                   </table>
+                  
                   <script>
                     const fetchAPI = async (url, option) => {
                         const res = await fetch(url, option);
                       return res.json();
-                    } 
-                    const deleteProduct = async (id) => {
-                      const url = `/cpanel/product/${id}/delete`;
+                    }
+
+                    {{!-- const notifications = async (userID, id ) => {
+                      const url = `/cpanel/product/notification`;
+                       const option = {
+                        method: 'POST', headers: {
+                          'Content-Type':
+                            'application/json'
+                        }
+                       }
+                        const result = await fetchAPI(url, option);
+                    } --}}
+
+                    const checkProduct = async (id) => {
+                      const url = `/cpanel/product/check-product-by-id/${id}`;
                        const option = {
                         method: 'POST', headers: {
                           'Content-Type':
@@ -624,25 +608,48 @@
                         }
                        }
                       try {
-                        const res = await fetchAPI(url, option);
-                           if (res.result) { 
+                        const result = await fetchAPI(url, option);
+                        console.log('check: ', result)
+                           if (result) {
                             window.location.reload(); 
                             } else {
-                            console.log(res.id); 
                             swal("Lỗi!", "Không thể xóa sản phẩm này!", "error"); 
                             } 
                             
                             } catch (err) { console.log(err);
                                swal("Lỗi!", "Không thể xóa sản phẩm này!", "error");
                           }
-                      }
-                    const confirmDelete = (id) => {
+                    }
+
+                    const rejectProduct = async (id) => {
+                      const url = `/cpanel/product/rejectProduct-by-id/${id}`;
+                       const option = {
+                        method: 'POST', headers: {
+                          'Content-Type':
+                            'application/json'
+                        }
+                       }
+                      try {
+                        const result = await fetchAPI(url, option);
+                        console.log('check: ', result)
+                           if (result) { 
+                            window.location.reload(); 
+                            } else {
+                            swal("Lỗi!", "Không thể xóa sản phẩm này!", "error"); 
+                            } 
+                            
+                            } catch (err) { console.log(err);
+                               swal("Lỗi!", "Không thể xóa sản phẩm này!", "error");
+                          }
+                    }
+
+                    {{!-- const confirmDelete = (id) => {
                         swal({title: "Xác nhận?",text: "Bạn có chắc chắn muốn xóa sản phẩm này không?", icon:"warning", buttons: true, dangerMode: true})
                         .then((willDelete) => {
                           if (willDelete) 
                           { deleteProduct(id) }
                         });
-                      }
+                      } --}}
                   </script>
                 </div>
               </div>

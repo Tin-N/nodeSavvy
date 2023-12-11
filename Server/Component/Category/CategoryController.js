@@ -23,6 +23,15 @@ const getAPICategory = async() =>{
         throw error;
     }
 }
+
+const getAPICategoryById = async(id) =>{
+    try{
+        return await categorySevice.getAPICategoryById(id);
+    }catch(error){
+        throw error;
+    }
+}
+
 const deleteCategoryById = async (id, isDelete) =>{
     try {
         return await categorySevice.deleteCategoryById(id, isDelete);
@@ -31,9 +40,9 @@ const deleteCategoryById = async (id, isDelete) =>{
     }
 }
 
-const addCategory = async (name, images, color, isDelete) => {
+const addCategory = async (name, color, images, isDelete) => {
     try {
-        return await categorySevice.addCategory(name, images, color, isDelete);
+        return await categorySevice.addCategory(name, color, images, isDelete);
     } catch (error) {
         return false;
     }
@@ -56,4 +65,4 @@ const searchCategoryName = async (name) => {
         return false;
     }
 }
-module.exports = {getAPICategory, deleteCategoryById, addCategory, updateCategoryByid, getAPICategoryNotDelete, getAPICategoryDelete};
+module.exports = {getAPICategory, deleteCategoryById, addCategory, updateCategoryByid, getAPICategoryNotDelete, getAPICategoryDelete, getAPICategoryById};
