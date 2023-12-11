@@ -41,16 +41,29 @@ router.post('/addReply', async (req, res, next) => {
         })
     }
 })
+function calculatePage(countData,limit) {
+    const trangMoiTrang = limit;
+    const soTrang =
+      countData <= trangMoiTrang ? 1 : Math.ceil(countData / trangMoiTrang);
+    return soTrang;
+  }
 router.get('/getFeedbackByProductID', async (req, res, next) => {
     try {
-        const {id} = req.query;
-        const feedbacks = await feedbackController.getFeedbackByProductID(id); 
+        const {id,limit,size} = req.query;
+        const feedbacks = await feedbackController.getFeedbackByProductID(id,limit,size); 
+        if(feedbacks.result.length>0)
         return res.status(200).json({
             result: true,
-            feedbacks: feedbacks
+            feedbacks: feedbacks.result,
+            totalPage:calculatePage(feedbacks.count,10),
+            countData:feedbacks.count
+        })
+        return res.status(400).json({
+            result: false,
+            feedbacks: null,
         })
     } catch (error) {
-        console.log('getFeedbackByProductID error(Api catch): '+console.error());
+        console.log('getFeedbackByProductID error(Api catch): '+error);
         return res.status(500).json({
             result:false,
             message: 'getFeedbackByProductID error(Api)'

@@ -21,6 +21,9 @@ const categoryApiRouter = require('./routes/Api/CategoryApi');
 require("./Component/User/UserModel")
 
 const userApiRouter = require('./routes/Api/UserApi');
+const statisticSellerApiRouter = require('./routes/Api/StatisticSeller');
+const statisticAdminApiRouter = require('./routes/Api/StatisticAdmin');
+
 const favoriteApiRouter = require('./routes/Api/FavoriteApi');
 
 const cartAPI = require('./routes/Api/Cart')
@@ -30,24 +33,6 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 
 //Nhat code
-const httpServer = createServer();
-
-const io = new Server(5000,
-  {cors:{
-    origin:process.env.NODE_ENV ==="production"?false :["http://localhost:5000"]
-  }}
-)
-
-io.on("connection",socket=>{
-  console.log(`a user connected with id ${socket.id}`);
-  socket.on('message',data=>{
-    console.log(data);
-    io.emit('message',`${socket.id.substring(0,5)}: ${data}`)
-  })
-  
-})
-httpServer.listen(3500,()=>console.log("Listening on port 3500 ..."))
-
 require('./Component/Product/productModel');
 const feedbackAPIRouter = require('./routes/Api/feedbackAPI');
 const productAPIRouter = require('./routes/Api/productAPI');
@@ -115,7 +100,8 @@ app.use('/Api/orderdetail', orderDetail);
 app.use('/Api/feedbackAPI', feedbackAPIRouter)
 app.use('/Api/notificationApi', notificationApiRouter);
 
-
+app.use('/Api/statisticSeller', statisticSellerApiRouter)
+app.use('/Api/statisticAdmin', statisticAdminApiRouter)
 
 // cpanel
 

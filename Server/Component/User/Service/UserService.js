@@ -227,9 +227,39 @@ const emailVerify = async (email) => {
   //   throw error;  
   // }
 };
-
-
+const getUserByName = async (size,page)=>{
+  try {
+      const result = await userModel.find(
+      ).sort({_id:1}).limit(size?size:10).skip(page);
+      const count =await userModel.find().count();
+      if(result)
+        return {result:result,count:count};
+      return null;
+  } catch (error) {
+      console.log(error);
+  }
+}
+const disableUser= async (id)=>{
+  try {
+      const user= await userModel.findByIdAndUpdate(id,{isDisabled:true});
+      return user
+  } catch (error) {
+      console.log("DisableUser service"+error);
+      return null
+  }
+}
+const activateUser= async (id)=>{
+  try {
+      const user= await userModel.findByIdAndUpdate(id,{isDisabled:false});
+      return user
+  } catch (error) {
+      console.log("activateUser service"+error);
+      return null
+  }
+}
 module.exports = {
+  disableUser,
+  activateUser,
   login,
   register,
   changePassword,
@@ -240,4 +270,5 @@ module.exports = {
   emailVerify,
   getByRollID,
   checkUserByid,
+  getUserByName
 };
