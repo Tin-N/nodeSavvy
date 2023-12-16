@@ -153,14 +153,23 @@ router.get('/get-seller-censorship/', async (req, res, next) => {
 router.post('/check-seller-by-id/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        
-        await userController.checkUserByid(id, 3);
-        return res.status(200).json({message: "Chấp nhận user làm seller" });
+            console.log(id);
+        const result= await userController.checkUserByid(id, 2);
+        return res.status(200).json({message: "Duyệt user vào hàng chờ" ,result:true,user:result});
     } catch (error) {
-        return res.status(500).json({ message: "Chấp nhận duyệt Error" });
+        return res.status(500).json({ message: "Chấp nhận duyệt Error",result:false });
     }
 });
-
+router.post('/get-user-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await userController.checkUserByid(id, 2);
+        return res.status(200).json({message: "Duyệt user vào hàng chờ" ,result:true});
+    } catch (error) {
+        return res.status(500).json({ message: "Chấp nhận duyệt Error",result:false });
+    }
+});
 //Tu choi user lam seller 1
 //http://localhost:3000/api/UserApi/reject-seller-by-id/:id
 router.post('/reject-seller-by-id/:id', async (req, res, next) => {

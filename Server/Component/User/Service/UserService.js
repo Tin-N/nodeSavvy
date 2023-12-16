@@ -138,18 +138,18 @@ const getByRollID = async () =>{
 }
 
 const checkUserByid = async (id, roleID) => {
-  try {
+  // try {
       const user = await userModel.findById(id);
       if (user) {
         user.roleID = roleID ? roleID : user.roleID;
-          await user.save();
-          return true;
+          
+          return await user.save();
       }
       return false;
-  } catch (error) {
-      console.log('Check user by id error: ', error);
-      return false;
-  }
+  // } catch (error) {
+  //     console.log('Check user by id error: ', error);
+  //     return false;
+  // }
 }
 // const loginGoogle = async (email, name) => {
 //   try {
