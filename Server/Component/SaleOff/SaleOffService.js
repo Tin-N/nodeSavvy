@@ -89,8 +89,11 @@ const getSaleOffCurrent = async (saleOffID) => {
 
 const getSaleApplyByIDSale = async (saleID) => {
   try {
-    const sales = await saleOffModel.findById(saleID)
-    return sales;
+    if (typeof saleID != "undefined") {
+      const sales = await saleOffModel.findById(saleID)
+      return sales;
+    }
+    return false;
   } catch (err) {
     console.log("Không thể lấy ticket sale đang dùng(Ser): " + err);
     return false;

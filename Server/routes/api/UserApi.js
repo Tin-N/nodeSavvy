@@ -160,7 +160,8 @@ router.post('/check-seller-by-id/:id', async (req, res, next) => {
         return res.status(500).json({ message: "Chấp nhận duyệt Error",result:false });
     }
 });
-router.post('/get-user-by-id/:id', async (req, res, next) => {
+
+router.post('/check-seller-wait-by-id/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         
@@ -171,6 +172,8 @@ router.post('/get-user-by-id/:id', async (req, res, next) => {
     }
 });
 //Tu choi user lam seller 1
+
+//lay danh sach user lam seller 1
 //http://localhost:3000/api/UserApi/reject-seller-by-id/:id
 router.post('/reject-seller-by-id/:id', async (req, res, next) => {
     try {

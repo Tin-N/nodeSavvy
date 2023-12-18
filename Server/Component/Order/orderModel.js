@@ -10,7 +10,8 @@ const orderSchema = new Schema({
     paymentStatus: { type: String },
     paymentMethods: { type: String },
     ownerID: [{type: ObjectId}],
-    address: {type: String}
+    address: {type: String},
+    isConfirmed: {type: Boolean}
 });
 module.exports = mongoose.models.order || mongoose.model('Order', orderSchema);
 

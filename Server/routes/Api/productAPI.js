@@ -29,24 +29,8 @@ router.post('/addProduct', [validationAddProduct], async (req, res, next) => {
         return res.status(500).json({ result: false })
     }
 });
-// http://localhost:3000/Api/productAPI/updateProduct
 
 
-router.post("/deleteProduct", async (req, res, next) => {
-  try {
-    let { id } = req.query;
-    const result = await productController.deleteProduct(id);
-    if (result)
-      return res.status(200).json({ result: true, message: "Xóa thành công" });
-    else
-      return res
-        .status(400)
-        .json({ result: true, message: "Lỗi không thể xóa" });
-  } catch (err) {
-    console.log("Không thêm được  sản phẩm: " + err);
-    return res.status(500).json({ result: false });
-  }
-});
 // http://localhost:3000/Api/productAPI/addOption
 router.post("/addOption", async (req, res, next) => {
   try {

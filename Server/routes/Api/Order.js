@@ -4,7 +4,7 @@ const orderModel = require('../../Component/Order/orderModel');
 
 router.post('/add', async (req, res) => {
   try {
-    const { orderDetailID, userID, orderDate, deliveryStatus, paymentStatus, paymentMethods, ownerID, address } = req.body;
+    const { orderDetailID, userID, orderDate, deliveryStatus, paymentStatus, paymentMethods, ownerID, address, isConfirmed } = req.body;
 
     const newOrderModel = new orderModel({
       orderDetailID,
@@ -14,7 +14,8 @@ router.post('/add', async (req, res) => {
       paymentStatus,
       paymentMethods,
       ownerID,
-      address
+      address,
+      isConfirmed
     });
 
     const savedOrderModel = await newOrderModel.save();
@@ -57,9 +58,9 @@ router.get('/getOrderForCustomer/:userID', async (req, res) => {
 // Lấy thông tin đơn hàng cho người bán
 router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
   try {
-    const ownerID = req.params.ownerID;
+    const { ownerID } = req.params.ownerID;
 
-    const orders = await orderModel.find({ ownerID: { $in: ownerID } });
+    const orders = await orderModel.find({ ownerID: { $in: ownerID }, isConfirmed: false });
 
     res.json(orders);
   } catch (error) {
@@ -104,6 +105,30 @@ router.delete('/delete/:orderID', async (req, res) => {
     res.status(500).json({ error: 'Đã xảy ra lỗi khi xoá bản ghi.' });
   }
 });
+
+
+router.post('/updateisConfirmedisTrue/:orderID', async (req, res, next) => {
+  try {
+    const { orderID } = req.params; // Lấy orderID từ URL
+
+    // Tìm và xoá bản ghi trong bảng Order bằng orderID
+    const update = await orderModel.findByIdAndUpdate({ orderID }, {
+      $set: {
+        isConfirmed: true
+      }
+    });
+
+    if (!deletedOrder) {
+      return res.status(404).json({ error: 'Không tìm thấy bản ghi để xoá.' });
+    }
+
+    // Trả về phản hồi cho việc xoá thành công
+    res.status(200).json({ message: 'Bản ghi đã được xoá thành công.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi xoá bản ghi.' });
+  }
+})
 
 
 

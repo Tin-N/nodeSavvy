@@ -30,9 +30,11 @@ router.get('/getSaleApplyBySaleID', async (req, res, next) => {
     try {
         let { saleID } = req.query;
         const request = await saleOffController.getSaleApplyByIDSale(saleID);
-        return res.status(200).json({ result: true, saleOff: request });
+        if (typeof saleID != "undefined")
+            return res.status(200).json({ result: true, saleOff: request })
+        return res.status(500).json({ result: false, message: "Không có dữ liệu saleID(Api)" })
     } catch (err) {
-        console.log('Không thể lấy sale hiện tại(Api): ' + err);
+        console.log('Không thể lấy sale hiện tại(Api catch): ' + err);
         return res.status(500).json({ result: false })
     }
 })

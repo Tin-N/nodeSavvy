@@ -266,6 +266,7 @@ router.get("/getAllForShipper", async (req, res) => {
       "products.deliveryStatus": "Delivering",
     });
 
+
     // Send the response with the retrieved order details
     res.status(200).json({ success: true, data: deliveringOrders });
   } catch (error) {

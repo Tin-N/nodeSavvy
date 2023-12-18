@@ -21,7 +21,7 @@ const productSchema=new Schema({
     // Seller gửi yêu cầu => 1 
     // Admin chấp nhận => 2 
     // Admin từ chối => 3 cho vào  list hủy bên seller, cho seller sửa thông tin lại => khi seller gửi yêu cầu lại thì sửa thành 1
-    isApproved: { type: Number },
+    isApproved: { type: Number, default:1 },
     name:{type:String},
     quantity:{type:Number},
     sold:{type:Number, default: 0},

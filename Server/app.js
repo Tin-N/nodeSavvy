@@ -67,6 +67,11 @@ const saleOffRouter = require('./routes/Api/saleOffAPI');
 
 mongoose.connect('mongodb+srv://nhatccg456:mcmytFu5xkrw9CwD@cluster0.fn2hqad.mongodb.net/').then(() => console.log('Database Connected!')).catch(err => console.log('Database Error: ', err));
 
+// mongoose.connect('mongodb://127.0.0.1:27017/SavvyDatabase?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// }).then(() => console.log('Database Connected!')).catch(err => console.log('Database Error: ', err));
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
