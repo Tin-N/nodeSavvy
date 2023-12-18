@@ -99,7 +99,7 @@ const getStatisticRevenueByWeek = async () => {
         },
         
         {
-          $sort: { orderDetailID: 1 }, // Sắp xếp theo trường "_id" tăng dần trước khi áp dụng $project
+          $sort: { orderDetailID: -1 }, // Sắp xếp theo trường "_id" tăng dần trước khi áp dụng $project
         },
         {
           $unwind: "$products",
@@ -111,7 +111,8 @@ const getStatisticRevenueByWeek = async () => {
         },
         {
           $group: {
-            _id: {
+            _id: 
+            {
               $dateToString: {
                 format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
                 date: "$orderDetailID",
@@ -128,9 +129,7 @@ const getStatisticRevenueByWeek = async () => {
                 value: "$totalDeliveredCost",
             },
         },
-        {
-          $sort: { totalDeliveredCost: 1 }, // Sắp xếp theo trường "label" tăng dần
-        },
+        
       ]);
       const result1 = await orderDetailsModel.aggregate([
         {
@@ -180,7 +179,7 @@ const getStatisticRevenueByWeek = async () => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(aYearAgo)],
             },
           },
         },
@@ -200,7 +199,7 @@ const getStatisticRevenueByWeek = async () => {
             _id: {
               $dateToString: {
                 format: "%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
+                date: "$orderDetailID",
                 timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
               },
             },
@@ -221,7 +220,7 @@ const getStatisticRevenueByWeek = async () => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(aYearAgo)],
             },
           },
         },
@@ -259,7 +258,7 @@ const getStatisticUserByWeek = async () => {
         const now = new Date();
         const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
-            {$sort:{_id:1}}
+            {$sort:{_id:-1}}
             ,
         {
           
@@ -283,7 +282,7 @@ const getStatisticUserByWeek = async () => {
             numberOfUsers: { $count: {} },
           },
         },
-        { $sort: { _id: 1 } },
+      
         {
             $project: {
                 _id: 0, // 0 để ẩn trường _id
@@ -313,7 +312,7 @@ const getStatisticUserByMonth = async () => {
             },
           },
         },
-        { $sort: { _id: 1 } },
+        { $sort: { _id: -1 } },
         {
           $group: {
             _id: {
@@ -345,7 +344,7 @@ const getStatisticUserByYear = async () => {
         const now = new Date();
       const aYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
            const result = await userModel.aggregate([
-            {$sort:{_id:1}}
+            {$sort:{_id:-1}}
         ,
         {
           $match: {
@@ -356,7 +355,7 @@ const getStatisticUserByYear = async () => {
         },
         {
           $sort:{
-            _id:1
+            _id:-1
           }
         },
         {
@@ -372,7 +371,7 @@ const getStatisticUserByYear = async () => {
             numberOfUsers: {  $count: {} },
           },
         },  
-        { $sort: { _id: 1 } },
+        // { $sort: { _id: -1 } },
         {
             $project: {
                 _id: "$id", // 0 để ẩn trường _id
@@ -433,13 +432,13 @@ const getTotalUserByYear = async () => {
             },
           },
         }
-  ,
+        ,
         {
             $group: {
                 _id:0,
                 // _id: {
                 //   $dateToString: {
-                //     format: "%Y", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                //     format: "%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
                 //     date: "$_id",
                 //     timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
                 //   },

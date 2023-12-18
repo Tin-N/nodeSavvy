@@ -4,11 +4,11 @@ const orderDetailsModel = require("../Order/orderDetailsModel");
 const mongoose = require("mongoose");
 const feedbackModel = require("../Feedback/feedbackModel");
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+const { MongoClient, ObjectId } = require('mongodb');
 const getStatisticRevenueByWeek = async (ownerID) => {
   try {
     const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(now.getTime() - 7*24 * 60 * 60 * 1000);
     console.log(sevenDaysAgo);
     if (ownerID) {
       const result = await orderDetailsModel.aggregate([
@@ -19,14 +19,14 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             },
           },
         },
-        { $sort: { orderDetailID: 1 } }
+        { $sort: { orderDetailID: -1 } }
         ,
         {
           $unwind: "$products",
         },
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID) ,
             "products.deliveryStatus": "Delivered",
           },
         },
@@ -43,6 +43,14 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         }
+        ,
+        {
+          $project: {
+              _id: 0, // 0 để ẩn trường _id
+              label: "$_id",
+              value: "$totalDeliveredCost",
+          },
+      },
       ]);
       return result;
     } else {
@@ -63,16 +71,18 @@ const getStatisticRevenueByMonth = async (ownerID) => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(aMonthAgo)],
             },
           },
         },
+        { $sort: { orderDetailID: -1 } }
+        ,
         {
           $unwind: "$products",
         },
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             "products.deliveryStatus": "Delivered",
           },
         },
@@ -82,15 +92,21 @@ const getStatisticRevenueByMonth = async (ownerID) => {
             _id: {
               $dateToString: {
                 format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
+                date: "$orderDetailID",
                 timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
               },
             },
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
-        { $sort: { _id: 1 } }
-        ,
+        {
+          $project: {
+              _id: 0, // 0 để ẩn trường _id
+              label: "$_id",
+              value: "$totalDeliveredCost",
+          },
+      },
+        
       ]);
       return result;
     } else {
@@ -111,16 +127,18 @@ const getStatisticRevenueByYear = async (ownerID) => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(aYearAgo)],
             },
           },
         },
+        { $sort: { orderDetailID: 1 } }
+        ,
         {
           $unwind: "$products",
         },
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             "products.deliveryStatus": "Delivered",
           },
         },
@@ -129,16 +147,21 @@ const getStatisticRevenueByYear = async (ownerID) => {
           $group: {
             _id: {
               $dateToString: {
-                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
+                format: "%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                date: "$orderDetailID",
                 timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
               },
             },
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
-        { $sort: { _id: 1 } }
-        ,
+        {
+          $project: {
+              _id: 0, // 0 để ẩn trường _id
+              label: "$_id",
+              value: "$totalDeliveredCost",
+          },
+      }
       ]);
       return result;
     } else {
@@ -152,8 +175,8 @@ const getStatisticRevenueByYear = async (ownerID) => {
 const getTotalRevenueByWeek = async (ownerID) => {
   try {
     const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    console.log(sevenDaysAgo);
+    const sevenDaysAgo = new Date(now.getTime() - 7*24 * 60 * 60 * 1000);
+    console.log(sevenDaysAgo,ownerID);
     if (ownerID) {
       const result = await orderDetailsModel.aggregate([
         {
@@ -169,19 +192,12 @@ const getTotalRevenueByWeek = async (ownerID) => {
         },
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             "products.deliveryStatus": "Delivered",
           },
         },
         {
           $group: {
-            //   _id: {
-            //     $dateToString: {
-            //       format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-            //       date: "$_id",
-            //       timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-            //     },
-            //   },
             _id: 0,
             totalProduct: { $count: {} },
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
@@ -219,7 +235,7 @@ const getTotalRevenueByMonth = async (ownerID) => {
         },
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             "products.deliveryStatus": "Delivered",
           },
         },
@@ -227,13 +243,6 @@ const getTotalRevenueByMonth = async (ownerID) => {
         ,
         {
           $group: {
-            //   _id: {
-            //     $dateToString: {
-            //       format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-            //       date: "$_id",
-            //       timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-            //     },
-            //   },
             _id: 0,
             totalProduct: { $count: {} },
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
@@ -269,7 +278,7 @@ const getTotalRevenueByYear = async (ownerID) => {
         },
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             "products.deliveryStatus": "Delivered",
           },
         },
@@ -306,7 +315,7 @@ const getTopRatedByProductByWeek = async (ownerID) => {
       const result = await feedbackModel.aggregate([
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             $expr: {
               $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
             },
@@ -355,7 +364,7 @@ const getTopRatedByProductByMonth = async (ownerID) => {
       const result = await feedbackModel.aggregate([
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             $expr: {
               $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
             },
@@ -404,7 +413,7 @@ const getTopRatedByProductByYear = async (ownerID) => {
       const result = await feedbackModel.aggregate([
         {
           $match: {
-            "products.ownerID": ownerID,
+            "products.ownerID": new ObjectId(ownerID),
             $expr: {
               $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
             },

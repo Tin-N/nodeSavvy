@@ -3,9 +3,9 @@ const router = express.Router();
 const orderDetailModel = require("../../Component/Order/orderDetailsModel");
 const orderModel = require("../../Component/Order/orderModel");
 const mongoose = require("mongoose");
+const { ObjectId } = require('mongodb');
 
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 router.post("/add", async (req, res) => {
   try {
@@ -369,10 +369,10 @@ router.get(
   async (req, res) => {
     try {
       const { userID, productID } = req.params; // Lấy orderDetailID từ URL
-      // console.log(productID);
+      console.log(userID, productID);
       // Tìm và xoá bản ghi trong bảng OrderDetail bằng orderDetailID
       const result = await orderModel.aggregate([
-        { $match: { userID: userID } },
+        { $match: { userID: new ObjectId(userID) } },
         {
           $lookup: {
             from: "orderdetails",
@@ -400,19 +400,22 @@ router.get(
 
               if(objectId.toString()==productID){
                 check=true;
-              }
+              } 
             });
           });
         });
         if(check)
-        return res.status(200).json({ result: true });
+        return res.status(200).json({ result: true,data: result});
         else
-        res.status(400).json({ result: false, data: null });
+        res.status(400).json({ result: false, data: result });
+
+      }else{
+              res.status(400).json({ result: false, data: result });
 
       }
 
       // Trả về phản hồi với thông báo xoá thành công
-      res.status(400).json({ result: false, data: null });
+      // res.status(400).json({ result: false, data: result });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Đã xảy ra lỗi khi xoá bản ghi." });

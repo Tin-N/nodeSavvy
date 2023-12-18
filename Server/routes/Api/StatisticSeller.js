@@ -87,7 +87,7 @@ router.get('/get-top-rated-products-by-month', async (req, res, next) => {
         return res.status(500).json("thong bao that bai");
     }
 });// http://localhost:3000/Api/statisticSeller/get-top-rated-products-week
-router.get('/get-top-rated-products-by-Year', async (req, res, next) => {
+router.get('/get-top-rated-products-by-year', async (req, res, next) => {
     try {
         const {ownerID}=req.query
 
@@ -107,7 +107,6 @@ router.get('/get-total-revenue-by-week', async (req, res, next) => {
     try {
         const {ownerID}=req.query
         const result =await statisticSeller.getTotalRevenueByWeek(ownerID);
-        console.log(result);
 
         if(result.length>0)
         return res.status(200).json({result:true,data:result});

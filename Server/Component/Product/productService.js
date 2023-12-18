@@ -82,36 +82,15 @@ const getProductByID = async (id) => {
   }
 }
 
-const getProductByCategoryID = async (categoryID, limitData, skipPage,sortName, sortPrice, sortRating, lte, gte) => {
+const getProductByCategoryID = async (categoryID, limitData, skipPage) => {
   try {
-
-    let sort={}
-let searchoriginal= {
-  categoryID:categoryID,
-  price: {
-    $lte: lte ? lte : MAX_VALUE,
-    $gte: gte ? gte : 0,
-  }
-}
-
-    if (sortName) 
-      sort={...sort,name: +sortName}
-    
-    if (sortPrice) 
-      sort={...sort,price: +sortPrice}
-    
-
-    if (sortRating) 
-      sort={...sort,rating: +sortRating}
-  
-
     console.log(limitData,typeof limitData!=='undefined'?limitData:5);
     const result= await productModel
-      .find(searchoriginal)
-      .limit(typeof limitData!=='undefined'?limitData:20)
-      .skip(skipPage).sort(sort);
+      .find({ categoryID: categoryID })
+      .limit(typeof limitData!=='undefined'?limitData:10)
+      .skip(skipPage);
       const count= await productModel
-      .find(searchoriginal).count();
+      .find({ categoryID: categoryID }).count();
       return {result:result, count:count}
   } catch (error) {
     console.log("getAllProductByUserID error: " + error);
