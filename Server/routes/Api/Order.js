@@ -58,9 +58,9 @@ router.get('/getOrderForCustomer/:userID', async (req, res) => {
 // Lấy thông tin đơn hàng cho người bán
 router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
   try {
-    const { ownerID } = req.params.ownerID;
+    const { ownerID } = req.params;
 
-    const orders = await orderModel.find({ ownerID: { $in: ownerID }, isConfirmed: false });
+    const orders = await orderModel.find({ ownerID: { $in: [ownerID] }, isConfirmed: false });
 
     res.json(orders);
   } catch (error) {
@@ -68,6 +68,7 @@ router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
     res.status(500).json({ message: 'Lỗi server' });
   }
 });
+
 
 router.get('/getOrderByOrderDetailID/:orderDetailID', async (req, res) => {
   const orderDetailID = req.params.orderDetailID;
@@ -107,29 +108,26 @@ router.delete('/delete/:orderID', async (req, res) => {
 });
 
 
-router.post('/updateisConfirmedisTrue/:orderID', async (req, res, next) => {
+router.put('/updateisConfirmedisTrue/:orderID', async (req, res) => {
   try {
-    const { orderID } = req.params; // Lấy orderID từ URL
+    const { orderID } = req.params;
 
-    // Tìm và xoá bản ghi trong bảng Order bằng orderID
-    const update = await orderModel.findByIdAndUpdate({ orderID }, {
-      $set: {
-        isConfirmed: true
-      }
-    });
+    // Find and update the order by setting isConfirmed to true
+    const updatedOrder = await orderModel.findOneAndUpdate(
+      { orderID },
+      { $set: { isConfirmed: true } },
+      { new: true }
+    );
 
-    if (!deletedOrder) {
-      return res.status(404).json({ error: 'Không tìm thấy bản ghi để xoá.' });
+    if (!updatedOrder) {
+      return res.status(404).json({ error: 'Không tìm thấy bản ghi để cập nhật.' });
     }
 
-    // Trả về phản hồi cho việc xoá thành công
-    res.status(200).json({ message: 'Bản ghi đã được xoá thành công.' });
+    res.status(200).json({ message: 'Bản ghi đã được cập nhật thành công.', updatedOrder });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Đã xảy ra lỗi khi xoá bản ghi.' });
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi cập nhật bản ghi.' });
   }
-})
-
-
+});
 
 module.exports = router;
