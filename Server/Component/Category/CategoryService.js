@@ -33,6 +33,15 @@ const getAPICategory = async () => {
   }
 }
 
+const getAPICategoryById = async (id) => {
+  try {
+    // return data;
+    return await categoryModel.findById(id);
+  } catch (error) {
+    console.log('Get all categories aerror: ', error);
+    throw error;
+  }
+}
 
 const deleteCategoryById = async (id, isDelete) => {
   try {
@@ -50,15 +59,15 @@ const deleteCategoryById = async (id, isDelete) => {
 }
 
 
-const addCategory = async (name, images, color, isDelete) => {
+const addCategory = async (name, color, images, isDelete) => {
   try {
-    const newCategory = { name, images, color, isDelete };
+    const newCategory = { name, color, images, isDelete };
     const c = new categoryModel(newCategory);
     await c.save();
     return true;
 
   } catch (error) {
-    console.log('Addd new category error: ', error);
+    console.log('Add new category error: ', error);
     return false;
   }
 }
@@ -90,4 +99,4 @@ const updateCategoryByid = async (id, name, images, color) => {
 //   }
 // }
 
-module.exports = { getAPICategoryNotDelete, deleteCategoryById, addCategory, updateCategoryByid, getAPICategoryDelete, getAPICategory, };
+module.exports = { getAPICategoryNotDelete, deleteCategoryById, addCategory, updateCategoryByid, getAPICategoryDelete, getAPICategory, getAPICategoryById};

@@ -14,6 +14,7 @@ const userSchema=new Schema({
     phoneNumber:{type:String},
     avatar:{type:String},
     isVerified:{type:Boolean, default:false},
+    isDisabled:{type:Boolean,default:false},
     emailToken:{type:String},
 });
 module.exports = mongoose.models.user || mongoose.model('user',userSchema);

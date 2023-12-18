@@ -148,20 +148,29 @@ router.get('/get-seller-censorship/', async (req, res, next) => {
     }
 });
 
-//lay danh sach user lam seller 3
+//chap nhan user lam seller 3
 //http://localhost:3000/api/UserApi/check-seller-by-id/:id
 router.post('/check-seller-by-id/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        
-        await userController.checkUserByid(id, 3);
-        return res.status(200).json({message: "Chấp nhận user làm seller" });
+            console.log(id);
+        const result= await userController.checkUserByid(id, 2);
+        return res.status(200).json({message: "Duyệt user vào hàng chờ" ,result:true,user:result});
     } catch (error) {
-        return res.status(500).json({ message: "Chấp nhận duyệt Error" });
+        return res.status(500).json({ message: "Chấp nhận duyệt Error",result:false });
     }
 });
-
-//lay danh sach user lam seller 1
+router.post('/get-user-by-id/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        await userController.checkUserByid(id, 2);
+        return res.status(200).json({message: "Duyệt user vào hàng chờ" ,result:true});
+    } catch (error) {
+        return res.status(500).json({ message: "Chấp nhận duyệt Error",result:false });
+    }
+});
+//Tu choi user lam seller 1
 //http://localhost:3000/api/UserApi/reject-seller-by-id/:id
 router.post('/reject-seller-by-id/:id', async (req, res, next) => {
     try {
@@ -173,4 +182,47 @@ router.post('/reject-seller-by-id/:id', async (req, res, next) => {
         return res.status(500).json({ message: "Từ chối Error" });
     }
 });
+//http://localhost:3000/api/UserApi/get-user-list/:page
+
+router.get('/get-user-list/:page', async (req, res, next) => {
+    // try {
+        const { page } = req.params;
+        
+        const result= await userController.getUserList(10, page);
+        if(result)
+        return res.status(200).json({result:result });
+        return res.status(400).json({result:result });
+
+    // } catch (error) {
+    //     return res.status(500).json({ message: "Từ chối Error" });
+    // }
+});
+//http://localhost:3000/Api/UserApi/activateUser?id=
+
+router.post('/activateUser', async (req, res, next) => {
+    try {
+        const {id} = req.query;
+        const user = await userController.activateUser(id);
+        if (user) {
+            return res.status(200).json({ result: true, user: user, message: "Login Google Success" });
+        }
+        return res.status(400).json({ result: false, user: null, token: null, message: "Login Google Failed" });
+    } catch (error) {
+        return res.status(500).json({ result: false, message: 'Error System' })
+    }
+  });
+  //http://localhost:3000/Api/UserApi/disableUser?id=
+
+  router.post('/disableUser', async (req, res, next) => {
+    try {
+        const {id} = req.query;
+        const user = await userController.disableUser(id);
+        if (user) {
+            return res.status(200).json({ result: true, user: user, message: "Login Google Success" });
+        }
+        return res.status(400).json({ result: false, user: null, token: null, message: "Login Google Failed" });
+    } catch (error) {
+        return res.status(500).json({ result: false, message: 'Error System' })
+    }
+  });
 module.exports = router;

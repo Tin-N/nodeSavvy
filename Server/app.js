@@ -15,13 +15,16 @@ const orderAPI = require('./routes/Api/Order')
 // const productAPIRouter = require('./routes/Api/productAPI');
 const orderDetail = require('./routes/Api/OrderDetail')
 
-const categoryApiRouter = require('./routes/api/CategoryApi');
 
+const categoryApiRouter = require('./routes/Api/CategoryApi');
 require("./Component/User/UserModel")
 
-const userApiRouter = require('./routes/api/UserApi');
+const userApiRouter = require('./routes/Api/UserApi');
+const statisticSellerApiRouter = require('./routes/Api/StatisticSeller');
+const statisticAdminApiRouter = require('./routes/Api/StatisticAdmin');
 
-const favoriteApiRouter = require('./routes/api/FavoriteApi');
+const favoriteApiRouter = require('./routes/Api/FavoriteApi');
+
 
 const cartAPI = require('./routes/Api/Cart')
 
@@ -31,8 +34,6 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 
 //Nhat code
-
-
 
 require('./Component/Product/productModel');
 const feedbackAPIRouter = require('./routes/Api/feedbackAPI');
@@ -58,6 +59,7 @@ const notificationApiRouter = require('./routes/api/NotificationApi');
 const productCpanelRouter= require('./routes/cpanel/ProductCpanel')
 const userCpanelRouter= require('./routes/cpanel/UserCpanel')
 const categoryCpanelRouter= require('./routes/cpanel/CategoryCpanel')
+
 
 
 require('./Component/SaleOff/SaleOffModel')
@@ -111,7 +113,8 @@ app.use('/Api/feedbackAPI', feedbackAPIRouter)
 
 app.use('/Api/notificationApi', notificationApiRouter);
 
-
+app.use('/Api/statisticSeller', statisticSellerApiRouter)
+app.use('/Api/statisticAdmin', statisticAdminApiRouter)
 
 // cpanel
 

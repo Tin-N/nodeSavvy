@@ -209,7 +209,7 @@
               <p class="fw-light text-muted mb-0">allenmoreno@gmail.com</p>
             </div>
             <a class="dropdown-item"
-              href="http://localhost:3000/cpanel/product/profile"><i
+              href="/cpanel/product/profile"><i
                 class="dropdown-item-icon mdi mdi-account-outline text-primary
                 me-2"></i>
               My Profile
@@ -433,16 +433,16 @@
     </div>
     <!-- partial -->
     <!-- partial:../partials/_sidebar.html -->
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/">
               <i class="mdi mdi-grid-large menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+              <span class="menu-title">Trang chủ</span>
             </a>
           </li>
 
-          <li class="nav-item nav-category">Forms and Datas</li>
+          <li class="nav-item nav-category"></li>
           <li class="nav-item">
             <a
               class="nav-link"
@@ -452,15 +452,21 @@
               aria-controls="form-elements"
             >
               <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Form</span>
+              <span class="menu-title">Kiểm Duyệt</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="http://localhost:3000/cpanel/product/form"
-                  >Basic form</a></li>
+                    href="/cpanel/user/getSeller"
+                  >Người bán</a></li>
+              </ul>
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a
+                    class="nav-link"
+                    href="/cpanel/product/getCensorshipProduct"
+                  >Sản phẩm</a></li>
               </ul>
             </div>
           </li>
@@ -473,13 +479,17 @@
               aria-controls="charts"
             >
               <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Charts</span>
+              <span class="menu-title">Thống kê</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/cpanel/product/chart">ChartJs</a></li>
+                  <a class="nav-link" href="/cpanel/product/Revenue/1">Doanh thu</a></li>
+              </ul>
+                            <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/cpanel/product/User/1">Người dùng</a></li>
               </ul>
             </div>
           </li>
@@ -492,17 +502,17 @@
               aria-controls="tables"
             >
               <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Tables</span>
+              <span class="menu-title">Quản lí danh mục</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/cpanel/product/">Basic table</a></li>
+                  <a class="nav-link" href="/cpanel/category/getCategory">Basic table</a></li>
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">pages</li>
+          {{!-- <li class="nav-item nav-category"></li> --}}
           <li class="nav-item">
             <a
               class="nav-link"
@@ -512,15 +522,15 @@
               aria-controls="auth"
             >
               <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Pages</span>
+              <span class="menu-title">Quản lí người dùng</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/login"> Login </a></li>
+                  <a class="nav-link" href="/login"> Login </a></li>
                 <li class="nav-item">
-                  <a class="nav-link" href="register.html"> Sign Up </a></li>
+                  <a class="nav-link" href="/register"> Sign Up </a></li>
 
               </ul>
             </div>
@@ -567,10 +577,10 @@
                         }}
 
                         <td>
-                          <a href="http://localhost:3000/cpanel/product/{{this._id}}/edit" class="btn
-                            btn-primary">Đồng ý</a>
+                          <a class="btn btn-primary"
+                            onclick="checkUser('{{this._id}}')">Đồng ý</a>
                           <a class="btn btn-danger"
-                            onclick="confirmDelete('{{this._id}}')">Từ chối</a>
+                            onclick="rejectUser('{{this._id}}')">Từ chối</a>
                         </td>
                       </tr>
                       {{/each}}
@@ -605,9 +615,10 @@
                     const fetchAPI = async (url, option) => {
                         const res = await fetch(url, option);
                       return res.json();
-                    } 
-                    const deleteProduct = async (id) => {
-                      const url = `/cpanel/product/${id}/delete`;
+                    }
+
+                    const checkUser = async (id) => {
+                      const url = `/cpanel/user/check-seller-by-id/${id}`;
                        const option = {
                         method: 'POST', headers: {
                           'Content-Type':
@@ -615,25 +626,48 @@
                         }
                        }
                       try {
-                        const res = await fetchAPI(url, option);
-                           if (res.result) { 
+                        const result = await fetchAPI(url, option);
+                        console.log('check: ', result)
+                           if (result) { 
                             window.location.reload(); 
                             } else {
-                            console.log(res.id); 
                             swal("Lỗi!", "Không thể xóa sản phẩm này!", "error"); 
                             } 
                             
                             } catch (err) { console.log(err);
                                swal("Lỗi!", "Không thể xóa sản phẩm này!", "error");
                           }
-                      }
-                    const confirmDelete = (id) => {
+                    }
+
+                    const rejectUser = async (id) => {
+                      const url = `/cpanel/user/reject-seller-by-id/${id}`;
+                       const option = {
+                        method: 'POST', headers: {
+                          'Content-Type':
+                            'application/json'
+                        }
+                       }
+                      try {
+                        const result = await fetchAPI(url, option);
+                        console.log('check: ', result)
+                           if (result) { 
+                            window.location.reload(); 
+                            } else {
+                            swal("Lỗi!", "Không thể xóa sản phẩm này!", "error"); 
+                            } 
+                            
+                            } catch (err) { console.log(err);
+                               swal("Lỗi!", "Không thể xóa sản phẩm này!", "error");
+                          }
+                    }
+
+                    {{!-- const confirmDelete = (id) => {
                         swal({title: "Xác nhận?",text: "Bạn có chắc chắn muốn xóa sản phẩm này không?", icon:"warning", buttons: true, dangerMode: true})
                         .then((willDelete) => {
                           if (willDelete) 
                           { deleteProduct(id) }
                         });
-                      }
+                      } --}}
                   </script>
                 </div>
               </div>

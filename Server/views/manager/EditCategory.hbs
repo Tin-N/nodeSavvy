@@ -272,7 +272,7 @@
               </div>
               <a
                 class="dropdown-item"
-                href="http://localhost:3000/cpanel/product/profile"
+                href="/cpanel/product/profile"
               ><i
                   class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"
                 ></i>
@@ -543,13 +543,13 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/">
               <i class="mdi mdi-grid-large menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+              <span class="menu-title">Trang chủ</span>
             </a>
           </li>
 
-          <li class="nav-item nav-category">Forms and Datas</li>
+          <li class="nav-item nav-category"></li>
           <li class="nav-item">
             <a
               class="nav-link"
@@ -559,15 +559,21 @@
               aria-controls="form-elements"
             >
               <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Form</span>
+              <span class="menu-title">Kiểm Duyệt</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a
                     class="nav-link"
-                    href="http://localhost:3000/cpanel/product/form"
-                  >Basic form</a></li>
+                    href="/cpanel/user/getSeller"
+                  >Người bán</a></li>
+              </ul>
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a
+                    class="nav-link"
+                    href="/cpanel/product/getCensorshipProduct"
+                  >Sản phẩm</a></li>
               </ul>
             </div>
           </li>
@@ -580,13 +586,17 @@
               aria-controls="charts"
             >
               <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Charts</span>
+              <span class="menu-title">Thống kê</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/cpanel/product/chart">ChartJs</a></li>
+                  <a class="nav-link" href="/cpanel/product/Revenue/1">Doanh thu</a></li>
+              </ul>
+                            <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/cpanel/product/User/1">Người dùng</a></li>
               </ul>
             </div>
           </li>
@@ -599,17 +609,17 @@
               aria-controls="tables"
             >
               <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Tables</span>
+              <span class="menu-title">Quản lí danh mục</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/cpanel/product/">Basic table</a></li>
+                  <a class="nav-link" href="/cpanel/category/getCategory">Basic table</a></li>
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">pages</li>
+          {{!-- <li class="nav-item nav-category"></li> --}}
           <li class="nav-item">
             <a
               class="nav-link"
@@ -619,20 +629,19 @@
               aria-controls="auth"
             >
               <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Pages</span>
+              <span class="menu-title">Quản lí người dùng</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:3000/login"> Login </a></li>
+                  <a class="nav-link" href="/login"> Login </a></li>
                 <li class="nav-item">
-                  <a class="nav-link" href="register.html"> Sign Up </a></li>
+                  <a class="nav-link" href="/register"> Sign Up </a></li>
 
               </ul>
             </div>
           </li>
-
         </ul>
       </nav>
       <!-- partial -->
@@ -649,21 +658,21 @@
                   <form
                     class="forms-sample"
                     method="post"
-                    action="/cpanel/product/{{product._id}}/edit"
+                    action="/cpanel/category/{{categories._id}}/editCategory"
                     enctype="multipart/form-data"
                   >
                     <div class="form-group">
                       <label for="exampleInputUsername1">Name</label>
                       <input
                         name="name"
-                        value="{{product.name}}"
+                        value="{{categories.name}}"
                         type="text"
                         class="form-control"
                         id="exampleInputUsername1"
                         placeholder="Name"
                       />
                     </div>
-                    <div class="form-group">
+                    {{!-- <div class="form-group">
                       <label for="exampleInputEmail1">Price</label>
                       <input
                         name="price"
@@ -673,16 +682,10 @@
                         id="exampleInputEmail1"
                         placeholder="Price"
                       />
-                    </div>
+                    </div> --}}
                     <div class="form-group">
-                      <label>Quantity</label>
-                      <input
-                        name="quantity"
-                        value="{{product.quantity}}"
-                        type="text"
-                        class="form-control"
-                        placeholder="Quantity"
-                      />
+                        <label for="favcolor">Chọn màu nền: </label>
+                        <input name="color" type="color" id="favcolor" value="{{categories.color}}"><br><br>
                     </div>
                     <div class="form-group">
                       <input
@@ -693,13 +696,13 @@
                       />
                       <img
                         id="img"
-                        src={{product.images}}
+                        src="{{categories.images}}"
                         width="100"
                         height="100"
                       />
                     </div>
 
-                    <div class="form-group">
+                    {{!-- <div class="form-group">
                       <label>Category</label>
                       <select name="category" class="form-control">
                         {{#each categories}}
@@ -714,11 +717,11 @@
                         {{/each}}
 
                       </select>
-                    </div>
+                    </div> --}}
                     <button
                       type="submit"
                       class="btn btn-primary me-2"
-                    >Submit</button>
+                    >Cập nhật</button>
                   </form>
                 </div>
               </div>

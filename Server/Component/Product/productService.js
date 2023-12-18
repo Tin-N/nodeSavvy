@@ -207,14 +207,17 @@ const FilterProductByName = async (
       // }
     }
 
-    let option = {};
-    if (name)
-      searchoriginal = { ...searchoriginal, name: { $regex: name, $options: "i" } }
+
+   let option={};
+    if(name)
+      searchoriginal={name:{$regex: name, $options: "i"}}
+
     if (sortNew) {
       option = { ...option, _id: -1 }
     }
     if (sortPrice) {
-      option = { ...option, price: -1 }
+      option={...option,sold:-1}
+
     }
 
     if (sortRating) {
@@ -223,14 +226,18 @@ const FilterProductByName = async (
     // if (sortDiscount) {
     //   option={...option,rating:1}
     // }
-    const count = await productModel
-      .find(searchoriginal).sort(option)
-      .count();
-    const product = await productModel
-      .find(searchoriginal).sort(option)
-      .limit(limitData ? limitData : 20)
-      .skip(skipData ? skipData : 0)
-    return { product: product, count: count };
+
+    console.log(skipData, limitData);
+
+    const count =await productModel
+    .find(searchoriginal).sort(option)
+    .count();
+    const product=await productModel
+    .find(searchoriginal).sort(option)
+    .limit(limitData ? limitData : 20)
+    .skip(skipData ? skipData : 0)
+    return {product:product,count:count};
+
   } catch (error) {
     console.log("filterProduct error: " + error);
   }

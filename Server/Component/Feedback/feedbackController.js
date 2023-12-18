@@ -19,9 +19,18 @@ const addReply = async (feedbackID, userID, reply) => {
         console.log('Không thể trả lời bình luận(Contr): ' + error);
     }
 }
-const getFeedbackByProductID = async (id) => {
+const getFeedbackByProductID = async (id,limitData,size) => {
     try {
-        return await feedbackService.getFeedbackByProductID(id);
+        let skip = 0;
+
+        if (typeof limitData !== "undefined" && limitData > 0)
+          skip = (size - 1) * limitData;
+        else {
+          if (size == 1) skip = 0;
+          else if (size > 1) skip = (size - 1) * 20;
+        }
+        console.log("page: " + skip);
+        return await feedbackService.getFeedbackByProductID(id,limitData,skip);
     } catch (error) {
         console.log('getFeedBackByProductID error(Contr): '+error);
     }
