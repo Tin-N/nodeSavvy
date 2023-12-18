@@ -1,8 +1,21 @@
 var express = require('express');
 var router = express.Router();
+const { MongoClient, ObjectId } = require('mongodb');
+
 // const notificationController = require('../../Component/Notification/NotificationController')
 const statisticAdmin=require("../../Component/Statistic/StatisticAdmin")
 //thong bao tu choi or dong y duyet product
+// http://localhost:3000/Api/statisticAdmin/create-ObjectID
+
+router.get('/create-ObjectID', async (req, res, next) => {
+    try {
+       const result= ObjectId.createFromTime(1702238051);
+        return res.status(200).json({result:true,data:result,message:"thong bao thanh cong"});
+    } catch (error) {
+        console.log('New product error: ', error);
+        return res.status(500).json("thong bao that bai");
+    }
+});
 // http://localhost:3000/Api/statisticAdmin/get-statistic-by-week
 router.get('/get-statistic-by-week', async (req, res, next) => {
     try {

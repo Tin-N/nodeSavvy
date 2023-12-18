@@ -19,6 +19,7 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             },
           },
         },
+        {$sort:{_id:1}},
         {
           $unwind: "$products",
         },
@@ -41,7 +42,7 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
-        {$sort:{_id:1}}
+        
         ,
       ]);    
       return result;
@@ -67,6 +68,7 @@ const getStatisticRevenueByMonth = async (ownerID) => {
             },
           },
         },
+        {$sort:{_id:1}},
         {
           $unwind: "$products",
         },
@@ -89,8 +91,7 @@ const getStatisticRevenueByMonth = async (ownerID) => {
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
-        {$sort:{_id:1}}
-        ,
+       
       ]);
       return result;
    }else{

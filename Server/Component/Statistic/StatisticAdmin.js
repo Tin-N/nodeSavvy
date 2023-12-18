@@ -1,6 +1,7 @@
 const productModel = require("../Product/productModel");
 const FeedbackModel = require("../Feedback/feedbackModel");
 const orderDetailsModel = require("../Order/orderDetailsModel");
+const { MongoClient, ObjectId } = require('mongodb');
 const userModel= require('../User/UserModel');
 const getStatisticRevenueByWeek = async () => {
     try {
@@ -15,6 +16,7 @@ const getStatisticRevenueByWeek = async () => {
             },
           },
         },
+         {$sort:{_id:1}},
         {
           $unwind: "$products",
         },
@@ -43,7 +45,7 @@ const getStatisticRevenueByWeek = async () => {
                 value: "$totalDeliveredCost",
             },
         }
-        , {$sort:{_id:1}},
+        
       ]);
       const result1 = await orderDetailsModel.aggregate([
         {
@@ -153,8 +155,7 @@ const getStatisticRevenueByWeek = async () => {
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
-        {$sort:{_id:1}},
-
+       
         {
             $project: {
                 _id: 0, // 0 để ẩn trường _id
@@ -191,7 +192,8 @@ const getStatisticRevenueByWeek = async () => {
             "products.deliveryStatus": "Delivered",
           },
         },
-        
+        {$sort:{_id:1}},
+
        
         {
           $group: {
@@ -213,8 +215,7 @@ const getStatisticRevenueByWeek = async () => {
                 value: "$totalDeliveredCost",
             },
         },
-        {$sort:{label:1}}
-        ,
+        
       ]);
       const result1 = await orderDetailsModel.aggregate([
         {
