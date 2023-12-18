@@ -12,7 +12,7 @@ const getStatisticRevenueByWeek = async () => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(sevenDaysAgo)],
             },
           },
         },
@@ -25,13 +25,13 @@ const getStatisticRevenueByWeek = async () => {
             "products.deliveryStatus": "Delivered",
           },
         }
-        ,
+        , {$sort:{orderDetailID:1}},
         {
           $group: {
             _id: {
               $dateToString: {
                 format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
+                date: "$orderDetailID",
                 timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
               },
             },
@@ -45,13 +45,13 @@ const getStatisticRevenueByWeek = async () => {
                 value: "$totalDeliveredCost",
             },
         }
-        
+
       ]);
       const result1 = await orderDetailsModel.aggregate([
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(sevenDaysAgo)],
             },
           },
         },
@@ -93,13 +93,13 @@ const getStatisticRevenueByWeek = async () => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(aMonthAgo)],
             },
           },
         },
         
         {
-          $sort: { _id: 1 }, // Sắp xếp theo trường "_id" tăng dần trước khi áp dụng $project
+          $sort: { orderDetailID: 1 }, // Sắp xếp theo trường "_id" tăng dần trước khi áp dụng $project
         },
         {
           $unwind: "$products",
@@ -114,7 +114,7 @@ const getStatisticRevenueByWeek = async () => {
             _id: {
               $dateToString: {
                 format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
+                date: "$orderDetailID",
                 timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
               },
             },
@@ -136,7 +136,7 @@ const getStatisticRevenueByWeek = async () => {
         {
           $match: {
             $expr: {
-              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(aMonthAgo)],
             },
           },
         },

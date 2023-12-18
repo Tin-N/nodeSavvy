@@ -317,7 +317,7 @@ router.get("/Revenue/:typeOfRevenue", async (req, res, next) =>{
             },
           },
         });
-        myChart.setWidth(data.values.length*80).setHeight(200).setBackgroundColor("#ffffff");
+        myChart.setWidth(data.values.length*150).setHeight(200).setBackgroundColor("#ffffff");
         res.render("manager/RevenueStatistics", { image: myChart.getUrl(),title:"Tháng",total:formatCurrency(staticticsRevenueByMonth.total[0].value) });
         break;
       }
@@ -371,7 +371,7 @@ router.get("/Revenue/:typeOfRevenue", async (req, res, next) =>{
             }
           },
         });
-        myChart.setWidth(data.values.length*80).setHeight(200).setBackgroundColor("#ffffff");
+        myChart.setWidth(data.values.length*150).setHeight(200).setBackgroundColor("#ffffff");
         res.render("manager/RevenueStatistics", { image: myChart.getUrl(),title:"Năm",total:formatCurrency(staticticsRevenueByYear.total[0].value) });
         break;
       }
@@ -501,7 +501,7 @@ router.get("/User/:typeOfRevenue", async (req, res, next) =>{
             },
           },
         });
-        myChart.setWidth(data.values.length*80).setHeight(200).setBackgroundColor("#ffffff");
+        myChart.setWidth(data.values.length*100).setHeight(200).setBackgroundColor("#ffffff");
         res.render("manager/UserStatistics", { image: myChart.getUrl(),title:"Tháng",totalBy:formatCurrency(totalUserByMonth[0].numberOfUsers),total:formatCurrency(totalUser)});
         break;
       }
@@ -557,7 +557,7 @@ router.get("/User/:typeOfRevenue", async (req, res, next) =>{
             }
           },
         });
-        myChart.setWidth(data.values.length*80).setHeight(200).setBackgroundColor("#ffffff");
+        myChart.setWidth(data.values.length*100).setHeight(200).setBackgroundColor("#ffffff");
         res.render("manager/UserStatistics", { image: myChart.getUrl(),title:"Năm",totalBy:formatCurrency(totalUserByYear[0].numberOfUsers),total:formatCurrency(totalUser)});
         break;
       }

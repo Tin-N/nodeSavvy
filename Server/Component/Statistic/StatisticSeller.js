@@ -8,12 +8,156 @@ const ObjectId = Schema.ObjectId;
 const getStatisticRevenueByWeek = async (ownerID) => {
   try {
     const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() -  24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     console.log(sevenDaysAgo);
-   if(ownerID){
-    const result = await orderDetailsModel.aggregate([
+    if (ownerID) {
+      const result = await orderDetailsModel.aggregate([
         {
-          $match: {     
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$orderDetailID" }, new Date(sevenDaysAgo)],
+            },
+          },
+        },
+        { $sort: { orderDetailID: 1 } }
+        ,
+        {
+          $unwind: "$products",
+        },
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            "products.deliveryStatus": "Delivered",
+          },
+        },
+
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                date: "$orderDetailID",
+                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
+              },
+            },
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
+        }
+      ]);
+      return result;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.log("Không lấy thống kê được(Ser): " + err);
+    return false;
+  }
+};
+const getStatisticRevenueByMonth = async (ownerID) => {
+  try {
+    const now = new Date();
+    const aMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    console.log(aMonthAgo);
+    if (typeof ownerID !== "undefined") {
+      const result = await orderDetailsModel.aggregate([
+        {
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+            },
+          },
+        },
+        {
+          $unwind: "$products",
+        },
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            "products.deliveryStatus": "Delivered",
+          },
+        },
+
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                date: "$_id",
+                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
+              },
+            },
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
+        },
+        { $sort: { _id: 1 } }
+        ,
+      ]);
+      return result;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.log("Không lấy thống kê được(Ser): " + err);
+    return false;
+  }
+};
+const getStatisticRevenueByYear = async (ownerID) => {
+  try {
+    const now = new Date();
+    const aYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+    console.log(aYearAgo);
+    if (typeof ownerID !== "undefined") {
+      const result = await orderDetailsModel.aggregate([
+        {
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
+            },
+          },
+        },
+        {
+          $unwind: "$products",
+        },
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            "products.deliveryStatus": "Delivered",
+          },
+        },
+
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+                date: "$_id",
+                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
+              },
+            },
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
+        },
+        { $sort: { _id: 1 } }
+        ,
+      ]);
+      return result;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.log("Không lấy thống kê năm được(Ser): " + err);
+    return false;
+  }
+};
+const getTotalRevenueByWeek = async (ownerID) => {
+  try {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    console.log(sevenDaysAgo);
+    if (ownerID) {
+      const result = await orderDetailsModel.aggregate([
+        {
+          $match: {
             $expr: {
               $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
             },
@@ -29,38 +173,39 @@ const getStatisticRevenueByWeek = async (ownerID) => {
             "products.deliveryStatus": "Delivered",
           },
         },
-        
         {
           $group: {
-            _id: {
-              $dateToString: {
-                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
-                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-              },
-            },
+            //   _id: {
+            //     $dateToString: {
+            //       format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
+            //       date: "$_id",
+            //       timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
+            //     },
+            //   },
+            _id: 0,
+            totalProduct: { $count: {} },
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
           },
         },
         
-        ,
+        
       ]);    
       return result;
-   }else{
-        return [];
-   }
+    } else {
+      return [];
+    }
   } catch (err) {
     console.log("Không lấy thống kê được(Ser): " + err);
     return false;
   }
 };
-const getStatisticRevenueByMonth = async (ownerID) => {
+const getTotalRevenueByMonth = async (ownerID) => {
   try {
     const now = new Date();
-    const aMonthAgo = new Date(now.getTime() -  30 * 24 * 60 * 60 * 1000);
+    const aMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     console.log(aMonthAgo);
-   if(typeof ownerID !== "undefined"){
-    const result = await orderDetailsModel.aggregate([
+    if (typeof ownerID !== "undefined") {
+      const result = await orderDetailsModel.aggregate([
         {
           $match: {
             $expr: {
@@ -74,157 +219,14 @@ const getStatisticRevenueByMonth = async (ownerID) => {
         },
         {
           $match: {
-              "products.ownerID": ownerID,
-            "products.deliveryStatus": "Delivered",
-          },
-        },
-        
-        {
-          $group: {
-            _id: {
-              $dateToString: {
-                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-                date: "$_id",
-                timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-              },
-            },
-            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
-          },
-        },
-       
-      ]);
-      return result;
-   }else{
-    return [];
-   }
-  } catch (err) {
-    console.log("Không lấy thống kê được(Ser): " + err);
-    return false;
-  }
-};
-const getStatisticRevenueByYear = async (ownerID) => {
-  try {
-    const now = new Date();
-    const aYearAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
-    console.log(aYearAgo);
-    if(typeof ownerID !=="undefined"){
-    const result = await orderDetailsModel.aggregate([
-      {
-        $match: {
-          $expr: {
-            $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
-          },
-        },
-      },
-      {
-        $unwind: "$products",
-      },
-      {
-        $match: {
-            "products.ownerID": ownerID,
-          "products.deliveryStatus": "Delivered",
-        },
-      },
-      
-      {
-        $group: {
-          _id: {
-            $dateToString: {
-                format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-              date: "$_id",
-              timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-            },
-          },
-          totalDeliveredCost: { $sum: "$products.itemTotalCost" },
-        },
-      },
-      {$sort:{_id:1}}
-      ,
-    ]);
-    return result;
-    }else{
-        return [];
-    }
-  } catch (err) {
-    console.log("Không lấy thống kê năm được(Ser): " + err);
-    return false;
-  }
-};
-const getTotalRevenueByWeek = async (ownerID) => {
-    try {
-      const now = new Date();
-      const sevenDaysAgo = new Date(now.getTime() -  24 * 60 * 60 * 1000);
-      console.log(sevenDaysAgo);
-     if(ownerID){
-      const result = await orderDetailsModel.aggregate([
-          {
-            $match: {     
-              $expr: {
-                $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
-              },
-            },
-          },
-          {
-            $unwind: "$products",
-          },
-          {
-            $match: {
-              "products.ownerID": ownerID,
-              "products.deliveryStatus": "Delivered",
-            },
-          },
-          {
-            $group: {
-            //   _id: {
-            //     $dateToString: {
-            //       format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
-            //       date: "$_id",
-            //       timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
-            //     },
-            //   },
-                _id:0,
-                totalProduct:{$count:{}},
-              totalDeliveredCost: { $sum: "$products.itemTotalCost" },
-            },
-          },
-        ]);    
-        console.log(result);
-        return result;
-     }else{
-          return [];
-     }
-    } catch (err) {
-      console.log("Không lấy thống kê được(Ser): " + err);
-      return false;
-    }
-};
-const getTotalRevenueByMonth = async (ownerID) => {
-try {
-    const now = new Date();
-    const aMonthAgo = new Date(now.getTime() -  30 * 24 * 60 * 60 * 1000);
-    console.log(aMonthAgo);
-    if(typeof ownerID !== "undefined"){
-    const result = await orderDetailsModel.aggregate([
-        {
-        $match: {
-            $expr: {
-            $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
-            },
-        },
-        },
-        {
-        $unwind: "$products",
-        },
-        {
-        $match: {
             "products.ownerID": ownerID,
             "products.deliveryStatus": "Delivered",
+          },
         },
-        },
-        {$sort:{_id:-1}}
+        { $sort: { _id: -1 } }
         ,
         {
-        $group: {
+          $group: {
             //   _id: {
             //     $dateToString: {
             //       format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
@@ -232,46 +234,47 @@ try {
             //       timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
             //     },
             //   },
-            _id:0,
-            totalProduct:{$count:{}},
+            _id: 0,
+            totalProduct: { $count: {} },
             totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
         },
-        },
-    ]);
-    return result;
-    }else{
-    return [];
+
+      ]);
+      return result;
+    } else {
+      return [];
     }
-} catch (err) {
+  } catch (err) {
     console.log("Không lấy thống kê được(Ser): " + err);
     return false;
-}
+  }
 };
 const getTotalRevenueByYear = async (ownerID) => {
-try {
+  try {
     const now = new Date();
-    const aMonthAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
+    const aMonthAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
     console.log(aMonthAgo);
-    if(typeof ownerID !=="undefined"){
-    const result = await orderDetailsModel.aggregate([
-    {
-        $match: {
-        $expr: {
-            $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+    if (typeof ownerID !== "undefined") {
+      const result = await orderDetailsModel.aggregate([
+        {
+          $match: {
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
+            },
+          },
         },
+        {
+          $unwind: "$products",
         },
-    },
-    {
-        $unwind: "$products",
-    },
-    {
-        $match: {
-        "products.ownerID": ownerID,
-        "products.deliveryStatus": "Delivered",
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            "products.deliveryStatus": "Delivered",
+          },
         },
-    },
-    {
-        $group: {
+        {
+          $group: {
             //   _id: {
             //     $dateToString: {
             //       format: "%d/%m", // Đối với tuần "%U", tháng "%Y-%m", năm "%Y"
@@ -279,65 +282,65 @@ try {
             //       timezone: "Asia/Ho_Chi_Minh", // Thay đổi múi giờ theo yêu cầu
             //     },
             //   },
-        _id:0,
-        totalProduct:{$count:{}},
-        totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+            _id: 0,
+            totalProduct: { $count: {} },
+            totalDeliveredCost: { $sum: "$products.itemTotalCost" },
+          },
         },
-    },
-    ]);
-    return result;
-    }else{
-        return [];
+      ]);
+      return result;
+    } else {
+      return [];
     }
-} catch (err) {
+  } catch (err) {
     console.log("Không lấy thống kê năm được(Ser): " + err);
     return false;
-}
+  }
 };
 const getTopRatedByProductByWeek = async (ownerID) => {
   try {
-    if(typeof ownerID !=="undefined"){
+    if (typeof ownerID !== "undefined") {
       const now = new Date();
-      const sevenDaysAgo = new Date(now.getTime() -  24 * 60 * 60 * 1000);
+      const sevenDaysAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       console.log(sevenDaysAgo);
-        const result = await feedbackModel.aggregate([
-            {
-                $match:{
-                    "products.ownerID": ownerID,
-                    $expr: {
-                      $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
-                    },
-                }
+      const result = await feedbackModel.aggregate([
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(sevenDaysAgo)],
             },
-          {
-            $group: {
-              _id: {$toObjectId: "$productID"},
-              rating: {
-                $avg: "$rating",
-              },
-            },
-          },
-          {
-            $sort:{
-                rating:-1,
-            }
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "_id",
-              foreignField: "_id",
-              as: "productInfo",
-            },
-          },{
-            $limit:10
           }
-        ]);    return result;
+        },
+        {
+          $group: {
+            _id: { $toObjectId: "$productID" },
+            rating: {
+              $avg: "$rating",
+            },
+          },
+        },
+        {
+          $sort: {
+            rating: -1,
+          }
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "productInfo",
+          },
+        }, {
+          $limit: 10
+        }
+      ]); return result;
 
-    }else{
-        return [];
+    } else {
+      return [];
     }
-   
+
   } catch (err) {
     console.log("Không lấy được top sản phẩm đánh giá tốt được(Ser): " + err);
     return false;
@@ -345,48 +348,48 @@ const getTopRatedByProductByWeek = async (ownerID) => {
 };
 const getTopRatedByProductByMonth = async (ownerID) => {
   try {
-    if(typeof ownerID !=="undefined"){
+    if (typeof ownerID !== "undefined") {
       const now = new Date();
-      const aMonthAgo = new Date(now.getTime() -  30*24 * 60 * 60 * 1000);
+      const aMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
       console.log(aMonthAgo);
-        const result = await feedbackModel.aggregate([
-            {
-                $match:{
-                    "products.ownerID": ownerID,
-                    $expr: {
-                      $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
-                    },
-                }
+      const result = await feedbackModel.aggregate([
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aMonthAgo)],
             },
-          {
-            $group: {
-              _id: {$toObjectId: "$productID"},
-              rating: {
-                $avg: "$rating",
-              },
-            },
-          },
-          {
-            $sort:{
-                rating:-1,
-            }
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "_id",
-              foreignField: "_id",
-              as: "productInfo",
-            },
-          },{
-            $limit:10
           }
-        ]);    return result;
+        },
+        {
+          $group: {
+            _id: { $toObjectId: "$productID" },
+            rating: {
+              $avg: "$rating",
+            },
+          },
+        },
+        {
+          $sort: {
+            rating: -1,
+          }
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "productInfo",
+          },
+        }, {
+          $limit: 10
+        }
+      ]); return result;
 
-    }else{
-        return [];
+    } else {
+      return [];
     }
-   
+
   } catch (err) {
     console.log("Không lấy được top sản phẩm đánh giá tốt được(Ser): " + err);
     return false;
@@ -394,48 +397,48 @@ const getTopRatedByProductByMonth = async (ownerID) => {
 };
 const getTopRatedByProductByYear = async (ownerID) => {
   try {
-    if(typeof ownerID !=="undefined"){
+    if (typeof ownerID !== "undefined") {
       const now = new Date();
-      const aYearAgo = new Date(now.getTime() -  365 * 24 * 60 * 60 * 1000);
+      const aYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
       console.log(aYearAgo);
-        const result = await feedbackModel.aggregate([
-            {
-                $match:{
-                    "products.ownerID": ownerID,
-                    $expr: {
-                      $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
-                    },
-                }
+      const result = await feedbackModel.aggregate([
+        {
+          $match: {
+            "products.ownerID": ownerID,
+            $expr: {
+              $gte: [{ $toDate: "$_id" }, new Date(aYearAgo)],
             },
-          {
-            $group: {
-              _id: {$toObjectId: "$productID"},
-              rating: {
-                $avg: "$rating",
-              },
-            },
-          },
-          {
-            $sort:{
-                rating:-1,
-            }
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "_id",
-              foreignField: "_id",
-              as: "productInfo",
-            },
-          },{
-            $limit:10
           }
-        ]);    return result;
+        },
+        {
+          $group: {
+            _id: { $toObjectId: "$productID" },
+            rating: {
+              $avg: "$rating",
+            },
+          },
+        },
+        {
+          $sort: {
+            rating: -1,
+          }
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "productInfo",
+          },
+        }, {
+          $limit: 10
+        }
+      ]); return result;
 
-    }else{
-        return [];
+    } else {
+      return [];
     }
-   
+
   } catch (err) {
     console.log("Không lấy được top sản phẩm đánh giá tốt được(Ser): " + err);
     return false;

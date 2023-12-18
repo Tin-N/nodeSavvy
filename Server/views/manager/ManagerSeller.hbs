@@ -614,7 +614,6 @@
             if (text !== currentPage && targetPage >= 1 && targetPage <= totalPages) {
               button.addEventListener('click', () => {
                 currentPage = targetPage;
-                alert(currentPage)
                 window.location.href=`/cpanel/user/ManagerSeller/${currentPage}`
                 renderPagination();
               });
