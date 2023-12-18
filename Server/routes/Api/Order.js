@@ -69,23 +69,22 @@ router.get('/getOrderForSeller/:ownerID/', async (req, res) => {
   }
 });
 
-
 router.get('/getOrderByOrderDetailID/:orderDetailID', async (req, res) => {
-  const orderDetailID = req.params.orderDetailID;
-
   try {
-    // Use Mongoose to find orders with the given orderDetailID
-    const orders = await orderModel.find({ orderDetailID });
+    const orderDetailID = req.params.orderDetailID;
 
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ success: false, error: 'No orders found for the given orderDetailID' });
+    // Find the order based on the provided orderDetailID
+    const order = await orderModel.findOne({ orderDetailID });
+
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
     }
 
-    res.status(200).json({ success: true, data: orders });
-  } catch (error) {
-    console.error('Error fetching orders by orderDetailID:', error);
-    res.status(500).json({ success: false, error: 'Internal Server Error' });
-  }
+    res.status(200).json(order);
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+}
 });
 
 router.delete('/delete/:orderID', async (req, res) => {
@@ -106,7 +105,6 @@ router.delete('/delete/:orderID', async (req, res) => {
     res.status(500).json({ error: 'Đã xảy ra lỗi khi xoá bản ghi.' });
   }
 });
-
 
 router.put('/updateisConfirmedisTrue/:orderID', async (req, res) => {
   try {
